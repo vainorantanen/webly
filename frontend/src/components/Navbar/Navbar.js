@@ -63,6 +63,9 @@ const Navbar = ({ user, logout }) => {
             <StyledButton color="inherit" component={Link} to="/yrityksille">
               Yrityksille
             </StyledButton>
+            <StyledButton color="inherit" component={Link} to="/kehittajienilmoitusket">
+              Kehittäjien ilmoitukset
+            </StyledButton>
             <StyledButton color="inherit" component={Link} to="/tarjouskilpailut">
               Avoimet tarjouskilpailut
             </StyledButton>
@@ -101,6 +104,9 @@ const Navbar = ({ user, logout }) => {
           </ListItemButton>
           <ListItemButton component={Link} to="/yrityksille" onClick={toggleDrawer}>
             <ListItemText primary="Yrityksille" />
+          </ListItemButton>
+          <ListItemButton component={Link} to="/kehittajienilmoitukset" onClick={toggleDrawer}>
+            <ListItemText primary="Kehittäjien ilmoitukset" />
           </ListItemButton>
           <ListItemButton component={Link} to="/tarjouskilpailut" onClick={toggleDrawer}>
             <ListItemText primary="Avoimet tarjouskilpailut" />

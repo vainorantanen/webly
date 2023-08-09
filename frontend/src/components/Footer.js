@@ -21,7 +21,7 @@ const Footer = () => {
           fontWeight: 'bold',
           color: '#ffffff',
         }}>
-          Nettisivutori
+          Webly
         </Typography>
 
         <Typography variant="body1" className="copyright">

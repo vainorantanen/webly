@@ -21,7 +21,7 @@ const HomeHeader = () => {
             marginBottom: '2rem'
           },
         }}
-      >Tervetuoloa Nettisivutoriin!</Typography>
+      >Webly</Typography>
 
       <Box sx={{
         display: 'flex',

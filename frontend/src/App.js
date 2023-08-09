@@ -6,6 +6,7 @@ import feedPostService from './services/feedposts'
 import loginService from './services/login'
 import usersService from './services/users'
 import kayttajaService from './services/user'
+import devfeedpostService from './services/devfeedposts'
 
 import Notification from './components/Notification'
 import storageService from './services/storage'
@@ -32,6 +33,7 @@ import AddFeedPostForm from './components/Feed/AddFeedPostForm'
 import Profile from './Profile/Profile'
 import SingleFeedPost from './components/Feed/SingleFeedPost'
 import ForCompaniesMain from './components/ForCompanies/ForCompaniesMain'
+import DevPostFeed from './components/DevelopersPosts/DevPostFeed'
 
 const theme = createTheme({
   typography: {
@@ -44,6 +46,7 @@ const App = () => {
   const [info, setInfo] = useState({ message: null })
   const [users, setUsers] = useState([])
   const [ feedPosts, setFeedPosts ] = useState([])
+  const [ devFeedPosts, setDevFeedPosts ] = useState([])
 
   const registerFormRef = useRef()
   const navigate = useNavigate()
@@ -52,6 +55,12 @@ const App = () => {
   useEffect(() => {
     feedPostService.getAll().then(posts =>
       setFeedPosts( posts )
+    )
+  }, [])
+
+  useEffect(() => {
+    devfeedpostService.getAll().then(posts =>
+      setDevFeedPosts( posts )
     )
   }, [])
 
@@ -118,6 +127,7 @@ const App = () => {
           <Route path='/profiili' element={<Profile user={user} setUser={setUser}/>} />
           <Route path='/tarjouskilpailut/:id' element={<SingleFeedPost feedPosts={feedPosts} user={user} />} />
           <Route path='/yrityksille' element={ <ForCompaniesMain /> } />
+          <Route path='/kehittajienilmoitukset' element={<DevPostFeed devFeedPosts={devFeedPosts} />} />
         </Routes>
         <Footer />
       </Box>

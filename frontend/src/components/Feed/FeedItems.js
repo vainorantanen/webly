@@ -8,13 +8,24 @@ import {
   Button,
 } from '@mui/material'
 import FeedPostCard from './FeedPostCard'
+import { useSelector } from 'react-redux'
 
-const FeedItems = ({ feedPosts }) => {
+const FeedItems = () => {
   const [filter1, setFilter1] = useState('All')
   const [filter2, setFilter2] = useState('All')
   const [filter3, setFilter3] = useState('All')
   const [currentPage, setCurrentPage] = useState(1)
   const postsPerPage = 5
+
+  const feedPosts = useSelector(({feedPosts}) => feedPosts)
+
+  useEffect(() => {
+    setCurrentPage(1)
+  }, [filter1, filter2, filter3])
+
+  if (!feedPosts || feedPosts.length === 0) {
+    return <Typography>Ei postauksia</Typography>
+  }
 
   const filteredPosts = feedPosts
     .filter((post) => {
@@ -37,10 +48,6 @@ const FeedItems = ({ feedPosts }) => {
   const currentPosts = filteredPosts.slice(indexOfFirstPost, indexOfLastPost)
 
   const paginate = (pageNumber) => setCurrentPage(pageNumber)
-
-  useEffect(() => {
-    setCurrentPage(1)
-  }, [filter1, filter2, filter3])
 
   return (
     <Box sx={{ marginTop: '4rem' }}>

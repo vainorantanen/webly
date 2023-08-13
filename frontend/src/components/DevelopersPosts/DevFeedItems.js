@@ -8,10 +8,13 @@ import {
   Button,
 } from '@mui/material'
 import DevFeedPostCard from './DevFeedPostCard'
+import { useSelector } from 'react-redux'
 
-const DevFeedItems = ({ devFeedPosts }) => {
+const DevFeedItems = () => {
 
-  if (devFeedPosts.length === 0) {
+  const devFeedPosts = useSelector(({devPosts}) => devPosts)
+
+  if (!devFeedPosts || devFeedPosts.length === 0) {
     return (
     <Typography>Ei ilmoituksia</Typography>
     )

@@ -3,13 +3,13 @@ import React from 'react'
 import FeedHeader from './FeedHeader'
 import FeedItems from './FeedItems'
 
-const Feed = ({ feedPosts }) => {
+const Feed = () => {
 
   return (
     <Container sx={{ marginTop: '5rem', minHeight: '100vh', backgroundColor: 'white', borderRadius: '1rem',
       marginBottom: '1rem' }}>
       <FeedHeader />
-      <FeedItems feedPosts={feedPosts} />
+      <FeedItems />
     </Container>
   )
 }

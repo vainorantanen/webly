@@ -1,8 +1,9 @@
 import React from 'react'
 import Company from './Company'
 import { Box, Container, Typography } from '@mui/material'
+import FeedItems from './FeedItems'
 
-const CompaniesList = ({ users }) => {
+const CompaniesList = () => {
   return (
     <Container sx={{ marginTop: '8rem', minHeight: '100vh', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
       <Typography
@@ -30,21 +31,7 @@ const CompaniesList = ({ users }) => {
       >
         Tutustu yrityksiin, jotka aktiivisesti osallistuvat tarjouskilpailuihin
       </Typography>
-      <Box
-        sx={{
-          display: 'flex',
-          flexDirection: 'column',
-          justifyContent: 'center',
-          textAlign: 'flex-start',
-          gap: '1rem',
-          marginBottom: '1rem',
-          borderRadius: '1rem',
-        }}
-      >
-        {users.filter((user) => user.isCompany).map((u) => (
-          <Company key={u.id} company={u} />
-        ))}
-      </Box>
+      <FeedItems />
     </Container>
   )
 }

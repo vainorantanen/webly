@@ -2,11 +2,11 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import { Typography, Box } from '@mui/material'
 
-const Company = ({ company }) => {
+const Company = ({ dev }) => {
   return (
     <Box
       component={Link}
-      to={`/yritykset/${company.id}`}
+      to={`/yritykset/${dev.id}`}
       sx={{
         display: 'flex',
         flexDirection: 'column',
@@ -37,7 +37,7 @@ const Company = ({ company }) => {
           },
         }}
       >
-        {company.name}
+        {dev.name}
       </Typography>
       <Typography sx={{
         color: '#666',
@@ -47,7 +47,7 @@ const Company = ({ company }) => {
         WebkitLineClamp: 2, // Show only one line of description
         WebkitBoxOrient: 'vertical',
         lineHeight: '1.4', // Increase line height for better readability
-      }}>{company.description}</Typography>
+      }}>{dev.description}</Typography>
     </Box>
   )
 }

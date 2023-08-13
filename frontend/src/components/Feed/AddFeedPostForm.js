@@ -10,33 +10,41 @@ import {
   FormControlLabel,
 } from '@mui/material'
 
-import feedPostService from '../../services/feedposts'
+import { useDispatch, useSelector } from 'react-redux'
+import { useNotification } from '../../hooks'
+import { addFeedPost } from '../../reducers/feedPosts'
 
-const AddFeedPostForm = ({ user, feedPosts, setFeedPosts }) => {
+const AddFeedPostForm = () => {
   const [description, setDescription] = useState('')
   const [question1, setQuestion1] = useState('Yksisivuinen (one-page) verkkosivu')
   const [question2, setQuestion2] = useState('Tuotteiden tai palveluiden esittely')
   const [question3, setQuestion3] = useState('Yhteydenottolomake ja yhteystiedot')
 
-  const addFeedPost = async (newPost) => {
-    const addedPost = await feedPostService.create(newPost)
-    setFeedPosts(feedPosts.concat(addedPost))
-  }
+  const user = useSelector(({ user }) => user)
+  const notify = useNotification()
+  
+  const dispatch = useDispatch()
 
   const handleSubmit = async (event) => {
     event.preventDefault()
-    await addFeedPost({
-      description,
-      timeStamp: new Date(),
-      isOpen: true,
-      question1,
-      question2,
-      question3
-    })
-    setDescription('')
-    setQuestion1('Yksisivuinen (one-page) verkkosivu')
-    setQuestion2('Tuotteiden tai palveluiden esittely')
-    setQuestion3('Yhteydenottolomake ja yhteystiedot')
+    try {
+        dispatch(addFeedPost({
+        description,
+        timeStamp: new Date(),
+        isOpen: true,
+        question1,
+        question2,
+        question3
+      }))
+      setDescription('')
+      setQuestion1('Yksisivuinen (one-page) verkkosivu')
+      setQuestion2('Tuotteiden tai palveluiden esittely')
+      setQuestion3('Yhteydenottolomake ja yhteystiedot')
+      notify('Postaus lisätty onnistuneesti', 'success')
+    } catch (error) {
+      notify('Ilmeni jokin ongelma postauksen teossa, yritä myöhemmin uudelleen', 'error')
+    }
+    
   }
 
   if (!user || user.isCompany) {

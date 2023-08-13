@@ -1,10 +1,11 @@
 import { Container, Typography, Box } from '@mui/material'
 import React from 'react'
 import { useParams } from 'react-router-dom'
+import {  useSelector } from 'react-redux'
 
-const CompanyInfoPage = ({ users }) => {
+const CompanyInfoPage = () => {
   const id = useParams().id
-  const company = users.find((c) => c.id === id)
+  const company = useSelector(({ users }) => users.find(p => p.id === id))
 
   if (!company) {
     return null

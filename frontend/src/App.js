@@ -3,8 +3,8 @@ import { useEffect } from 'react'
 
 import Notification from './components/Notification'
 import LoginForm from './components/LoginForm'
-import CompaniesList from './components/CompaniesList'
-import CompanyInfoPage from './components/CompanyInfoPage'
+import CompaniesList from './components/Companies/CompaniesList'
+import CompanyInfoPage from './components/Companies/CompanyInfoPage'
 
 import ScrollToTop from './components/ScrollToTop'
 

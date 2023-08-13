@@ -66,7 +66,7 @@ const Navbar = ({ logout }) => {
             <StyledButton color="inherit" component={Link} to="/yrityksille">
               Yrityksille
             </StyledButton>
-            <StyledButton color="inherit" component={Link} to="/kehittajienilmoitusket">
+            <StyledButton color="inherit" component={Link} to="/kehittajienilmoitukset">
               Kehittäjien ilmoitukset
             </StyledButton>
             <StyledButton color="inherit" component={Link} to="/tarjouskilpailut">

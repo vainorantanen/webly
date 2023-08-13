@@ -3,18 +3,18 @@ import { Container, Typography, Box } from '@mui/material'
 import ProfileInfo from './ProfileInfo'
 import feedbidService from '../../services/feedbids'
 import FeedBidCard from '../Feed/FeedBidCard'
+import { useSelector, useDispatch } from 'react-redux'
+import { useNotification } from '../../hooks'
 
-const CompanyProfile = ({ user, setUser }) => {
-  const [userFeedBids, setUserFeedBids] = useState([])
 
-  useEffect(() => {
-    const fetchUserFeedBids = async () => {
-      const allFeedBids = await feedbidService.getAll()
-      const userFeedBids = allFeedBids.filter(b => b.user.id === user.id)
-      setUserFeedBids(userFeedBids)
-    }
-    fetchUserFeedBids()
-  }, [user.id])
+const CompanyProfile = () => {
+  const localUser = useSelector(({user}) => user)
+  const user = useSelector(({users}) => users).find(u => u.id === localUser.id)
+
+  const notify = useNotification()
+  const dispatch = useDispatch()
+
+  const userFeedBids = useSelector(({feedBids}) => feedBids).filter(p => p.user.id === user.id)
 
   if (!user) {
     return null
@@ -25,11 +25,13 @@ const CompanyProfile = ({ user, setUser }) => {
       <Typography>Toimijan {user.name} Profiili</Typography>
       <ProfileInfo />
       <Typography>Seuraa tekemiesi tarjousten tilannetta</Typography>
-      {userFeedBids.map(m => (
+      {userFeedBids.length > 0 ? (userFeedBids.map(m => (
         <Box key={m.id} sx={{ border: '1px solid black', borderRadius: '1rem', marginTop: '1rem' }}>
           <FeedBidCard bid={m}/>
         </Box>
-      ))}
+      ))): (
+        <Typography>Ei vielä tarjouksia</Typography>
+      )}
     </Container>
   )
 }

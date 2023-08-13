@@ -1,20 +1,29 @@
 import { Container, TextField, Button } from '@mui/material'
 import React from 'react'
 import { useState } from 'react'
-import userService from '../../services/users'
+import { useDispatch } from 'react-redux'
+import { useNotification } from '../../hooks'
+import { updateUser } from '../../reducers/user'
 import { useSelector } from 'react-redux'
 
 const ModifyDescriptionForm = () => {
 
+  const notify = useNotification()
+    const dispatch = useDispatch()
   const localUser = useSelector(({user}) => user)
   const user = useSelector(({users}) => users).find(u => u.id === localUser.id)
 
   const [description, setDescription] = useState(user.description)
 
   const handleSubmit = async () => {
-    await userService.update({ ...user, description: description })
-    //setUser({ ...user, description: description })
-  }
+    try {
+        dispatch(updateUser({...user, description }))
+        setDescription('')
+        notify('Päivitys tehty onnistuneesti', 'success')
+    } catch (error) {
+        notify('Ilmeni jokin ongelma päivityksessä, yritä myöhemmin uudelleen', 'error')
+    }
+}
 
   return (
     <Container sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', textAlign: 'center' }}>

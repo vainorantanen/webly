@@ -52,7 +52,7 @@ const SingleFeedPost = () => {
       </Box>
       {user && user.isCompany === true && (
         <Togglable buttonLabel='Tee tarjous'>
-          <MakeBidForm />
+          <MakeBidForm post={post}/>
         </Togglable>
       )}
       <Typography>Tarjoukset</Typography>

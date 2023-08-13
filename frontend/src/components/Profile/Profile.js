@@ -1,25 +1,32 @@
 import React from 'react'
 import CompanyProfile from './CompanyProfile'
 import PrivateProfile from './PrivateProfile'
-import { Container } from '@mui/material'
+import { Container, Typography } from '@mui/material'
+import { useSelector } from 'react-redux'
 
-const Profile = ({ user, setUser }) => {
+const Profile = () => {
+
+  const user = useSelector(({ user }) => user)
 
   if (!user) {
-    return null
+    return (
+      <Container sx={{ minHeight: '90vh', marginTop: '5rem', borderRadius: '0.5rem' }}>
+          <Typography>Kirjaudu sisään nähdäksesi profiilisi</Typography>
+      </Container>
+  )
   }
 
   if (user.isCompany === true) {
     return (
       <Container>
-        <CompanyProfile user={user} setUser={setUser}/>
+        <CompanyProfile />
       </Container>
     )
   }
 
   return (
     <Container>
-      <PrivateProfile user={user} setUser={setUser}/>
+      <PrivateProfile />
     </Container>
   )
 }

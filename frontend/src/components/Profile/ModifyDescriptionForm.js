@@ -2,13 +2,18 @@ import { Container, TextField, Button } from '@mui/material'
 import React from 'react'
 import { useState } from 'react'
 import userService from '../../services/users'
+import { useSelector } from 'react-redux'
 
-const ModifyDescriptionForm = ({ user, setUser }) => {
+const ModifyDescriptionForm = () => {
+
+  const localUser = useSelector(({user}) => user)
+  const user = useSelector(({users}) => users).find(u => u.id === localUser.id)
+
   const [description, setDescription] = useState(user.description)
 
   const handleSubmit = async () => {
     await userService.update({ ...user, description: description })
-    setUser({ ...user, description: description })
+    //setUser({ ...user, description: description })
   }
 
   return (

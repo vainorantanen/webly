@@ -1,16 +1,25 @@
 import { Container, TextField, Button } from '@mui/material'
 import React from 'react'
 import { useState } from 'react'
-import feedpostService from '../../services/feedposts'
+import { useNotification } from '../../hooks'
+import { updateFeedPost } from '../../reducers/feedPosts'
+import { useDispatch } from 'react-redux'
 
 const ModifyPost = ({ post }) => {
+  const notify = useNotification()
+  const dispatch = useDispatch()
+
   const [description, setDescription] = useState(post.description)
 
   const handleSubmit = async () => {
-    await feedpostService.update({ ...post, description: description })
-    //setpost({ ...post, description: description })
-    setDescription('')
-  }
+    try {
+        dispatch(updateFeedPost({...post, description }))
+        setDescription('')
+        notify('Päivitys tehty onnistuneesti', 'success')
+    } catch (error) {
+        notify('Ilmeni jokin ongelma päivityksessä, yritä myöhemmin uudelleen', 'error')
+    }
+}
 
   return (
     <Container sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', textAlign: 'center' }}>

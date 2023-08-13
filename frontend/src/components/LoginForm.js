@@ -1,26 +1,27 @@
 import React from 'react'
-import { useState } from 'react'
 import { Container, Box, TextField, Button, Typography } from '@mui/material'
-import Togglable from './Togglable'
-import RegisterPage from './RegisterPage'
-import { useNavigate } from 'react-router-dom'
+import { useDispatch } from 'react-redux'
+import { loginUser } from '../reducers/user'
+import { useState } from "react";
+import { useNotification } from '../hooks'
+import { Link } from 'react-router-dom'
 
-const LoginForm = ({ login, registerFormRef, addUser }) => {
-  const [username, setUsername] = useState('')
-  const [password, setPassword] = useState('')
+const LoginForm = () => {
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
 
-  const navigate = useNavigate()
+  const dispatch = useDispatch()
 
+  const notify = useNotification()
+  
   const handleSubmit = async (event) => {
     event.preventDefault()
     try {
-      await login(username, password)
+      dispatch(loginUser({ username, password }))
       setUsername('')
       setPassword('')
-
-      navigate('/')
-    } catch (error) {
-      console.log('error:', error) // Error message
+    } catch (e) {
+      notify('Väärä käyttäjätunnus tai salasana', 'error')
     }
   }
 
@@ -30,7 +31,7 @@ const LoginForm = ({ login, registerFormRef, addUser }) => {
       flexDirection: 'column',
       alignItems: 'center',
       justifyContent: 'center',
-      minHeight: '100vh',
+      minHeight: '80vh',
     }}>
       <Box>
         <Typography sx={{
@@ -39,7 +40,7 @@ const LoginForm = ({ login, registerFormRef, addUser }) => {
           '@media (max-width: 442px)': {
             fontSize: '1.5rem',
           },
-        }}>Kirjaudu Nettisivutoriin</Typography>
+        }}>Kirjaudu</Typography>
       </Box>
       <Box component="form" onSubmit={handleSubmit}
         sx={{
@@ -51,22 +52,22 @@ const LoginForm = ({ login, registerFormRef, addUser }) => {
           maxWidth: '30rem',
         }}
       >
-        <Typography>Käyttäjätunnus</Typography>
         <TextField
           id="login-username"
           label="Käyttäjätunnus"
+          required
           value={username}
           className="username-input"
           onChange={({ target }) => setUsername(target.value)}
           sx={{ marginBottom: '1rem' }}
         />
-        <Typography>Salasana</Typography>
         <TextField
           id="login-password"
           label="Salasana"
           type="password"
+          required
           value={password}
-          className='password-input'
+          className="password-input"
           onChange={({ target }) => setPassword(target.value)}
           sx={{ marginBottom: '1rem' }}
         />
@@ -91,15 +92,11 @@ const LoginForm = ({ login, registerFormRef, addUser }) => {
       </Box>
       <Box>
         <Typography sx={{
-          fontSize: '2rem',
+          fontSize: '1rem',
           textAlign: 'center',
-          '@media (max-width: 442px)': {
-            fontSize: '1.5rem',
-          },
-        }}>Eikö sinulla ole vielä käyttäjää? Reksiteröidy</Typography>
-        <Togglable buttonLabel='Rekisteröidy' ref={registerFormRef}>
-          <RegisterPage addUser={addUser}/>
-        </Togglable>
+        }}>Eikö sinulla ole vielä käyttäjää? <Button component={Link}
+          to='/register'
+        >Reksiteröidy</Button></Typography>
       </Box>
     </Container>
   )

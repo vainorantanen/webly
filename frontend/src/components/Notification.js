@@ -1,9 +1,11 @@
-import React from 'react'
+import { useSelector } from 'react-redux'
 import { Alert, Box } from '@mui/material'
 
-const Notification = ({ info }) => {
+const Notification = () => {
+  const info = useSelector(({ notification }) => notification)
+
   if (!info.message) {
-    return null
+    return
   }
 
   const notificationStyle = {

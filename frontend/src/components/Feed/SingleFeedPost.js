@@ -4,10 +4,13 @@ import { useParams } from 'react-router-dom'
 import FeedBidCard from './FeedBidCard'
 import Togglable from '../Togglable'
 import MakeBidForm from './MakeBidForm'
+import { useSelector } from 'react-redux'
 
-const SingleFeedPost = ({ feedPosts, user }) => {
+const SingleFeedPost = () => {
+
+  const user = useSelector(({ user }) => user)
   const id = useParams().id
-  const [ post, setPost ] = useState(feedPosts.find((c) => c.id === id))
+  const post = useSelector(({feedPosts}) => feedPosts.find(p => p.id === id))
 
   if (!post) {
     return null
@@ -49,7 +52,7 @@ const SingleFeedPost = ({ feedPosts, user }) => {
       </Box>
       {user && user.isCompany === true && (
         <Togglable buttonLabel='Tee tarjous'>
-          <MakeBidForm post={post} setPost={setPost}/>
+          <MakeBidForm post={post}/>
         </Togglable>
       )}
       <Typography>Tarjoukset</Typography>

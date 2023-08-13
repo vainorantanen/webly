@@ -1,15 +1,25 @@
 import { Container, TextField, Button } from '@mui/material'
 import React from 'react'
 import { useState } from 'react'
-import userService from '../services/users'
+import { useNotification } from '../../hooks'
+import { updateFeedPost } from '../../reducers/feedPosts'
+import { useDispatch } from 'react-redux'
 
-const ModifyDescriptionForm = ({ user, setUser }) => {
-  const [description, setDescription] = useState(user.description)
+const ModifyPost = ({ post }) => {
+  const notify = useNotification()
+  const dispatch = useDispatch()
+
+  const [description, setDescription] = useState(post.description)
 
   const handleSubmit = async () => {
-    await userService.update({ ...user, description: description })
-    setUser({ ...user, description: description })
-  }
+    try {
+        dispatch(updateFeedPost({...post, description }))
+        setDescription('')
+        notify('Päivitys tehty onnistuneesti', 'success')
+    } catch (error) {
+        notify('Ilmeni jokin ongelma päivityksessä, yritä myöhemmin uudelleen', 'error')
+    }
+}
 
   return (
     <Container sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', textAlign: 'center' }}>
@@ -35,10 +45,10 @@ const ModifyDescriptionForm = ({ user, setUser }) => {
           },
         }}
       >
-        Päivitä
+          Päivitä
       </Button>
     </Container>
   )
 }
 
-export default ModifyDescriptionForm
+export default ModifyPost

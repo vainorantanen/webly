@@ -1,30 +1,34 @@
 import React, { useEffect, useState } from 'react'
 import { Container, Typography, Box, Button } from '@mui/material'
-import CompanyProfileInfo from './CompanyProfileInfo'
-import feedpostService from '../services/feedposts'
-import FeedPostCard from '../components/Feed/FeedPostCard'
-import Togglable from '../components/Togglable'
+import FeedPostCard from '../Feed/FeedPostCard'
+import Togglable from '../Togglable'
 import ModifyPost from './ModifyPost'
-import FeedBidCard from '../components/Feed/FeedBidCard'
+import FeedBidCard from '../Feed/FeedBidCard'
+import { useSelector, useDispatch } from 'react-redux'
+import { useNotification } from '../../hooks'
+import { updateFeedPost } from '../../reducers/feedPosts'
+import ProfileInfo from './ProfileInfo'
 
-const PrivateProfile = ({ user, setUser }) => {
-  const [userFeedPosts, setuserFeedPosts] = useState([])
+const PrivateProfile = () => {
+  const localUser = useSelector(({user}) => user)
+  const user = useSelector(({users}) => users).find(u => u.id === localUser.id)
 
-  useEffect(() => {
-    const fetchuserFeedPosts = async () => {
-      const allFeedPosts = await feedpostService.getAll()
-      const userFeedPosts = allFeedPosts.filter(b => b.user.id === user.id)
-      setuserFeedPosts(userFeedPosts)
-    }
-    fetchuserFeedPosts()
-  }, [user.id])
+  const notify = useNotification()
+  const dispatch = useDispatch()
+  const userFeedPosts = useSelector(({ feedPosts }) => feedPosts).filter(p => p.user.id === user.id)
 
   const handleMarkDone = async ({ post }) => {
     const confirmed = window.confirm('Haluatko varmasti merkitä tämän ilmoituksen suljetuksi?')
     if (!confirmed) {
       return // If the user clicks "Cancel," do nothing
     }
-    await feedpostService.update({ ...post, isOpen: false })
+    try {
+      dispatch(updateFeedPost({ ...post, isOpen: false }))
+      notify('Päivitetty onnistuneesti', 'success')
+    } catch (error) {
+      notify('Ilmeni jokin ongelma', 'erro')
+    }
+  
   }
 
   const handleMarkOpen = async ({ post }) => {
@@ -32,7 +36,12 @@ const PrivateProfile = ({ user, setUser }) => {
     if (!confirmed) {
       return // If the user clicks "Cancel," do nothing
     }
-    await feedpostService.update({ ...post, isOpen: true })
+    try {
+      dispatch(updateFeedPost({ ...post, isOpen: true }))
+      notify('Päivitetty onnistuneesti', 'success')
+    } catch (error) {
+      notify('Ilmeni jokin ongelma', 'erro')
+    }
   }
 
   if (!user) {
@@ -41,8 +50,8 @@ const PrivateProfile = ({ user, setUser }) => {
 
   return (
     <Container sx={{ marginTop: '7rem', minHeight: '100vh', backgroundColor: 'white', borderRadius: '1rem', marginBottom: '1rem' }}>
+      <ProfileInfo />
       <Typography>Käyttäjän {user.name} Profiili</Typography>
-      <CompanyProfileInfo user={user} setUser={setUser} />
       <Typography>Seuraa ilmoitustesi tilannetta</Typography>
       {userFeedPosts.map(m => (
         <Box key={m.id} sx={{ marginTop: '1rem', border: '1px solid black', borderRadius: '1rem' }}>

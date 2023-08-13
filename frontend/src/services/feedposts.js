@@ -2,11 +2,6 @@ import axios from 'axios'
 import storageService from './storage'
 const baseUrl = '/api/feedposts'
 
-/*
-const headers = {
-  'Authorization': storageService.loadUser() ? `Bearer ${storageService.loadUser().token}` : null
-}
-*/
 const getAll = async () => {
   const request = await axios.get(baseUrl)
   return request.data
@@ -34,4 +29,5 @@ const remove = async (id) => {
   await axios.delete(`${baseUrl}/${id}`, { headers })
 }
 
+// eslint-disable-next-line import/no-anonymous-default-export
 export default { getAll, create, update, remove }

@@ -16,6 +16,7 @@ import {
 import { Menu as MenuIcon } from '@mui/icons-material'
 import './navbar.css'
 import { Link } from 'react-router-dom'
+import { useSelector } from 'react-redux'
 
 const theme = createTheme({
   palette: {
@@ -39,8 +40,10 @@ const StyledButton = styled(Button)({
     backgroundImage: 'linear-gradient(to bottom, #C4C4C4, #BCBCBC)' }
 })
 
-const Navbar = ({ user, logout }) => {
+const Navbar = ({ logout }) => {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false)
+
+  const user = useSelector(({ user }) => user)
 
   const toggleDrawer = () => {
     setIsDrawerOpen(!isDrawerOpen)
@@ -63,7 +66,7 @@ const Navbar = ({ user, logout }) => {
             <StyledButton color="inherit" component={Link} to="/yrityksille">
               Yrityksille
             </StyledButton>
-            <StyledButton color="inherit" component={Link} to="/kehittajienilmoitusket">
+            <StyledButton color="inherit" component={Link} to="/kehittajienilmoitukset">
               Kehittäjien ilmoitukset
             </StyledButton>
             <StyledButton color="inherit" component={Link} to="/tarjouskilpailut">

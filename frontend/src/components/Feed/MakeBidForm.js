@@ -1,24 +1,36 @@
 import { Container, Typography, Button, TextField, Box } from '@mui/material'
 import React from 'react'
 import { useState } from 'react'
-import feedBidService from '../../services/feedbids'
+import { useDispatch, useSelector } from 'react-redux'
+import { useNotification } from '../../hooks'
+import { addFeedBid } from '../../reducers/feedBids'
 
-const MakeBidForm = ({ post, setPost }) => {
+const MakeBidForm = ({ post }) => {
   const [description, setDescription] = useState('')
   const [ price, setPrice ] = useState(0)
 
+  const user = useSelector(({ user }) => user)
+  const notify = useNotification()
+  
+  const dispatch = useDispatch()
+  /*
   const addFeedBid = async (newPost) => {
     const addedBid = await feedBidService.create(newPost)
     //notifyWith(`A new course '${newCourse.title}' by '${newCourse.company}' added`)
     setPost({ ...post, feedBids: post.feedBids.concat(addedBid) })
   }
-
+*/
   const handleSubmit = async (event) => {
     event.preventDefault()
-    console.log('handlesubmit', description)
-    await addFeedBid({ description, timeStamp : new Date(), isApproved: false, price, target: post })
-    setDescription('')
-    setPrice(0)
+    try {
+      dispatch(addFeedBid({ description, timeStamp : new Date(), isApproved: false, price, target: post }))
+      setDescription('')
+      setPrice(0)
+      notify('Tarjous lisätty onnistuneesti', 'success')
+    } catch (error) {
+      notify('Ilmeni jokin ongelma tarjouksen teossa, yritä myöhemmin uudelleen', 'error')
+    }
+    
   }
 
   return (

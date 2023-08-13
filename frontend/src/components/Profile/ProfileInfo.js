@@ -1,8 +1,11 @@
 import { Container, Typography } from '@mui/material'
 import React from 'react'
 import ModifyDescriptionForm from './ModifyDescriptionForm'
+import { useSelector } from 'react-redux'
 
-const CompanyProfileInfo = ({ user, setUser }) => {
+const ProfileInfo = () => {
+
+  const user = useSelector(({user}) => user)
 
   return (
     <Container sx={{ display: 'flex', flexDirection: 'column', marginTop: '1rem',
@@ -10,10 +13,10 @@ const CompanyProfileInfo = ({ user, setUser }) => {
     }}>
       <Typography>Käyttäjänimi: {user.username}</Typography>
       <Typography>Toimijanimi: {user.name}</Typography>
-      <Typography>Esittelysi:</Typography>
-      <ModifyDescriptionForm user={user} setUser={setUser}/>
+      <Typography>Tietoa minusta</Typography>
+      <ModifyDescriptionForm />
     </Container>
   )
 }
 
-export default CompanyProfileInfo
+export default ProfileInfo

@@ -1,7 +1,7 @@
 import { Container, TextField, Button } from '@mui/material'
 import React from 'react'
 import { useState } from 'react'
-import userService from '../services/users'
+import userService from '../../services/users'
 
 const ModifyDescriptionForm = ({ user, setUser }) => {
   const [description, setDescription] = useState(user.description)

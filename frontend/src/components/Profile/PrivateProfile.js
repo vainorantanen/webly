@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react'
 import { Container, Typography, Box, Button } from '@mui/material'
 import CompanyProfileInfo from './CompanyProfileInfo'
-import feedpostService from '../services/feedposts'
-import FeedPostCard from '../components/Feed/FeedPostCard'
-import Togglable from '../components/Togglable'
+import feedpostService from '../../services/feedposts'
+import FeedPostCard from '../Feed/FeedPostCard'
+import Togglable from '../Togglable'
 import ModifyPost from './ModifyPost'
-import FeedBidCard from '../components/Feed/FeedBidCard'
+import FeedBidCard from '../Feed/FeedBidCard'
 
 const PrivateProfile = ({ user, setUser }) => {
   const [userFeedPosts, setuserFeedPosts] = useState([])

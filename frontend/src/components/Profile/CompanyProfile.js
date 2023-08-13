@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import { Container, Typography, Box } from '@mui/material'
 import CompanyProfileInfo from './CompanyProfileInfo'
-import feedbidService from '../services/feedbids'
-import FeedBidCard from '../components/Feed/FeedBidCard'
+import feedbidService from '../../services/feedbids'
+import FeedBidCard from '../Feed/FeedBidCard'
 
 const CompanyProfile = ({ user, setUser }) => {
   const [userFeedBids, setUserFeedBids] = useState([])

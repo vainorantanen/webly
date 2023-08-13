@@ -8,8 +8,10 @@ import { TextField, Button, Typography, Box,
   DialogActions,
 
 } from '@mui/material'
+import usersService from '../services/users'
+import { useNotification } from '../hooks'
 
-const RegisterPage = ({ addUser }) => {
+const RegisterPage = () => {
   const [username, setUsername] = useState('')
   const [name, setName] = useState('')
   const [password, setPassword] = useState('')
@@ -18,6 +20,8 @@ const RegisterPage = ({ addUser }) => {
   const [openTermsDialog, setOpenTermsDialog] = useState(false)
   const [ isCompany, setIsCompany ] = useState(false)
   const [confirmPassword, setConfirmPassword] = useState('')
+
+  const notify = useNotification()
 
   const handleSubmit = async (event) => {
     event.preventDefault()
@@ -28,7 +32,9 @@ const RegisterPage = ({ addUser }) => {
       return
     }
 
-    await addUser({ username, name, password, description,
+    try {
+
+    await usersService.create({ username, name, password, description,
       isCompany })
     setName('')
     setPassword('')
@@ -36,6 +42,10 @@ const RegisterPage = ({ addUser }) => {
     setDescription('')
     setIsCompany(false)
     setIsTermsAccepted(false)
+      notify('Käyttäjä rekisteröity onnistuneesti', 'success')
+    } catch (error) {
+      notify('Rekiströinti epäonnistui', 'error')
+    }
   }
 
   const handleTermsDialogOpen = () => {

@@ -1,7 +1,7 @@
 import { Container, TextField, Button } from '@mui/material'
 import React from 'react'
 import { useState } from 'react'
-import feedpostService from '../services/feedposts'
+import feedpostService from '../../services/feedposts'
 
 const ModifyPost = ({ post }) => {
   const [description, setDescription] = useState(post.description)

@@ -1,5 +1,6 @@
 const router = require('express').Router()
 const FeedPost = require('../models/feedpost')
+const FeedBid = require('../models/feedbid')
 
 const { userExtractor } = require('../utils/middleware')
 
@@ -13,20 +14,18 @@ router.get('/', async (request, response) => {
 
 router.post('/', userExtractor, async (request, response) => {
   //console.log("RBODY", request.body)
-  const { description, timeStamp, isOpen, question1, question2, question3 } = request.body
+  const { description, question1, question2, question3 } = request.body
   //console.log("aINFO", additionalinfo)
   const feedPost = new FeedPost({
     description,
-    timeStamp,
-    isOpen,
+    timeStamp: new Date(),
+    isOpen: true,
     question1,
     question2,
     question3,
   })
 
   const user = request.user
-
-  console.log('user feedpostisa: ', user)
 
   if (!user || user.isCompany === true) {
     return response.status(401).json({ error: 'operation not permitted' })
@@ -52,6 +51,41 @@ router.put('/:id', async (request, response) => {
   updatedFeedPost = await FeedPost.findById(updatedFeedPost._id).populate('user')
 
   response.json(updatedFeedPost)
+})
+
+router.post('/:id/feedbids', userExtractor, async (request, response) => {
+  const { description, timeStamp, isApproved, price } = request.body
+
+  const user = request.user
+
+  if (!user || user.isCompany === false) {
+    return response.status(401).json({ error: 'operation not permitted' })
+  }
+
+  const feedPost = await FeedPost.findById(request.params.id)
+
+  const offerToAdd = new FeedBid({
+    description,
+    timeStamp,
+    isApproved,
+    offeror: user.name,
+    targetPost: feedPost._id,
+    price,
+  })
+
+  offerToAdd.user = user._id
+
+  await offerToAdd.save()
+
+  feedPost.feedBids = feedPost.feedBids.concat(offerToAdd._id)
+  let updatedfeedPost = await feedPost.save()
+
+  user.feedBids = user.feedBids.concat(offerToAdd._id)
+  await user.save()
+
+  updatedfeedPost = await FeedPost.findById(feedPost.id).populate('user').populate({ path: 'feedBids' })
+  response.status(201).json(updatedfeedPost)
+
 })
 /*
 router.delete('/:id', userExtractor, async (request, response) => {

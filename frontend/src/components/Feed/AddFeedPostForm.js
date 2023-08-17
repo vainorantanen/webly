@@ -30,8 +30,6 @@ const AddFeedPostForm = () => {
     try {
         dispatch(addFeedPost({
         description,
-        timeStamp: new Date(),
-        isOpen: true,
         question1,
         question2,
         question3

@@ -4,7 +4,7 @@ const User = require('../models/user')
 const { userExtractor } = require('../utils/middleware')
 
 router.post('/', async (request, response) => {
-  const { username, name, password, description, isCompany } = request.body
+  const { username, name, password, description, isCompany, email } = request.body
 
   if ( !password || password.length < 3) {
     return response.status(400).json({
@@ -18,6 +18,7 @@ router.post('/', async (request, response) => {
   const user = new User({
     username,
     name,
+    email,
     passwordHash,
     description,
     isCompany
@@ -30,20 +31,23 @@ router.post('/', async (request, response) => {
 
 router.get('/', async (request, response) => {
   const users = await User.find({})
-    .populate('feedPosts', { description: 1, timeStamp: 1 })
-    .populate('feedBids', { price: 1, description: 1 })
+    .populate({ path: 'feedPosts' })
+    .populate( { path: 'feedBids' })
   response.json(users)
 })
 
 router.put('/:id', userExtractor, async (request, response) => {
-  const { description } = request.body
+  const { description, email } = request.body
 
-  console.log('desc: ', description)
-  console.log('user: ', request.user)
+  const user = request.user
 
-  let updatedUser = await User.findByIdAndUpdate(request.params.id,  { description }, { new: true })
+  const wantedUser = await User.findById(request.params.id)
 
-  console.log('updatedUser: ', updatedUser)
+  if (!user || wantedUser.id.toString() !== user.id.toString()) {
+    return response.status(401).json({ error: 'operation not permitted' })
+  }
+
+  let updatedUser = await User.findByIdAndUpdate(request.params.id,  { description, email }, { new: true })
 
   updatedUser = await User.findById(updatedUser._id)
 

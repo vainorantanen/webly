@@ -3,7 +3,8 @@ import React from 'react'
 import { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNotification } from '../../hooks'
-import { addFeedBid } from '../../reducers/feedBids'
+import { makeOffer } from '../../reducers/feedPosts'
+
 
 const MakeBidForm = ({ post }) => {
   const [description, setDescription] = useState('')
@@ -23,7 +24,7 @@ const MakeBidForm = ({ post }) => {
   const handleSubmit = async (event) => {
     event.preventDefault()
     try {
-      dispatch(addFeedBid({ description, timeStamp : new Date(), isApproved: false, price, target: post }))
+      dispatch(makeOffer(post.id, { description, timeStamp : new Date(), isApproved: false, price }))
       setDescription('')
       setPrice(0)
       notify('Tarjous lisätty onnistuneesti', 'success')

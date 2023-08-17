@@ -50,10 +50,10 @@ const PrivateProfile = () => {
 
   return (
     <Container sx={{ marginTop: '7rem', minHeight: '100vh', backgroundColor: 'white', borderRadius: '1rem', marginBottom: '1rem' }}>
-      <ProfileInfo />
       <Typography>Käyttäjän {user.name} Profiili</Typography>
+      <ProfileInfo />
       <Typography>Seuraa ilmoitustesi tilannetta</Typography>
-      {userFeedPosts.map(m => (
+      {userFeedPosts.length > 0 ? userFeedPosts.map(m => (
         <Box key={m.id} sx={{ marginTop: '1rem', border: '1px solid black', borderRadius: '1rem' }}>
           <FeedPostCard post={m}/>
           <Togglable buttonLabel='Muokkaa ilmoituksen sisältöä'>
@@ -84,7 +84,9 @@ const PrivateProfile = () => {
             </Box>
           ))}
         </Box>
-      ))}
+      )): (
+        <Typography>Ei vielä julkaisuja</Typography>
+      )}
     </Container>
   )
 }

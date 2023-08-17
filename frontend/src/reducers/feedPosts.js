@@ -51,6 +51,13 @@ export const commentFeedPost = (id, comment) => {
   }
 }
 
+export const makeOffer = (id, content) => {
+  return async dispatch => {
+    const data = await feedPostService.makeoffer(id, content)
+    dispatch(alter(data))
+  }
+}
+
 export const removeFeedPost = (object) => {
   return async dispatch => {
     await feedPostService.remove(object.id)

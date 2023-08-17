@@ -12,7 +12,8 @@ const ProfileInfo = () => {
       justifyContent: 'center', textAlign: 'center', alignItems: 'center'
     }}>
       <Typography>Käyttäjänimi: {user.username}</Typography>
-      <Typography>Toimijanimi: {user.name}</Typography>
+      <Typography>Julkinen nimi: {user.name}</Typography>
+      <Typography>Sähköposti: {user.email}</Typography>
       <Typography>Tietoa minusta</Typography>
       <ModifyDescriptionForm />
     </Container>

@@ -7,7 +7,7 @@ const { userExtractor } = require('../utils/middleware')
 router.get('/', async (request, response) => {
   const feedPosts = await FeedPost
     .find({})
-    .populate('user', { name: 1, imageurl: 1 })
+    .populate('user', { name: 1 })
     .populate('feedBids')
   response.json(feedPosts)
 })
@@ -43,8 +43,18 @@ router.post('/', userExtractor, async (request, response) => {
   response.status(201).json(createdFeedPost)
 })
 
-router.put('/:id', async (request, response) => {
+router.put('/:id', userExtractor, async (request, response) => {
   const { description, isOpen } = request.body
+
+  const user = request.user
+  // käyttäjän tulee olla sama kuin postauksen lisännyt käyttäjä
+
+  const feedPost = await FeedPost.findById(request.params.id)
+
+
+  if (!user || feedPost.user.toString() !== user.id.toString()) {
+    return response.status(401).json({ error: 'operation not permitted' })
+  }
 
   let updatedFeedPost = await FeedPost.findByIdAndUpdate(request.params.id,  { description, isOpen }, { new: true })
 
@@ -87,22 +97,79 @@ router.post('/:id/feedbids', userExtractor, async (request, response) => {
   response.status(201).json(updatedfeedPost)
 
 })
-/*
-router.delete('/:id', userExtractor, async (request, response) => {
-  const blog = await Blog.findById(request.params.id)
+
+router.put('/:id/feedBidAccept/:oid', userExtractor, async (request, response) => {
 
   const user = request.user
 
-  if (!user || blog.user.toString() !== user.id.toString()) {
+  const feedPostId = request.params.id
+  const offerId = request.params.oid
+
+  const feedPost = await FeedPost.findById(feedPostId)
+
+  // vain feedPostin lisännyt käyttäjä voi hyväksyä tarjouksen
+  if (!user || feedPost.user.toString() !== user.id.toString()) {
     return response.status(401).json({ error: 'operation not permitted' })
   }
 
-  user.blogs = user.blogs.filter(b => b.toString() !== blog.id.toString() )
+  // Update the isApproved field of the specified offer
+  const updatedOffer = await FeedBid.findByIdAndUpdate(offerId, { isApproved: true }, { new: true })
+  // Find the feedPost and update its feedBids array with the updated offer
+
+  const updatedfeedBidsArray = feedPost.feedBids.map(offer =>
+    offer._id.equals(updatedOffer._id) ? updatedOffer : offer
+  )
+
+  const updatedfeedPost = await FeedPost.findByIdAndUpdate(
+    feedPostId,
+    { feedBids: updatedfeedBidsArray },
+    { new: true }
+  ).populate('user').populate({ path: 'feedBids' })
+
+  response.json(updatedfeedPost)
+})
+
+router.delete('/:id', userExtractor, async (request, response) => {
+  const post = await FeedPost.findById(request.params.id)
+
+  const user = request.user
+
+  if (!user || post.user.toString() !== user.id.toString()) {
+    return response.status(401).json({ error: 'operation not permitted' })
+  }
+
+  user.feedPosts = user.feedPosts.filter(b => b.toString() !== post.id.toString() )
 
   await user.save()
-  await blog.remove()
+
+  await FeedBid.deleteMany({ targetPost: request.params.id })
+
+  await post.remove()
 
   response.status(204).end()
 })
-*/
+
+router.delete('/:id/feedbids/:oid', userExtractor, async (request, response) => {
+  const feedPost = await FeedPost.findById(request.params.id)
+  const user = request.user
+  const offerId = request.params.oid
+
+  const offerToDelete = await FeedBid.findById(offerId)
+
+  if (!user || !(offerToDelete.user.toString() === user._id.toString() || user._id.toString() === feedPost.user.toString())) {
+    return response.status(401).json({ error: 'operation not permitted' })
+  }
+
+  await offerToDelete.remove()
+
+  user.feedBids = user.feedBids.filter(c => c._id.toString() !== offerId)
+  await user.save()
+  feedPost.feedBids = feedPost.feedBids.filter(c => c._id.toString() !== offerId)
+  let updatedfeedPost = await feedPost.save()
+
+  updatedfeedPost = await FeedPost.findById(feedPost.id).populate('user').populate({ path: 'feedBids' })
+  response.status(201).json(updatedfeedPost)
+
+})
+
 module.exports = router

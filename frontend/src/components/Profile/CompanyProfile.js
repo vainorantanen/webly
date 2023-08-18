@@ -4,6 +4,7 @@ import FeedBidCard from '../Feed/FeedBidCard'
 import { useSelector, useDispatch } from 'react-redux'
 import { useNotification } from '../../hooks'
 import ModifyBasicInfo from './ModifyBasicInfo'
+import ModifyDescriptionForm from './ModifyDescriptionForm'
 
 
 const CompanyProfile = () => {
@@ -23,6 +24,7 @@ const CompanyProfile = () => {
     <Container sx={{ marginTop: '7rem', minHeight: '100vh', backgroundColor: 'white', borderRadius: '1rem', marginBottom: '1rem' }}>
       <Typography>Toimijan {user.name} Profiili</Typography>
       <ModifyBasicInfo />
+      <ModifyDescriptionForm />
       <Typography>Seuraa tekemiesi tarjousten tilannetta</Typography>
       {userFeedBids.length > 0 ? (userFeedBids.map(m => (
         <Box key={m.id} sx={{ border: '1px solid black', borderRadius: '1rem', marginTop: '1rem' }}>

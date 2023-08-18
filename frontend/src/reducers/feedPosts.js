@@ -58,6 +58,20 @@ export const makeOffer = (id, content) => {
   }
 }
 
+export const modifyBidApprovedState = (offerId, targetId) => {
+  return async dispatch => {
+    const data = await feedPostService.modifyAccept(targetId, offerId)
+    dispatch(alter(data))
+  }
+}
+
+export const removBidFromFeedPost = (offerId, targetId) => {
+  return async dispatch => {
+    const data = await feedPostService.removeOffer(targetId, offerId)
+    dispatch(alter(data))
+  }
+}
+
 export const removeFeedPost = (object) => {
   return async dispatch => {
     await feedPostService.remove(object.id)

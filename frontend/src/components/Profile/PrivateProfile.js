@@ -3,6 +3,7 @@ import { Container, Typography, Box } from '@mui/material'
 import { useSelector } from 'react-redux'
 import BuyersPosts from './BuyersPosts'
 import ModifyBasicInfo from './ModifyBasicInfo'
+import ModifyDescriptionForm from './ModifyDescriptionForm'
 
 const PrivateProfile = () => {
   const localUser = useSelector(({user}) => user)
@@ -18,6 +19,7 @@ const PrivateProfile = () => {
       <Typography sx={{ marginBottom: '1rem' }}>Käyttäjän {user.name} profiili</Typography>
         <Typography sx={{ marginBottom: '1rem' }}>Tietoja minusta:</Typography>
         <ModifyBasicInfo />
+        <ModifyDescriptionForm />
         <Box sx={{ border: '2px solid white', borderRadius: '0.5rem', padding: '0.5rem', marginTop: '1rem', marginBottom: '1rem' }}>
             <Typography sx={{ whiteSpace: 'break-spaces' }}>{user.description}</Typography>
         </Box>

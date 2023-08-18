@@ -29,6 +29,8 @@ import DevPostFeed from './components/DevelopersPosts/DevPostFeed'
 import { useNotification, useInitialization, useClearUser } from './hooks/index'
 import { useSelector } from 'react-redux'
 import RegisterPage from './components/RegisterPage'
+import ModifyBuyerPost from './components/Profile/ModifyBuyerPost'
+import ModifyDevPost from './components/Profile/ModifyDevPost'
 
 const theme = createTheme({
   typography: {
@@ -69,6 +71,8 @@ const App = () => {
           <Route path='/tarjouskilpailut' element={<Feed />} />
           <Route path='/lisaailmoitus' element={<AddFeedPostForm />} />
           <Route path='/profiili' element={<Profile />} />
+          <Route path='/profiili/kayttaja/muokkaa/ilmoitus/:id' element={<ModifyBuyerPost />} />
+          <Route path='/profiili/kehittaja/muokkaa/ilmoitus/:id' element={<ModifyDevPost />} />
           <Route path='/tarjouskilpailut/:id' element={<SingleFeedPost />} />
           <Route path='/yrityksille' element={ <ForCompaniesMain /> } />
           <Route path='/kehittajienilmoitukset' element={<DevPostFeed />} />

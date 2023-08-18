@@ -48,7 +48,7 @@ router.put('/:id', async (request, response) => {
 
   let updatedFeedPost = await FeedPost.findByIdAndUpdate(request.params.id,  { description, isOpen }, { new: true })
 
-  updatedFeedPost = await FeedPost.findById(updatedFeedPost._id).populate('user')
+  updatedFeedPost = await FeedPost.findById(updatedFeedPost._id).populate('user').populate({ path: 'feedBids' })
 
   response.json(updatedFeedPost)
 })

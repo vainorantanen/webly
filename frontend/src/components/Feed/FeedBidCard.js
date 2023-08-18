@@ -3,7 +3,7 @@ import React from 'react'
 import CheckCircleIcon from '@mui/icons-material/CheckCircle'
 
 const FeedBidCard = ({ bid }) => {
-  //console.log('biddi: ', bid)
+
   return (
     <Box sx={{ backgroundColor: 'white', borderRadius: '1rem', padding: '1rem', marginBottom: '1rem' }}>
       {bid.isApproved ? (

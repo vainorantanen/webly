@@ -1,10 +1,6 @@
 import axios from 'axios'
-const baseUrl = '/api/users'
 import storageService from './storage'
-
-const headers = {
-  'Authorization': storageService.loadUser() ? `Bearer ${storageService.loadUser().token}` : null
-}
+const baseUrl = '/api/users'
 
 const getAllUsers = async () => {
   const request = await axios.get(baseUrl)
@@ -17,8 +13,11 @@ const create = async (object) => {
 }
 
 const update = async (object) => {
+  const token = await storageService.loadUser() ? `Bearer ${storageService.loadUser().token}` : null
+  const headers = token ? { 'Authorization': token } : {}
   const request = await axios.put(`${baseUrl}/${object.id}`, object, { headers })
   return request.data
 }
 
+// eslint-disable-next-line import/no-anonymous-default-export
 export default { getAllUsers, create, update }

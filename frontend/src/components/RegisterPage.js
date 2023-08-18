@@ -20,6 +20,7 @@ const RegisterPage = () => {
   const [openTermsDialog, setOpenTermsDialog] = useState(false)
   const [ isCompany, setIsCompany ] = useState(false)
   const [confirmPassword, setConfirmPassword] = useState('')
+  const [ email, setEmail ] = useState('')
 
   const notify = useNotification()
 
@@ -35,13 +36,15 @@ const RegisterPage = () => {
     try {
 
     await usersService.create({ username, name, password, description,
-      isCompany })
+      isCompany, email })
     setName('')
     setPassword('')
     setUsername('')
     setDescription('')
     setIsCompany(false)
     setIsTermsAccepted(false)
+    setEmail('')
+    setConfirmPassword('')
       notify('Käyttäjä rekisteröity onnistuneesti', 'success')
     } catch (error) {
       notify('Rekiströinti epäonnistui', 'error')
@@ -102,6 +105,16 @@ const RegisterPage = () => {
           fullWidth
           value={name}
           onChange={({ target }) => setName(target.value)}
+          margin="normal"
+        />
+        <TextField
+          id="email"
+          label="Sähköposti"
+          required
+          type='email'
+          fullWidth
+          value={email}
+          onChange={({ target }) => setEmail(target.value)}
           margin="normal"
         />
         <TextField

@@ -21,9 +21,13 @@ const schema = mongoose.Schema({
     type: Number,
     required: true
   },
-  target: {
+  targetPost: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'FeedPost'
+  },
+  offeror: {
+    type: String,
+    required: true
   }
 })
 

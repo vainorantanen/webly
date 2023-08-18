@@ -12,7 +12,6 @@ const Footer = () => {
         padding: '20px',
         fontFamily: 'Arial, sans-serif',
         lineHeight: '3rem',
-        backgroundColor: '#020049',
         color: 'white',
         borderRadius: '1rem',
       }}>

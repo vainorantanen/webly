@@ -44,6 +44,12 @@ const userSchema = mongoose.Schema({
       type: mongoose.Schema.Types.ObjectId,
       ref: 'DevFeedPost'
     }
+  ],
+  portalPosts: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'PortalPost'
+    }
   ]
 })
 

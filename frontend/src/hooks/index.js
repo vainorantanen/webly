@@ -6,6 +6,7 @@ import { initUser, clearUser } from '../reducers/user'
 import { initializeFeedPosts } from '../reducers/feedPosts'
 import { initializeDevsPosts } from '../reducers/devsPosts'
 import { initializeFeedBids } from '../reducers/feedBids'
+import { initializePortalposts } from '../reducers/portalPosts'
 
 export const useNotification = () => {
   const dispatch = useDispatch()
@@ -23,6 +24,7 @@ export const useInitialization = () => {
     dispatch(initializeFeedPosts())
     dispatch(initializeDevsPosts())
     dispatch(initializeFeedBids())
+    dispatch(initializePortalposts())
     dispatch(initUser())
   }
 }

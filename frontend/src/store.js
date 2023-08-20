@@ -5,6 +5,7 @@ import usersReducer from './reducers/users'
 import devsPostReducer from './reducers/devsPosts'
 import feedPostsReducer from './reducers/feedPosts'
 import feedBidsReducer from './reducers/feedBids'
+import portalPostsReducer from './reducers/portalPosts'
 
 const store = configureStore({
   reducer: {
@@ -13,7 +14,8 @@ const store = configureStore({
     users: usersReducer,
     devsPosts: devsPostReducer,
     feedPosts: feedPostsReducer,
-    feedBids: feedBidsReducer
+    feedBids: feedBidsReducer,
+    portalPosts: portalPostsReducer
   }
 })
 

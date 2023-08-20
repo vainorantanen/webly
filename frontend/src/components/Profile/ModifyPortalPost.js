@@ -4,7 +4,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import { useParams } from 'react-router-dom'
 import { useState } from 'react'
 import { useNotification } from '../../hooks'
-import { updateFeedPost } from '../../reducers/feedPosts'
+import { updatePortalpost } from '../../reducers/portalPosts'
 
 const ModifyBuyerPost = () => {
   
@@ -14,18 +14,18 @@ const ModifyBuyerPost = () => {
     const postId = useParams().id
     const user = useSelector(({user}) => user)
 
-    const userPost = useSelector(({ feedPosts }) => feedPosts).find(p => p.id === postId)
-    const [description, setDescription] = useState(userPost.description);
+    const userPortalPost = useSelector(({ portalPosts }) => portalPosts).find(p => p.id === postId)
+    const [description, setDescription] = useState(userPortalPost.description);
     const handleSubmit = async () => {
       try {
-          dispatch(updateFeedPost({...userPost, description }))
+          dispatch(updatePortalpost({...userPortalPost, description }))
           notify('Päivitys tehty onnistuneesti', 'success')
       } catch (error) {
           notify('Ilmeni jokin ongelma päivityksessä, yritä myöhemmin uudelleen', 'error')
       }
   }
 
-    if (!userPost || user.id !== userPost.user.id) {
+    if (!userPortalPost || user.id !== userPortalPost.user.id) {
         <Container>
             <Typography>Error loading data</Typography>
         </Container>

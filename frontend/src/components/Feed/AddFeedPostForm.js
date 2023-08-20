@@ -8,17 +8,20 @@ import {
   Radio,
   RadioGroup,
   FormControlLabel,
+  Checkbox
 } from '@mui/material'
 
 import { useDispatch, useSelector } from 'react-redux'
 import { useNotification } from '../../hooks'
 import { addFeedPost } from '../../reducers/feedPosts'
+import { addPortalpost } from '../../reducers/portalPosts'
 
 const AddFeedPostForm = () => {
   const [description, setDescription] = useState('')
   const [question1, setQuestion1] = useState('Yksisivuinen (one-page) verkkosivu')
   const [question2, setQuestion2] = useState('Tuotteiden tai palveluiden esittely')
   const [question3, setQuestion3] = useState('Yhteydenottolomake ja yhteystiedot')
+  const [ isPortalPost, setIsPortalPost ] = useState(false)
 
   const user = useSelector(({ user }) => user)
   const notify = useNotification()
@@ -28,12 +31,21 @@ const AddFeedPostForm = () => {
   const handleSubmit = async (event) => {
     event.preventDefault()
     try {
+      if (isPortalPost) {
+        dispatch(addPortalpost({
+          description,
+        question1,
+        question2,
+        question3
+        }))
+      } else {
         dispatch(addFeedPost({
         description,
         question1,
         question2,
         question3
       }))
+    }
       setDescription('')
       setQuestion1('Yksisivuinen (one-page) verkkosivu')
       setQuestion2('Tuotteiden tai palveluiden esittely')
@@ -43,6 +55,10 @@ const AddFeedPostForm = () => {
       notify('Ilmeni jokin ongelma postauksen teossa, yritä myöhemmin uudelleen', 'error')
     }
     
+  }
+  
+const handleIsPortalPostChange = (e) => {
+    setIsPortalPost(e.target.checked)
   }
 
   if (!user || user.isCompany) {
@@ -101,6 +117,11 @@ const AddFeedPostForm = () => {
           maxWidth: '30rem',
         }}
       >
+        <FormControlLabel
+          control={<Checkbox checked={isPortalPost} onChange={handleIsPortalPostChange} />}
+          label="Valitse tämä, jos haluat julkaista ilmoituksen vain toimittajien nähtäville"
+          sx={{ marginBottom: '1rem' }}
+        />
         {/* Multiple-Choice Question 1 */}
         <Typography>Kuinka monta sivua haluat nettisivuillesi?</Typography>
         <RadioGroup

@@ -74,7 +74,7 @@ const BuyersPosts = () => {
                 <Typography sx={{ fontSize: '1.3rem' }}>{p.title}</Typography>
                 <Typography sx={{ whiteSpace: 'break-spaces' }}>{p.description}</Typography>
                 <Button component={Link} to={`/profiili/kayttaja/muokkaa/portaaliilmoitus/${p.id}`} >Muokkaa ilmoituksen sisältöä</Button>
-                <Button component={Link} to={`/tarjouskilpailut/${p.id}`}>Siirry ilmoitukseen</Button>
+                <Button component={Link} to={`/portaali/ilmoitukset/${p.id}`}>Siirry ilmoitukseen</Button>
                 <Button sx={{ color: 'red' }} onClick={() => handleDeletePortalPost(p.id)}>Poista ilmoitus</Button>
             </Box>  
         )) : (

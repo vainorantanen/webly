@@ -64,7 +64,7 @@ router.put('/:id', userExtractor, async (request, response) => {
 })
 
 router.post('/:id/feedbids', userExtractor, async (request, response) => {
-  const { description, timeStamp, isApproved, price } = request.body
+  const { description, price } = request.body
 
   const user = request.user
 
@@ -76,8 +76,8 @@ router.post('/:id/feedbids', userExtractor, async (request, response) => {
 
   const offerToAdd = new FeedBid({
     description,
-    timeStamp,
-    isApproved,
+    timeStamp: new Date(),
+    isApproved: false,
     offeror: user.name,
     targetPost: feedPost._id,
     price,
@@ -161,6 +161,7 @@ router.delete('/:id/feedbids/:oid', userExtractor, async (request, response) => 
   }
 
   await offerToDelete.remove()
+  await FeedBid.deleteMany({ id: offerId })
 
   user.feedBids = user.feedBids.filter(c => c._id.toString() !== offerId)
   await user.save()

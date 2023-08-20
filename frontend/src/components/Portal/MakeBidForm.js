@@ -3,7 +3,8 @@ import React from 'react'
 import { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNotification } from '../../hooks'
-import { makeOffer } from '../../reducers/feedPosts'
+import { makeOffer } from '../../reducers/portalPosts'
+
 
 
 const MakeBidForm = ({ post }) => {
@@ -14,13 +15,7 @@ const MakeBidForm = ({ post }) => {
   const notify = useNotification()
   
   const dispatch = useDispatch()
-  /*
-  const addFeedBid = async (newPost) => {
-    const addedBid = await feedBidService.create(newPost)
-    //notifyWith(`A new course '${newCourse.title}' by '${newCourse.company}' added`)
-    setPost({ ...post, feedBids: post.feedBids.concat(addedBid) })
-  }
-*/
+
   const handleSubmit = async (event) => {
     event.preventDefault()
     try {

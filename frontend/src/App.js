@@ -33,6 +33,7 @@ import ModifyBuyerPost from './components/Profile/ModifyBuyerPost'
 import ModifyDevPost from './components/Profile/ModifyDevPost'
 import ModifyPortalPost from './components/Profile/ModifyPortalPost'
 import Portal from './components/Portal/Portal'
+import SinglePostPortalView from './components/Portal/SinglePostPortalView'
 
 const theme = createTheme({
   typography: {
@@ -77,7 +78,7 @@ const App = () => {
           <Route path='/profiili/kayttaja/muokkaa/portaaliilmoitus/:id' element={<ModifyPortalPost />} />
           <Route path='/profiili/kehittaja/muokkaa/ilmoitus/:id' element={<ModifyDevPost />} />
           <Route path='/portaali' element={<Portal />} />
-          
+          <Route path='/portaali/ilmoitukset/:id' element={<SinglePostPortalView />} />
           <Route path='/tarjouskilpailut/:id' element={<SingleFeedPost />} />
           <Route path='/yrityksille' element={ <ForCompaniesMain /> } />
           <Route path='/kehittajienilmoitukset' element={<DevPostFeed />} />

@@ -64,7 +64,7 @@ router.put('/:id', userExtractor, async (request, response) => {
 })
 
 router.post('/:id/feedbids', userExtractor, async (request, response) => {
-  const { description, timeStamp, isApproved, price } = request.body
+  const { description, price } = request.body
 
   const user = request.user
 
@@ -76,8 +76,8 @@ router.post('/:id/feedbids', userExtractor, async (request, response) => {
 
   const offerToAdd = new FeedBid({
     description,
-    timeStamp,
-    isApproved,
+    timeStamp: new Date(),
+    isApproved: false,
     offeror: user.name,
     targetPost: portalPost._id,
     price,

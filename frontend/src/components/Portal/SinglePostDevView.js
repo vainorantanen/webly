@@ -41,7 +41,7 @@ const SinglePostDevView = () => {
   }
 
   const userBidsOnPost = post.feedBids.filter(bid =>
-    bid.targetPost === post.id
+    bid.user === user.id
   );
 
   return (

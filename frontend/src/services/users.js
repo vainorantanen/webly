@@ -1,6 +1,7 @@
 import axios from 'axios'
-const baseUrl = '/api/users'
 import storageService from './storage'
+
+const baseUrl = '/api/users'
 
 const headers = {
   'Authorization': storageService.loadUser() ? `Bearer ${storageService.loadUser().token}` : null

@@ -10,52 +10,98 @@ import {
   TextField,
   Typography,
 } from '@mui/material'
-import React, { useState } from 'react'
+import React, { forwardRef, useEffect, useImperativeHandle, useState } from 'react'
 
 import { useDispatch, useSelector } from 'react-redux'
 import { useNotification } from '../../../hooks'
-import { addFeedPost } from '../../../reducers/feedPosts'
+import { update } from '../../../reducers/formData'
 
-const BasicInfoForm = ({ basiInfo, setBasicInfo }) => {
-  const [description, setDescription] = useState('')
-  const [question1, setQuestion1] = useState('')
-  const [question2, setQuestion2] = useState('')
-  const [question2Other, setQuestion2Other] = useState('')
-  const [question3, setQuestion3] = useState('')
-  const [question3Other, setQuestion3Other] = useState('')
-  const [question4, setQuestion4] = useState('')
-  const [question4Other, setQuestion4Other] = useState('')
-  const [question5, setQuestion5] = useState('')
-  const [question6, setQuestion6] = useState('')
+const BasicInfoForm = forwardRef((props, ref) => {
+  const formData = useSelector(state => state.formData)
+
+  const [description, setDescription] = useState(formData.description)
+  const [question1, setQuestion1] = useState(formData.question1)
+  const [question2, setQuestion2] = useState(formData.question2)
+  const [question2Other, setQuestion2Other] = useState(formData.question2Other)
+  const [question3, setQuestion3] = useState(formData.question3)
+  const [question3Other, setQuestion3Other] = useState(formData.question3Other)
+  const [question4, setQuestion4] = useState(formData.question4)
+  const [question5, setQuestion5] = useState(formData.question5)
+
+  const [q1Error, setQ1Error] = useState(false)
+  const [q2OError, setQ2OError] = useState(false)
+  const [q3OError, setQ3OError] = useState(false)
+  const [q5Error, setQ5Error] = useState(false)
 
   const notify = useNotification()
-  
   const dispatch = useDispatch()
 
-  const handleSubmit = async (event) => {
-    event.preventDefault()
-    try {
-        dispatch(addFeedPost({
-        description,
-        timeStamp: new Date(),
-        isOpen: true,
-        question1,
-        question2,
-        question3
-      }))
-      setDescription('')
-      setQuestion1('')
-      setQuestion2('')
-      setQuestion3('')
-      setQuestion4('')
-      setQuestion5('')
-      setQuestion6('')
-      notify('Postaus lisätty onnistuneesti', 'success')
-    } catch (error) {
-      notify('Ilmeni jokin ongelma postauksen teossa, yritä myöhemmin uudelleen', 'error')
+  const validateFields = () => {
+    let isValid = true
+
+    if (!question1) {
+      setQ1Error(true)
+      isValid = false
+    } else {
+      setQ1Error(false)
     }
-    
+
+    if (question2 === 'other' && !question2Other) {
+      setQ2OError(true)
+      isValid = false
+    } else {
+      setQ2OError(false)
+    }
+
+    if (question3 === 'other' && !question3Other) {
+      setQ3OError(true)
+      isValid = false
+    } else {
+      setQ3OError(false)
+    }
+
+    if (!question5) {
+      setQ5Error(true)
+      isValid = false
+    } else {
+      setQ5Error(false)
+    }
+
+    return isValid
   }
+
+  const handleSubmit =  () => {
+
+    if (!validateFields()) {
+      notify('Täytä kaikki pakolliset kentät', 'error')
+      return
+    }
+    dispatch(update({
+      description,
+      question1,
+      question2,
+      question2Other,
+      question3,
+      question3Other,
+      question4,
+      question5
+    }))
+  }
+
+  useEffect(() => {
+    setDescription(formData.description)
+    setQuestion1(formData.question1)
+    setQuestion2(formData.question2)
+    setQuestion2Other(formData.question2Other)
+    setQuestion3(formData.question3)
+    setQuestion3Other(formData.question3Other)
+    setQuestion4(formData.question4)
+    setQuestion5(formData.question5)
+  }, [formData])
+
+  useImperativeHandle(ref, () => ({
+    handleSubmit: handleSubmit
+  }))
 
   return (
     <Container
@@ -69,19 +115,6 @@ const BasicInfoForm = ({ basiInfo, setBasicInfo }) => {
         borderRadius: '1rem',
       }}
     >
-      <Typography
-        sx={{
-          fontSize: '1.3rem',
-          textAlign: 'center',
-          marginTop: '6rem',
-          '@media (max-width: 442px)': {
-            fontSize: '1rem',
-          },
-        }}
-      >
-        Lisää ilmoitus
-      </Typography>
-
       <Box
         component="form"
         onSubmit={handleSubmit}
@@ -99,11 +132,12 @@ const BasicInfoForm = ({ basiInfo, setBasicInfo }) => {
           id="question1"
           label="Kerro nettisivujesi tarkoituksesta."
           required
+          error={q1Error}
           multiline
-          rows={9}
+          minRows={5}
           value={question1}
           onChange={({ target }) => setQuestion1(target.value)}
-          sx={{ marginBottom: '1rem' }}
+          sx={{ marginBottom: '1rem',    marginTop: '1rem' }}
         />
 
         {/* Question 2 */}
@@ -118,91 +152,70 @@ const BasicInfoForm = ({ basiInfo, setBasicInfo }) => {
           <FormControlLabel value="Kuluttajat" control={<Radio />} label="Kuluttajat" />
           <FormControlLabel value="Yritykset tai yrittäjät" control={<Radio />} label="Yritykset tai yrittäjät" />
           <FormControlLabel value="Sisäiset sidosryhmät" control={<Radio />} label="Sisäiset sidosryhmät" />
-          <FormControlLabel value="Muu. Mikä?" control={<Radio />} label="Muu. Mikä?" />
-          {question2 === 'Muu. Mikä?' && (
+          <FormControlLabel value="other" control={<Radio />} label="Muu, mikä?" />
+          {question2 === 'other' && (
             <TextField
               id="question2-other"
               label="Muu. Kerro tarkemmin."
               value={question2Other}
+              required
+              error={q2OError}
               onChange={({ target }) => setQuestion2Other(target.value)}
               sx={{ marginLeft: '1rem' }}
             />
           )}
         </RadioGroup>
 
-       {/* Question 3 */}
-        <Typography>Mitä toimintoja nettisivuillasi on?</Typography>
-        <FormGroup
+        {/* Question 3 */}
+        <Typography>Onko olemassa teknologiasia rajoitteita?</Typography>
+        <RadioGroup
           aria-label="question3"
           name="question3"
           value={question3}
           sx={{ marginBottom: '2rem' }}
           onChange={(event) => setQuestion3(event.target.value)}
         >
-          <FormControlLabel control={<Checkbox />} label="Tuotteiden tai palveluiden esittely" value="Tuotteiden tai palveluiden esittely" />
-          <FormControlLabel control={<Checkbox />} label="Hinnaston esittely" value="Hinnaston esittely" />
-          <FormControlLabel control={<Checkbox />} label="Yhteydenottolomake" value="Yhteydenottolomake" />
-          <FormControlLabel control={<Checkbox />} label="Tilauslomake" value="Tilauslomake" />
-          <FormControlLabel control={<Checkbox />} label="Asiakaspalveluchat" value="Asiakaspalveluchat" />
-          <FormControlLabel control={<Checkbox />} label="Muu. Mikä?" value="Muu. Mikä?" />
-          {question3.includes('Muu. Mikä?') && (
+          <FormControlLabel value="Tiettyjä ohjelmistoja ja teknologioita valittu, jotka voivat rajoittaa projektia." control={<Radio />} label="Tiettyjä ohjelmistoja ja teknologioita valittu, jotka voivat rajoittaa projektia." />
+          <FormControlLabel value="Ohjelmitoa ja teknologioita valittu, mutta joustoa on " control={<Radio />} label="Ohjelmitoa ja teknologioita valittu, mutta joustoa on " />
+          <FormControlLabel value="Ei rajoittavia tekijöitä" control={<Radio />} label="Ei rajoittavia tekijöitä" />
+          <FormControlLabel value="other" control={<Radio />} label="Muu, mikä?" />
+          {question3 === 'other' && (
             <TextField
               id="question3-other"
               label="Muu. Kerro tarkemmin."
               value={question3Other}
+              required={q3OError}
               onChange={({ target }) => setQuestion3Other(target.value)}
-              sx={{ marginLeft: '1rem' }}
-            />
-          )}
-        </FormGroup>
-
-        {/* Question 4 */}
-        <Typography>Onko olemassa teknologiasia rajoitteita?</Typography>
-        <RadioGroup
-          aria-label="question4"
-          name="question4"
-          value={question4}
-          sx={{ marginBottom: '2rem' }}
-          onChange={(event) => setQuestion4(event.target.value)}
-        >
-          <FormControlLabel value="Ei rajoittavia tekijöitä" control={<Radio />} label="Ei rajoittavia tekijöitä" />
-          <FormControlLabel value="Tiettyjä ohjelmistoja ja teknologioita valittu, jotka voivat rajoittaa projektia." control={<Radio />} label="Tiettyjä ohjelmistoja ja teknologioita valittu, jotka voivat rajoittaa projektia." />
-          <FormControlLabel value="Ohjelmitoa ja teknologioita valittu, mutta joustoa on " control={<Radio />} label="Ohjelmitoa ja teknologioita valittu, mutta joustoa on " />
-          <FormControlLabel value="Muu. Mikä?" control={<Radio />} label="Muu. Mikä?" />
-          {question4 === 'Muu. Mikä?' && (
-            <TextField
-              id="question4-other"
-              label="Muu. Kerro tarkemmin."
-              value={question4Other}
-              onChange={({ target }) => setQuestion4Other(target.value)}
               sx={{ marginLeft: '1rem' }}
             />
           )}
         </RadioGroup>
 
-        {/* Question 5 */}
+        {/* Question 4 */}
         <Typography>Tarvitsetko sivuillesi sisällönhallintatyökaluja?</Typography>
         <RadioGroup
-          aria-label="question5"
-          name="question5"
-          value={question5}
+          aria-label="question4"
+          name="question4"
+          value={question4}
+          required
           sx={{ marginBottom: '2rem' }}
-          onChange={(event) => setQuestion5(event.target.value)}
+          onChange={(event) => setQuestion4(event.target.value)}
         >
           <FormControlLabel value="Laaja CMS" control={<Radio />} label="Laaja CMS" />
           <FormControlLabel value="Suppea CMS" control={<Radio />} label="Suppea CMS" />
           <FormControlLabel value="Ei tarvetta" control={<Radio />} label="Ei tarvetta" />
         </RadioGroup>
 
-        {/* Question 6 */}
+        {/* Question 5 */}
         <TextField
-          id="question6"
+          id="question5"
           label="Mitä toiminnallisuuksia sivuillasi tulee olla?"
           required
           multiline
-          rows={9}
-          value={question6}
-          onChange={({ target }) => setQuestion6(target.value)}
+          minRows={5}
+          error={q5Error}
+          value={question5}
+          onChange={({ target }) => setQuestion5(target.value)}
           sx={{ marginBottom: '1rem' }}
         />
 
@@ -210,33 +223,14 @@ const BasicInfoForm = ({ basiInfo, setBasicInfo }) => {
           id="description"
           label="Mainitse mahdolliset muut toiveet."
           multiline
-          rows={15}
+          minRows={5}
           value={description}
           onChange={({ target }) => setDescription(target.value)}
           sx={{ marginBottom: '1rem' }}
         />
-        <Button
-          type="submit"
-          variant="contained"
-          color="primary"
-          fullWidth
-          sx={{
-            backgroundColor: 'blue',
-            color: 'white',
-            transition: 'transform 0.3s',
-            marginTop: '1rem',
-            marginBottom: '1rem',
-            '&:hover': {
-              transform: 'scale(1.05)',
-              backgroundImage: 'linear-gradient(to bottom, #003eff, #006eff)',
-            },
-          }}
-        >
-          Lähetä
-        </Button>
       </Box>
     </Container>
   )
-}
+})
 
 export default BasicInfoForm

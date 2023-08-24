@@ -1,79 +1,84 @@
 import {
   Box,
+  Button,
   Container,
   Step,
   StepLabel,
   Stepper,
   Typography,
-  Button,
-
 } from '@mui/material'
-import React, { useState } from 'react'
+
+import { Fragment, createRef, useState } from 'react'
 
 import { useDispatch, useSelector } from 'react-redux'
 import { useNotification } from '../../../hooks'
-import { addFeedPost } from '../../../reducers/feedPosts'
 
 import BasicInfoForm from './BasicInfoForm'
-import TermsForm from './TermsForm'
 import FormSummary from './FormSummary'
-
-const defaultBasicInfo = {
-  description: '',
-  question1: '',
-  question2: '',
-  question3: '',
-  question4: '',
-  question5: '',
-  question6: ''
-}
+import TermsForm from './TermsForm'
 
 const AddFeedPostForm = () => {
-  const [basicInfo, setBasicInfo] = useState(defaultBasicInfo)
 
+  const formData = useSelector(state => state.formData)
   const steps = ['Perustiedot', 'Ilmoituksen ehdot', 'Yhteenveto']
 
-  const user = useSelector(({ user }) => user)
+  const user = useSelector(state => state.user)
+  const notification = useSelector(state => state.notificatio)
+
   const notify = useNotification()
-  
-  
   const dispatch = useDispatch()
 
-  const handleSubmit = async (event) => {
-    event.preventDefault()
-    try {
-      dispatch(addFeedPost({
-        description: basicInfo.description,
-        timeStamp: new Date(),
-        isOpen: true,
-        question1: basicInfo.question1,
-        question2: basicInfo.question2,
-        question3: basicInfo.question3,
-        question4: basicInfo.question4,
-        question5: basicInfo.question5,
-        question6: basicInfo.question6
-      }))
-      setBasicInfo(defaultBasicInfo)
-      notify('Postaus lisätty onnistuneesti', 'success')
-    } catch (error) {
-      notify('Ilmeni jokin ongelma postauksen teossa, yritä myöhemmin uudelleen', 'error')
-    } 
+  // const handleSubmit = async (event) => {
+  //   event.preventDefault()
+  //   try {
+  //     dispatch(addFeedPost({
+  //       description: basicInfo.description,
+  //       timeStamp: new Date(),
+  //       isOpen: true,
+  //       question1: basicInfo.question1,
+  //       question2: basicInfo.question2,
+  //       question3: basicInfo.question3,
+  //       question4: basicInfo.question4,
+  //       question5: basicInfo.question5,
+  //       question6: basicInfo.question6
+  //     }))
+  //     setBasicInfo(defaultBasicInfo)
+  //     notify('Postaus lisätty onnistuneesti', 'success')
+  //   } catch (error) {
+  //     notify('Ilmeni jokin ongelma postauksen teossa, yritä myöhemmin uudelleen', 'error')
+  //   } 
+  // }
+  const handleBasicsSubmit = () => {
+    basicsRef.current.handleSubmit()
+  }
+
+  const handleTermsSubmit = () => {
+    termsRef.current.handleSubmit()
   }
   
-  const [activeStep, setActiveStep] = React.useState(0);
+
+  const basicsRef = createRef(null)
+  const termsRef = createRef(null)
+
+  const [activeStep, setActiveStep] = useState(0)
 
   const handleNext = () => {
-    setActiveStep((prevActiveStep) => prevActiveStep + 1);
-  };
+    if (activeStep === 0)  {
+      handleBasicsSubmit()
+      
+    } else if (activeStep === 1) {
+      handleTermsSubmit()
+    }
+    setActiveStep((prevActiveStep) => prevActiveStep + 1)
+  }
 
   const handleBack = () => {
-    setActiveStep((prevActiveStep) => prevActiveStep - 1);
-  };
+    setActiveStep((prevActiveStep) => prevActiveStep - 1)
+  }
 
   const handleReset = () => {
-    setActiveStep(0);
-  };
-
+    setActiveStep(0)
+  }
   
   
   if (!user || user.isCompany) {
@@ -102,7 +107,7 @@ const AddFeedPostForm = () => {
         flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'center',
-        minHeight: '100vh',
+        minHeight: '50vh',
         backgroundColor: 'white',
         borderRadius: '1rem',
       }}
@@ -133,23 +138,23 @@ const AddFeedPostForm = () => {
           })}
         </Stepper>
         {activeStep === steps.length ? (
-          <React.Fragment>
+          <Fragment>
             <Typography sx={{ mt: 2, mb: 1 }}>
               All steps completed - you&apos;re finished
             </Typography>
             <Box sx={{ display: 'flex', flexDirection: 'row', pt: 2 }}>
               <Box sx={{ flex: '1 1 auto' }} />
-              <Button onClick={handleReset}>Reset</Button>
+              <Button onClick={handleReset}>Uusi Ilmoitus</Button>
             </Box>
-          </React.Fragment>
+          </Fragment>
         ) : (
-          <React.Fragment>
+          <Fragment>
             { activeStep === 0 ? (
-              <BasicInfoForm basicInfo={basicInfo} setBasicInfo={setBasicInfo} />
+              <BasicInfoForm ref={basicsRef} />
             ) : activeStep === 1 ?(
-              <TermsForm basicInfo={basicInfo} setBasicInfo={setBasicInfo} />
+              <TermsForm ref={termsRef} />
             ) : (
-              <FormSummary basicInfo={basicInfo} />
+              <FormSummary />
             )}
             <Box sx={{ display: 'flex', flexDirection: 'row', pt: 2 }}>
               <Button
@@ -158,15 +163,15 @@ const AddFeedPostForm = () => {
                 onClick={handleBack}
                 sx={{ mr: 1 }}
               >
-                Back
+                Takaisin
               </Button>
               <Box sx={{ flex: '1 1 auto' }} />
 
               <Button onClick={handleNext}>
-                {activeStep === steps.length - 1 ? 'Finish' : 'Next'}
+                {activeStep === steps.length - 1 ? 'Lähetä' : 'Seuraava'}
               </Button>
             </Box>
-          </React.Fragment>
+          </Fragment>
         )}
       </Box>
 

@@ -3,43 +3,78 @@ import {
   Button,
   Checkbox,
   Container,
+  FormControl,
   FormControlLabel,
   FormGroup,
+  InputAdornment,
+  InputLabel,
+  OutlinedInput,
   Radio,
   RadioGroup,
   TextField,
   Typography,
-} from '@mui/material'
+} from '@mui/material';
 
-import React, { useState } from 'react'
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import dayjs from 'dayjs';
 
-const TermsForm = ({ terms, setTerms }) => {
+import { useNotification } from '../../../hooks';
+import { update } from '../../../reducers/formData';
 
-  const [question1, setQuestion1] = useState('')
-  const [question2, setQuestion2] = useState('')
-  const [question2Other, setQuestion2Other] = useState('')
-  const [question3, setQuestion3] = useState('')
-  const [question3Other, setQuestion3Other] = useState('')
-  const [question4, setQuestion4] = useState('')
-  const [question4Other, setQuestion4Other] = useState('')
-  const [question5, setQuestion5] = useState('')
-  const [question6, setQuestion6] = useState('')
-  const [description, setDescription] = useState('')
+import React, { forwardRef, useImperativeHandle, useState, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 
-  const handleSubmit = async (event) => {
-    setTerms({
-      question1,
-      question2,
-      question2Other,
-      question3,
-      question3Other,
-      question4,
-      question4Other,
-      question5,
-      question6,
-      description
-    })
+const TermsForm = forwardRef((props, ref) => {
+  const formData = useSelector(state => state.formData)
+
+  const [date, setDate] = useState(formData.date)
+  const [isOpen, setIsOpen] = useState(formData.isOpen)
+  const [minPrice, setMinPrice] = useState(formData.minPrice)
+  const [maxPrice, setMaxPrice] = useState(formData.maxPrice)
+
+  const notify = useNotification()
+  const dispatch = useDispatch()
+
+  const validateFields = () => {
+    let isValid = true
+    if (!date) {
+      isValid = false
+    } 
+    if (minPrice === '' || maxPrice === '') {
+      isValid = false
+    } 
+    if (minPrice > maxPrice) {
+      notify('Minimihinta ei voi olla suurempi kuin maksimihinta', 'error')
+      isValid = false
+    }
+    return isValid
   }
+      
+  const handleSubmit = async (event) => {
+    if (!validateFields()) {
+      return
+    }
+    dispatch(update({
+      date,
+      isOpen,
+      minPrice,
+      maxPrice
+    }))
+  }
+
+  useImperativeHandle(ref, () => ({
+    handleSubmit: handleSubmit
+  }))
+
+  useEffect(() => {
+    setDate(formData.date)
+    setIsOpen(formData.isOpen)
+    setMinPrice(formData.minPrice)
+    setMaxPrice(formData.maxPrice)
+  }
+  , [formData])
 
   return (
     <Container
@@ -48,165 +83,77 @@ const TermsForm = ({ terms, setTerms }) => {
         flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'center',
-        minHeight: '100vh',
+        minHeight: '50vh',
         backgroundColor: 'white',
         borderRadius: '1rem',
       }}
     >
-    <Box
-      component="form"
-      onSubmit={handleSubmit}
-      sx={{
-        display: 'flex',
-        flexDirection: 'column',
-        marginTop: '2rem',
-        marginBottom: '2rem',
-        width: '100%',
-        maxWidth: '30rem',
-      }}
-    >
-      {/* Question 1 */}
-      <TextField
-        id="question1"
-        label="Kerro nettisivujesi tarkoituksesta."
-        required
-        multiline
-        rows={9}
-        value={question1}
-        onChange={({ target }) => setQuestion1(target.value)}
-        sx={{ marginBottom: '1rem' }}
-      />
+      <Box
+        component="form"
+        onSubmit={handleSubmit}
+        sx={{
+          display: 'flex',
+          flexDirection: 'column',
+          marginTop: '2rem',
+          marginBottom: '2rem',
+          width: '100%',
+          maxWidth: '30rem',
+        }}
+      >
+        {/* Question 1 */}
+        <Typography>Aseta tarjouskilpailullesi takaraja</Typography>
+        <LocalizationProvider dateAdapter={AdapterDayjs}>
+          <DatePicker
+            label="Aseta takaraja"
+            defaultValue={dayjs()}
+            value={date}
+            required
+            format='DD.MM.YYYY'
+            onChange={(newValue) => {
+              setDate(newValue)
+            }}
+            renderInput={(params) => <TextField {...params} />}
+          />
+        </LocalizationProvider>
+
         {/* Question 2 */}
-        <Typography>Kenelle nettisivusi on suunnattu?</Typography>
+        <Typography>Avoin kilpailu (Jos kilpailu on avoin tarjoukset ovat julkisia.)</Typography>
         <RadioGroup
-          aria-label="question2"
-          name="question2"
-          value={question2}
-          sx={{ marginBottom: '2rem' }}
-          onChange={(event) => setQuestion2(event.target.value)}
-        >
-          <FormControlLabel value="Kuluttajat" control={<Radio />} label="Kuluttajat" />
-          <FormControlLabel value="Yritykset tai yrittäjät" control={<Radio />} label="Yritykset tai yrittäjät" />
-          <FormControlLabel value="Sisäiset sidosryhmät" control={<Radio />} label="Sisäiset sidosryhmät" />
-          <FormControlLabel value="Muu. Mikä?" control={<Radio />} label="Muu. Mikä?" />
-          {question2 === 'Muu. Mikä?' && (
-            <TextField
-              id="question2-other"
-              label="Muu. Kerro tarkemmin."
-              value={question2Other}
-              onChange={({ target }) => setQuestion2Other(target.value)}
-              sx={{ marginLeft: '1rem' }}
-            />
-          )}
-        </RadioGroup>
+            aria-label="isOpen"
+            name="isOpen"
+            required
+            value={isOpen}
+            sx={{ marginBottom: '2rem' }}
+            onChange={(event) => setIsOpen(event.target.value)}
+          >
+            <FormControlLabel value={true} control={<Radio />} label="Kyllä" />
+            <FormControlLabel value={false} control={<Radio />} label="Ei" />
+          </RadioGroup>
+        {/* Question 3 */}
+        <Typography>Hintahaarukka (esitä hintatoiveesi projektista)</Typography>
+        <Box sx={{ display: 'flex', alignItems: 'flex-end' }}>
 
-       {/* Question 3 */}
-        <Typography>Mitä toimintoja nettisivuillasi on?</Typography>
-        <FormGroup
-          aria-label="question3"
-          name="question3"
-          value={question3}
-          sx={{ marginBottom: '2rem' }}
-          onChange={(event) => setQuestion3(event.target.value)}
-        >
-          <FormControlLabel control={<Checkbox />} label="Tuotteiden tai palveluiden esittely" value="Tuotteiden tai palveluiden esittely" />
-          <FormControlLabel control={<Checkbox />} label="Hinnaston esittely" value="Hinnaston esittely" />
-          <FormControlLabel control={<Checkbox />} label="Yhteydenottolomake" value="Yhteydenottolomake" />
-          <FormControlLabel control={<Checkbox />} label="Tilauslomake" value="Tilauslomake" />
-          <FormControlLabel control={<Checkbox />} label="Asiakaspalveluchat" value="Asiakaspalveluchat" />
-          <FormControlLabel control={<Checkbox />} label="Muu. Mikä?" value="Muu. Mikä?" />
-          {question3.includes('Muu. Mikä?') && (
-            <TextField
-              id="question3-other"
-              label="Muu. Kerro tarkemmin."
-              value={question3Other}
-              onChange={({ target }) => setQuestion3Other(target.value)}
-              sx={{ marginLeft: '1rem' }}
-            />
-          )}
-        </FormGroup>
-
-        {/* Question 4 */}
-        <Typography>Onko olemassa teknologiasia rajoitteita?</Typography>
-        <RadioGroup
-          aria-label="question4"
-          name="question4"
-          value={question4}
-          sx={{ marginBottom: '2rem' }}
-          onChange={(event) => setQuestion4(event.target.value)}
-        >
-          <FormControlLabel value="Ei rajoittavia tekijöitä" control={<Radio />} label="Ei rajoittavia tekijöitä" />
-          <FormControlLabel value="Tiettyjä ohjelmistoja ja teknologioita valittu, jotka voivat rajoittaa projektia." control={<Radio />} label="Tiettyjä ohjelmistoja ja teknologioita valittu, jotka voivat rajoittaa projektia." />
-          <FormControlLabel value="Ohjelmitoa ja teknologioita valittu, mutta joustoa on " control={<Radio />} label="Ohjelmitoa ja teknologioita valittu, mutta joustoa on " />
-          <FormControlLabel value="Muu. Mikä?" control={<Radio />} label="Muu. Mikä?" />
-          {question4 === 'Muu. Mikä?' && (
-            <TextField
-              id="question4-other"
-              label="Muu. Kerro tarkemmin."
-              value={question4Other}
-              onChange={({ target }) => setQuestion4Other(target.value)}
-              sx={{ marginLeft: '1rem' }}
-            />
-          )}
-        </RadioGroup>
-
-        {/* Question 5 */}
-        <Typography>Tarvitsetko sivuillesi sisällönhallintatyökaluja?</Typography>
-        <RadioGroup
-          aria-label="question5"
-          name="question5"
-          value={question5}
-          sx={{ marginBottom: '2rem' }}
-          onChange={(event) => setQuestion5(event.target.value)}
-        >
-          <FormControlLabel value="Laaja CMS" control={<Radio />} label="Laaja CMS" />
-          <FormControlLabel value="Suppea CMS" control={<Radio />} label="Suppea CMS" />
-          <FormControlLabel value="Ei tarvetta" control={<Radio />} label="Ei tarvetta" />
-        </RadioGroup>
-
-        {/* Question 6 */}
-        <TextField
-          id="question6"
-          label="Mitä toiminnallisuuksia sivuillasi tulee olla?"
-          required
-          multiline
-          rows={9}
-          value={question6}
-          onChange={({ target }) => setQuestion6(target.value)}
-          sx={{ marginBottom: '1rem' }}
-        />
-
-        <TextField
-          id="description"
-          label="Mainitse mahdolliset muut toiveet."
-          multiline
-          rows={15}
-          value={description}
-          onChange={({ target }) => setDescription(target.value)}
-          sx={{ marginBottom: '1rem' }}
-        />
-        <Button
-          type="submit"
-          variant="contained"
-          color="primary"
-          fullWidth
-          sx={{
-            backgroundColor: 'blue',
-            color: 'white',
-            transition: 'transform 0.3s',
-            marginTop: '1rem',
-            marginBottom: '1rem',
-            '&:hover': {
-              transform: 'scale(1.05)',
-              backgroundImage: 'linear-gradient(to bottom, #003eff, #006eff)',
-            },
-          }}
-        >
-          Lähetä
-        </Button>
+          <FormControl fullWidth sx={{ m: 1 }} value={minPrice} required onChange={(event) => setMinPrice(event.target.value)}>
+              <InputLabel htmlFor="outlined-adornment-amount">Min</InputLabel>
+              <OutlinedInput
+                id="outlined-adornment-amount"
+                startAdornment={<InputAdornment position="start">€</InputAdornment>}
+                label="min"
+              />
+          </FormControl>
+          <FormControl fullWidth sx={{ m: 1 }} value={maxPrice} required onChange={(event) => setMaxPrice(event.target.value)}>
+              <InputLabel htmlFor="outlined-adornment-amount">Max</InputLabel>
+              <OutlinedInput
+                id="outlined-adornment-amount"
+                startAdornment={<InputAdornment position="start">€</InputAdornment>}
+                label="max"
+              />
+          </FormControl>
+        </Box>
+        
       </Box>
     </Container>
   )
-}
+})
 
 export default TermsForm

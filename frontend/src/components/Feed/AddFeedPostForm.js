@@ -1,15 +1,15 @@
-import React, { useState } from 'react'
 import {
-  TextField,
-  Button,
-  Typography,
-  Container,
   Box,
+  Button,
+  Checkbox,
+  Container,
+  FormControlLabel,
   Radio,
   RadioGroup,
-  FormControlLabel,
-  Checkbox
+  TextField,
+  Typography
 } from '@mui/material'
+import React, { useState } from 'react'
 
 import { useDispatch, useSelector } from 'react-redux'
 import { useNotification } from '../../hooks'
@@ -202,3 +202,4 @@ const handleIsPortalPostChange = (e) => {
 }
 
 export default AddFeedPostForm
+

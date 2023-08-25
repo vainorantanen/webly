@@ -12,6 +12,7 @@ import { Fragment, createRef, useState } from 'react'
 
 import { useDispatch, useSelector } from 'react-redux'
 import { useNotification } from '../../../hooks'
+import { resetFormData } from '../../../reducers/formData'
 
 import BasicInfoForm from './BasicInfoForm'
 import FormSummary from './FormSummary'
@@ -74,6 +75,8 @@ const AddFeedPostForm = () => {
         return;
       }
       handleTermsSubmit()
+    } else  if (activeStep === 2) {
+      //handleSummarySubmit()
     }
     setActiveStep((prevActiveStep) => prevActiveStep + 1)
   }
@@ -84,6 +87,7 @@ const AddFeedPostForm = () => {
 
   const handleReset = () => {
     setActiveStep(0)
+    dispatch(resetFormData())
   }
   
   

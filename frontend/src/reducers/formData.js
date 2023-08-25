@@ -2,7 +2,7 @@ import { createSlice } from "@reduxjs/toolkit"
 import dayjs from "dayjs"
 
 const initialState = {
-  description: '',
+  other: '',
   question1: '',
   question2: 'Kuluttajat',
   question2Other: '',
@@ -33,5 +33,11 @@ const slice = createSlice({
 })
 
  export const { set, update } = slice.actions
+
+ export const resetFormData = () => {
+   return async dispatch => {
+     dispatch(set(initialState))
+   }
+ }
 
  export default slice.reducer

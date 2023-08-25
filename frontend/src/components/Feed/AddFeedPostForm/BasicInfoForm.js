@@ -19,7 +19,7 @@ import { update } from '../../../reducers/formData'
 const BasicInfoForm = forwardRef((props, ref) => {
   const formData = useSelector(state => state.formData)
 
-  const [description, setDescription] = useState(formData.description)
+  const [other, setOther] = useState(formData.other)
   const [question1, setQuestion1] = useState(formData.question1)
   const [question2, setQuestion2] = useState(formData.question2)
   const [question2Other, setQuestion2Other] = useState(formData.question2Other)
@@ -77,7 +77,7 @@ const BasicInfoForm = forwardRef((props, ref) => {
       return
     }
     dispatch(update({
-      description,
+      other,
       question1,
       question2,
       question2Other,
@@ -89,7 +89,7 @@ const BasicInfoForm = forwardRef((props, ref) => {
   }
 
   useEffect(() => {
-    setDescription(formData.description)
+    setOther(formData.other)
     setQuestion1(formData.question1)
     setQuestion2(formData.question2)
     setQuestion2Other(formData.question2Other)
@@ -221,12 +221,12 @@ const BasicInfoForm = forwardRef((props, ref) => {
         />
 
         <TextField
-          id="description"
+          id="other"
           label="Mainitse mahdolliset muut toiveet."
           multiline
           minRows={5}
-          value={description}
-          onChange={({ target }) => setDescription(target.value)}
+          value={other}
+          onChange={({ target }) => setOther(target.value)}
           sx={{ marginBottom: '1rem' }}
         />
       </Box>

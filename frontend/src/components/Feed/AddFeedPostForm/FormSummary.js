@@ -1,26 +1,35 @@
-import { Box, Typography } from "@mui/material"
+import { Container, Paper, Typography } from "@mui/material"
+import dayjs from 'dayjs'
 import { useSelector } from "react-redux"
 
 const FormSummary = () => {
-  const data = useSelector(state => state.formData)
-
+  const formData = useSelector(state => state.formData)
+  console.log('data', formData)
   return (
-    <Box>
-      {/* <Typography variant="h6">Perustiedot</Typography>
-      <Typography variant="body1">{data.description}</Typography>
-      <Typography variant="h6">Ilmoituksen ehdot</Typography>
-      <Typography variant="body1">Päivämäärä: {data.date}</Typography>
-      <Typography variant="body1">Aukiolo: {data.isOpen ? 'Auki' : 'Suljettu'}</Typography>
-      <Typography variant="body1">Minimihinta: {data.minPrice}</Typography>
-      <Typography variant="body1">Maksimihinta: {data.maxPrice}</Typography>
-      <Typography variant="h6">Yhteenveto</Typography>
-      <Typography variant="body1">Kysymys 1: {data.question1}</Typography>
-      <Typography variant="body1">Kysymys 2: {data.question2}</Typography>
-      <Typography variant="body1">Kysymys 3: {data.question3}</Typography>
-      <Typography variant="body1">Kysymys 4: {data.question4}</Typography>
-      <Typography variant="body1">Kysymys 5: {data.question5}</Typography> */}
-      moi
-    </Box>
+    <Container
+      sx={{
+        display: 'flex',
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'center',
+        marginTop: '2rem'
+      }}
+    >
+      <Paper sx={{display: 'flex', flexDirection: "column", padding: '2rem', justifyContent: 'center', alignItems: 'begin' }}>
+        <Typography variant="h4">Perustiedot</Typography>
+        <Typography>Sivun tarkoitus: {formData.question1}</Typography>
+        <Typography>Kohdeyleisö: {formData.question2 === 'other' ? formData.question2Other : formData.question2}</Typography>
+        <Typography>Teknologiset rajoitteet: {formData.question3 === 'other' ? formData.question3Other : formData.question3}</Typography>
+        <Typography>Sisälönhallinta: {formData.question4}</Typography>
+        <Typography>Toiminnallisuus: {formData.question5}</Typography>
+        <Typography>Muuta: {formData.other}</Typography>
+
+        <Typography variant="h4" >Ehdot</Typography>
+        <Typography>Tarjouskilpailun takaraja: {dayjs(formData.date).format('DD.MM.YYYY')}</Typography>
+        <Typography>Ilmoitus on auki: {formData.isOpen === 'true' ? 'Kyllä' : formData.isOpen === 'false' ? 'Ei' : 'Ei määritelty'}</Typography>
+        <Typography>Hintahaarukka: {formData.minPrice}€ - {formData.maxPrice}€</Typography>
+      </Paper>
+    </Container>
   )
 }
 

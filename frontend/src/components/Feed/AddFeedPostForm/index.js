@@ -64,9 +64,15 @@ const AddFeedPostForm = () => {
 
   const handleNext = () => {
     if (activeStep === 0)  {
+      if (!basicsRef.current.validateFields()) {
+        return;
+      }
       handleBasicsSubmit()
-      
+
     } else if (activeStep === 1) {
+      if (!termsRef.current.validateFields()) {
+        return;
+      }
       handleTermsSubmit()
     }
     setActiveStep((prevActiveStep) => prevActiveStep + 1)

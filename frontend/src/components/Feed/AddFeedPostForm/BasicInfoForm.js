@@ -100,7 +100,8 @@ const BasicInfoForm = forwardRef((props, ref) => {
   }, [formData])
 
   useImperativeHandle(ref, () => ({
-    handleSubmit: handleSubmit
+    handleSubmit: handleSubmit,
+    validateFields: validateFields
   }))
 
   return (

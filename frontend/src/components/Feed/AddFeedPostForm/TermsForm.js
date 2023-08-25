@@ -23,16 +23,20 @@ import dayjs from 'dayjs';
 import { useNotification } from '../../../hooks';
 import { update } from '../../../reducers/formData';
 
-import React, { forwardRef, useImperativeHandle, useState, useEffect } from 'react';
+import React, { forwardRef, useEffect, useImperativeHandle, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 const TermsForm = forwardRef((props, ref) => {
   const formData = useSelector(state => state.formData)
 
-  const [date, setDate] = useState(formData.date)
+  const [date, setDate] = useState(null)
   const [isOpen, setIsOpen] = useState(formData.isOpen)
   const [minPrice, setMinPrice] = useState(formData.minPrice)
   const [maxPrice, setMaxPrice] = useState(formData.maxPrice)
+
+  const [dateError, setDateError] = useState(false)
+  const [minPriceError, setMinPriceError] = useState(false)
+  const [maxPriceError, setMaxPriceError] = useState(false)
 
   const notify = useNotification()
   const dispatch = useDispatch()
@@ -40,15 +44,33 @@ const TermsForm = forwardRef((props, ref) => {
   const validateFields = () => {
     let isValid = true
     if (!date) {
+      console.log('date', date)
+      notify('Aseta takaraja', 'error')
+      setDateError(true)
       isValid = false
-    } 
+    } else {
+      setDateError(false)
+    }
+
     if (minPrice === '' || maxPrice === '') {
+      console.log('minPrice', minPrice)
+      notify('Aseta hintahaarukka', 'error')
+      setMinPriceError(true)
+      setMaxPriceError(true)
       isValid = false
-    } 
+    } else {
+      setMinPriceError(false)
+      setMaxPriceError(false)
+    }
+    
     if (minPrice > maxPrice) {
       notify('Minimihinta ei voi olla suurempi kuin maksimihinta', 'error')
+      setMaxPriceError(true)
       isValid = false
+    } else {
+      setMaxPriceError(false)
     }
+
     return isValid
   }
       
@@ -65,7 +87,8 @@ const TermsForm = forwardRef((props, ref) => {
   }
 
   useImperativeHandle(ref, () => ({
-    handleSubmit: handleSubmit
+    handleSubmit: handleSubmit,
+    validateFields: validateFields
   }))
 
   useEffect(() => {
@@ -105,14 +128,12 @@ const TermsForm = forwardRef((props, ref) => {
         <LocalizationProvider dateAdapter={AdapterDayjs}>
           <DatePicker
             label="Aseta takaraja"
-            defaultValue={dayjs()}
+            error={dateError}
             value={date}
-            required
-            format='DD.MM.YYYY'
+            minDate={dayjs().add(1, 'day')}
             onChange={(newValue) => {
               setDate(newValue)
             }}
-            renderInput={(params) => <TextField {...params} />}
           />
         </LocalizationProvider>
 
@@ -132,23 +153,40 @@ const TermsForm = forwardRef((props, ref) => {
         {/* Question 3 */}
         <Typography>Hintahaarukka (esitä hintatoiveesi projektista)</Typography>
         <Box sx={{ display: 'flex', alignItems: 'flex-end' }}>
-
-          <FormControl fullWidth sx={{ m: 1 }} value={minPrice} required onChange={(event) => setMinPrice(event.target.value)}>
-              <InputLabel htmlFor="outlined-adornment-amount">Min</InputLabel>
-              <OutlinedInput
-                id="outlined-adornment-amount"
-                startAdornment={<InputAdornment position="start">€</InputAdornment>}
-                label="min"
-              />
-          </FormControl>
-          <FormControl fullWidth sx={{ m: 1 }} value={maxPrice} required onChange={(event) => setMaxPrice(event.target.value)}>
-              <InputLabel htmlFor="outlined-adornment-amount">Max</InputLabel>
-              <OutlinedInput
-                id="outlined-adornment-amount"
-                startAdornment={<InputAdornment position="start">€</InputAdornment>}
-                label="max"
-              />
-          </FormControl>
+          <TextField
+            label="Minimihinta"
+            type='number'
+            id="minPrice"
+            error={minPriceError}
+            sx={{ m: 1, width: '25ch' }}
+            InputProps={{
+              startAdornment: <InputAdornment position="start">€</InputAdornment>,
+            }}
+            value={minPrice}
+            required
+            onChange={(event) => setMinPrice(event.target.value)}
+          />
+          <Typography
+            sx={{
+              m: 1,
+              fontSize: '1.5rem',
+              fontWeight: 'bold',
+              marginBottom: '1.3rem',
+            }}
+          >-</Typography>
+          <TextField
+            label="Maksimihinta"
+            type='number'
+            id="maxPrice"
+            error={maxPriceError}
+            sx={{ m: 1, width: '25ch' }}
+            InputProps={{
+              startAdornment: <InputAdornment position="start">€</InputAdornment>,
+            }}
+            value={maxPrice}
+            required
+            onChange={(event) => setMaxPrice(event.target.value)}
+          />
         </Box>
         
       </Box>

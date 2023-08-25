@@ -13,6 +13,8 @@ import { Fragment, createRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNotification } from '../../../hooks'
 import { resetFormData } from '../../../reducers/formData'
+import { addFeedPost } from '../../../reducers/feedPosts'
+import { addPortalPost } from '../../../reducers/portalPosts'
 
 import BasicInfoForm from './BasicInfoForm'
 import FormSummary from './FormSummary'
@@ -24,31 +26,23 @@ const AddFeedPostForm = () => {
   const steps = ['Perustiedot', 'Ilmoituksen ehdot', 'Yhteenveto']
 
   const user = useSelector(state => state.user)
-  const notification = useSelector(state => state.notificatio)
 
   const notify = useNotification()
   const dispatch = useDispatch()
 
-  // const handleSubmit = async (event) => {
-  //   event.preventDefault()
-  //   try {
-  //     dispatch(addFeedPost({
-  //       description: basicInfo.description,
-  //       timeStamp: new Date(),
-  //       isOpen: true,
-  //       question1: basicInfo.question1,
-  //       question2: basicInfo.question2,
-  //       question3: basicInfo.question3,
-  //       question4: basicInfo.question4,
-  //       question5: basicInfo.question5,
-  //       question6: basicInfo.question6
-  //     }))
-  //     setBasicInfo(defaultBasicInfo)
-  //     notify('Postaus lisätty onnistuneesti', 'success')
-  //   } catch (error) {
-  //     notify('Ilmeni jokin ongelma postauksen teossa, yritä myöhemmin uudelleen', 'error')
-  //   } 
-  // }
+  const handleSubmit = async (event) => {
+    event.preventDefault()
+    try {
+      if (formData.isOpen === 'true') {
+        dispatch(addFeedPost(formData))
+      } else if (formData.isOpen === 'false') {
+        dispatch(addPortalPost(formData))
+      }
+      notify('Postaus lisätty onnistuneesti', 'success')
+    } catch (error) {
+      notify('Ilmeni jokin ongelma postauksen teossa, yritä myöhemmin uudelleen', 'error')
+    } 
+  }
   const handleBasicsSubmit = () => {
     basicsRef.current.handleSubmit()
   }
@@ -76,7 +70,7 @@ const AddFeedPostForm = () => {
       }
       handleTermsSubmit()
     } else  if (activeStep === 2) {
-      //handleSummarySubmit()
+      handleSubmit()
     }
     setActiveStep((prevActiveStep) => prevActiveStep + 1)
   }

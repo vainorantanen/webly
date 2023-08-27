@@ -1,10 +1,8 @@
 import { Container, Paper, Typography } from "@mui/material"
-import dayjs from 'dayjs'
 import { useSelector } from "react-redux"
 
 const FormSummary = () => {
   const formData = useSelector(state => state.formData)
-  console.log('data', formData)
   return (
     <Container
       sx={{
@@ -25,8 +23,8 @@ const FormSummary = () => {
         <Typography>Muuta: {formData.other}</Typography>
 
         <Typography variant="h4" >Ehdot</Typography>
-        <Typography>Tarjouskilpailun takaraja: {dayjs(formData.date).format('DD.MM.YYYY')}</Typography>
-        <Typography>Ilmoitus on auki: {formData.isOpen === 'true' ? 'Kyllä' : formData.isOpen === 'false' ? 'Ei' : 'Ei määritelty'}</Typography>
+        <Typography>Tarjouskilpailun takaraja: {formData.date}</Typography>
+        <Typography>Ilmoitus on auki: {formData.isOpen ? 'Kyllä' : 'Ei'}</Typography>
         <Typography>Hintahaarukka: {formData.minPrice}€ - {formData.maxPrice}€</Typography>
       </Paper>
     </Container>

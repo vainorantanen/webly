@@ -1,14 +1,8 @@
 import {
   Box,
-  Button,
-  Checkbox,
   Container,
-  FormControl,
   FormControlLabel,
-  FormGroup,
   InputAdornment,
-  InputLabel,
-  OutlinedInput,
   Radio,
   RadioGroup,
   TextField,
@@ -23,13 +17,24 @@ import dayjs from 'dayjs';
 import { useNotification } from '../../../hooks';
 import { update } from '../../../reducers/formData';
 
-import React, { forwardRef, useEffect, useImperativeHandle, useState } from 'react';
+import React, { forwardRef, useImperativeHandle, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 const TermsForm = forwardRef((props, ref) => {
   const formData = useSelector(state => state.formData)
 
-  const [date, setDate] = useState(null)
+  const validDate = () => {
+    if (!formData.date) {
+      return null
+    } else {
+      const dateArray = formData.date.split('.')
+      const validDateString = dateArray.reverse().join('-')
+      const dateObject = dayjs(validDateString)
+      return dateObject
+    }
+  }
+
+  const [date, setDate] = useState(validDate())
   const [isOpen, setIsOpen] = useState(formData.isOpen)
   const [minPrice, setMinPrice] = useState(formData.minPrice)
   const [maxPrice, setMaxPrice] = useState(formData.maxPrice)
@@ -63,7 +68,7 @@ const TermsForm = forwardRef((props, ref) => {
       setMaxPriceError(false)
     }
     
-    if (minPrice > maxPrice) {
+    if (parseInt(minPrice) >= parseInt(maxPrice)) {
       notify('Minimihinta ei voi olla suurempi kuin maksimihinta', 'error')
       setMaxPriceError(true)
       isValid = false
@@ -79,7 +84,7 @@ const TermsForm = forwardRef((props, ref) => {
       return
     }
     dispatch(update({
-      date,
+      date: dayjs(date).format('DD.MM.YYYY').toString(),
       isOpen,
       minPrice,
       maxPrice
@@ -91,13 +96,9 @@ const TermsForm = forwardRef((props, ref) => {
     validateFields: validateFields
   }))
 
-  useEffect(() => {
-    setDate(formData.date)
-    setIsOpen(formData.isOpen)
-    setMinPrice(formData.minPrice)
-    setMaxPrice(formData.maxPrice)
+  const handleRadioChange = (event) => {
+    setIsOpen(event.target.value === 'true')
   }
-  , [formData])
 
   return (
     <Container
@@ -130,6 +131,7 @@ const TermsForm = forwardRef((props, ref) => {
             label="Aseta takaraja"
             error={dateError}
             value={date}
+            format="DD.MM.YYYY"
             minDate={dayjs().add(1, 'day')}
             onChange={(newValue) => {
               setDate(newValue)
@@ -145,10 +147,10 @@ const TermsForm = forwardRef((props, ref) => {
             required
             value={isOpen}
             sx={{ marginBottom: '2rem' }}
-            onChange={(event) => setIsOpen(event.target.value)}
+            onChange={handleRadioChange}
           >
-            <FormControlLabel value={true} control={<Radio />} label="Kyllä" />
-            <FormControlLabel value={false} control={<Radio />} label="Ei" />
+            <FormControlLabel value='true' control={<Radio />} label="Kyllä" />
+            <FormControlLabel value='false' control={<Radio />} label="Ei" />
           </RadioGroup>
         {/* Question 3 */}
         <Typography>Hintahaarukka (esitä hintatoiveesi projektista)</Typography>

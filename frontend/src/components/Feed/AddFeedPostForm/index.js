@@ -12,8 +12,9 @@ import { Fragment, createRef, useState } from 'react'
 
 import { useDispatch, useSelector } from 'react-redux'
 import { useNotification } from '../../../hooks'
-import { addFeedPost } from '../../../reducers/feedPosts'
+
 import { resetFormData } from '../../../reducers/formData'
+import { addFeedPost } from '../../../reducers/feedPosts'
 import { addPortalpost } from '../../../reducers/portalPosts'
 
 import BasicInfoForm from './BasicInfoForm'
@@ -30,18 +31,26 @@ const AddFeedPostForm = () => {
   const notify = useNotification()
   const dispatch = useDispatch()
 
-  const handleSubmit = async (event) => {
+  const handleSubmit = () => {
     try {
-      if (formData.isOpen === 'true') {
+      console.log(formData.isOpen)
+      if (formData.isOpen === true) {
         dispatch(addFeedPost(formData))
-      } else if (formData.isOpen === 'false') {
+        console.log(formData)
+        console.log('addFeedPost')
+      } else if (formData.isOpen === false) {
         dispatch(addPortalpost(formData))
+        console.log('addPortalpost')
       }
+
       notify('Postaus lisätty onnistuneesti', 'success')
+      dispatch(resetFormData())
     } catch (error) {
       notify('Ilmeni jokin ongelma postauksen teossa, yritä myöhemmin uudelleen', 'error')
     } 
   }
+
+
   const handleBasicsSubmit = () => {
     basicsRef.current.handleSubmit()
   }
@@ -68,8 +77,10 @@ const AddFeedPostForm = () => {
         return;
       }
       handleTermsSubmit()
+
     } else  if (activeStep === 2) {
       handleSubmit()
+      console.log('submit')
     }
     setActiveStep((prevActiveStep) => prevActiveStep + 1)
   }

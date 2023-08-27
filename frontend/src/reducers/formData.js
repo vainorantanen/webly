@@ -1,5 +1,4 @@
 import { createSlice } from "@reduxjs/toolkit"
-import dayjs from "dayjs"
 
 const initialState = {
   other: '',

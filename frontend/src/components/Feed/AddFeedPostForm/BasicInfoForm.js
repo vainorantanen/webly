@@ -88,17 +88,6 @@ const BasicInfoForm = forwardRef((props, ref) => {
     }))
   }
 
-  useEffect(() => {
-    setOther(formData.other)
-    setQuestion1(formData.question1)
-    setQuestion2(formData.question2)
-    setQuestion2Other(formData.question2Other)
-    setQuestion3(formData.question3)
-    setQuestion3Other(formData.question3Other)
-    setQuestion4(formData.question4)
-    setQuestion5(formData.question5)
-  }, [formData])
-
   useImperativeHandle(ref, () => ({
     handleSubmit: handleSubmit,
     validateFields: validateFields

@@ -1,11 +1,12 @@
 import { configureStore } from '@reduxjs/toolkit'
+import devsPostReducer from './reducers/devsPosts'
+import feedBidsReducer from './reducers/feedBids'
+import feedPostsReducer from './reducers/feedPosts'
+import formDataReducer from './reducers/formData'
 import notificationReducer from './reducers/notification'
+import portalPostsReducer from './reducers/portalPosts'
 import userReducer from './reducers/user'
 import usersReducer from './reducers/users'
-import devsPostReducer from './reducers/devsPosts'
-import feedPostsReducer from './reducers/feedPosts'
-import feedBidsReducer from './reducers/feedBids'
-import portalPostsReducer from './reducers/portalPosts'
 
 const store = configureStore({
   reducer: {
@@ -15,7 +16,8 @@ const store = configureStore({
     devsPosts: devsPostReducer,
     feedPosts: feedPostsReducer,
     feedBids: feedBidsReducer,
-    portalPosts: portalPostsReducer
+    portalPosts: portalPostsReducer,
+    formData: formDataReducer
   }
 })
 

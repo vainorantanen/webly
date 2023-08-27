@@ -9,6 +9,9 @@ const schema = mongoose.Schema({
     type: String,
     required: true
   },
+  other: {
+    type: String
+  },
   timeStamp: {
     type: Date,
     required: true
@@ -31,7 +34,19 @@ const schema = mongoose.Schema({
   },
   question3: {
     type: String
-  }
+  },
+  question4: {
+    type: String
+  },
+  dueDate: {
+    type: String
+  },
+  minPrice: {
+    type: Number
+  },
+  maxPrice: {
+    type: Number
+  },
 })
 
 schema.set('toJSON', {

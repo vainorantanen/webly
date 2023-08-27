@@ -14,8 +14,9 @@ router.get('/', async (request, response) => {
 
 router.post('/', userExtractor, async (request, response) => {
   //console.log("RBODY", request.body)
-  const { description, question1, question2, question3 } = request.body
+  const { description, other, question1, question1Other, question2, question2Other, question3, question4, date, minPrice, maxPrice } = request.body
   //console.log("aINFO", additionalinfo)
+  console.log('request.body', request.body)
   const feedPost = new FeedPost({
     description,
     timeStamp: new Date(),
@@ -23,7 +24,28 @@ router.post('/', userExtractor, async (request, response) => {
     question1,
     question2,
     question3,
+    question4,
+    dueDate: date,
+    other,
+    minPrice,
+    maxPrice
   })
+
+  if (question1 === 'other') {
+    feedPost.question1 = question1Other
+  }
+
+  if (question2 === 'other') {
+    feedPost.question2 = question2Other
+  }
+
+  if (question1 === 'other') {
+    feedPost.question1 = question1Other
+  }
+
+  if (question2 === 'other') {
+    feedPost.question2 = question2Other
+  }
 
   const user = request.user
 

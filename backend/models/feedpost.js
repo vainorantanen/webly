@@ -5,9 +5,12 @@ const schema = mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User'
   },
-  description : {
+  description: {
     type: String,
     required: true
+  },
+  other: {
+    type: String
   },
   timeStamp: {
     type: Date,
@@ -30,6 +33,12 @@ const schema = mongoose.Schema({
     type: String
   },
   question3: {
+    type: String
+  },
+  question4: {
+    type: String
+  },
+  duedate: {
     type: String
   }
 })

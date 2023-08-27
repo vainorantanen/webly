@@ -14,8 +14,9 @@ router.get('/', async (request, response) => {
 
 router.post('/', userExtractor, async (request, response) => {
   //console.log("RBODY", request.body)
-  const { description, question1, question2, question3 } = request.body
+  const { description, other, question1, question1Other, question2, question2Other, question3, question4, dueDate } = request.body
   //console.log("aINFO", additionalinfo)
+
   const portalPost = new PortalPost({
     description,
     timeStamp: new Date(),
@@ -23,7 +24,18 @@ router.post('/', userExtractor, async (request, response) => {
     question1,
     question2,
     question3,
+    question4,
+    dueDate,
+    other
   })
+
+  if (question1 === 'other') {
+    portalPost.question1 = question1Other
+  }
+
+  if (question2 === 'other') {
+    portalPost.question2 = question2Other
+  }
 
   const user = request.user
 

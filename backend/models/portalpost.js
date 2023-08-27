@@ -9,6 +9,9 @@ const schema = mongoose.Schema({
     type: String,
     required: true
   },
+  other: {
+    type: String
+  },
   timeStamp: {
     type: Date,
     required: true
@@ -30,6 +33,12 @@ const schema = mongoose.Schema({
     type: String
   },
   question3: {
+    type: String
+  },
+  question4: {
+    type: String
+  },
+  duedate: {
     type: String
   }
 })

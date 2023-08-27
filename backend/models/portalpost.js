@@ -38,9 +38,15 @@ const schema = mongoose.Schema({
   question4: {
     type: String
   },
-  duedate: {
+  dueDate: {
     type: String
-  }
+  },
+  minPrice: {
+    type: Number
+  },
+  maxPrice: {
+    type: Number
+  },
 })
 
 schema.set('toJSON', {

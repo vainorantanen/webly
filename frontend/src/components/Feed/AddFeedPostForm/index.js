@@ -12,9 +12,9 @@ import { Fragment, createRef, useState } from 'react'
 
 import { useDispatch, useSelector } from 'react-redux'
 import { useNotification } from '../../../hooks'
-import { resetFormData } from '../../../reducers/formData'
 import { addFeedPost } from '../../../reducers/feedPosts'
-import { addPortalPost } from '../../../reducers/portalPosts'
+import { resetFormData } from '../../../reducers/formData'
+import { addPortalpost } from '../../../reducers/portalPosts'
 
 import BasicInfoForm from './BasicInfoForm'
 import FormSummary from './FormSummary'
@@ -31,12 +31,11 @@ const AddFeedPostForm = () => {
   const dispatch = useDispatch()
 
   const handleSubmit = async (event) => {
-    event.preventDefault()
     try {
       if (formData.isOpen === 'true') {
         dispatch(addFeedPost(formData))
       } else if (formData.isOpen === 'false') {
-        dispatch(addPortalPost(formData))
+        dispatch(addPortalpost(formData))
       }
       notify('Postaus lisätty onnistuneesti', 'success')
     } catch (error) {

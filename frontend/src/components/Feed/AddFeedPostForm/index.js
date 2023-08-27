@@ -33,7 +33,6 @@ const AddFeedPostForm = () => {
 
   const handleSubmit = () => {
     try {
-      console.log(formData.isOpen)
       if (formData.isOpen === true) {
         dispatch(addFeedPost(formData))
         console.log(formData)

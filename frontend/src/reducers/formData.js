@@ -2,13 +2,13 @@ import { createSlice } from "@reduxjs/toolkit"
 
 const initialState = {
   other: '',
-  question1: '',
-  question2: 'Kuluttajat',
+  description: '',
+  question1: 'Kuluttajat',
+  question1Other: '',
+  question2: 'Ei rajoittavia tekijöitä',
   question2Other: '',
-  question3: 'Ei rajoittavia tekijöitä',
-  question3Other: '',
-  question4: 'Ei tarvetta',
-  question5: '',
+  question3: 'Ei tarvetta',
+  question4: '',
   isOpen: true,
   minPrice: '',
   maxPrice: ''

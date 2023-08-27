@@ -20,18 +20,18 @@ const BasicInfoForm = forwardRef((props, ref) => {
   const formData = useSelector(state => state.formData)
 
   const [other, setOther] = useState(formData.other)
+  const [description, setDescription] = useState(formData.description)
   const [question1, setQuestion1] = useState(formData.question1)
+  const [question1Other, setQuestion1Other] = useState(formData.question1Other)
   const [question2, setQuestion2] = useState(formData.question2)
   const [question2Other, setQuestion2Other] = useState(formData.question2Other)
   const [question3, setQuestion3] = useState(formData.question3)
-  const [question3Other, setQuestion3Other] = useState(formData.question3Other)
   const [question4, setQuestion4] = useState(formData.question4)
-  const [question5, setQuestion5] = useState(formData.question5)
 
-  const [q1Error, setQ1Error] = useState(false)
+  const [dError, setDError] = useState(false)
+  const [q1OError, setQ1OError] = useState(false)
   const [q2OError, setQ2OError] = useState(false)
-  const [q3OError, setQ3OError] = useState(false)
-  const [q5Error, setQ5Error] = useState(false)
+  const [q4Error, setQ4Error] = useState(false)
 
   const notify = useNotification()
   const dispatch = useDispatch()
@@ -39,11 +39,18 @@ const BasicInfoForm = forwardRef((props, ref) => {
   const validateFields = () => {
     let isValid = true
 
-    if (!question1) {
-      setQ1Error(true)
+    if (!description) {
+      setDError(true)
       isValid = false
     } else {
-      setQ1Error(false)
+      setDError(false)
+    }
+
+    if (question1 === 'other' && !question1Other) {
+      setQ1OError(true)
+      isValid = false
+    } else {
+      setQ1OError(false)
     }
 
     if (question2 === 'other' && !question2Other) {
@@ -53,18 +60,11 @@ const BasicInfoForm = forwardRef((props, ref) => {
       setQ2OError(false)
     }
 
-    if (question3 === 'other' && !question3Other) {
-      setQ3OError(true)
+    if (!question4) {
+      setQ4Error(true)
       isValid = false
     } else {
-      setQ3OError(false)
-    }
-
-    if (!question5) {
-      setQ5Error(true)
-      isValid = false
-    } else {
-      setQ5Error(false)
+      setQ4Error(false)
     }
 
     return isValid
@@ -78,13 +78,13 @@ const BasicInfoForm = forwardRef((props, ref) => {
     }
     dispatch(update({
       other,
+      description,
       question1,
+      question1Other,
       question2,
       question2Other,
       question3,
-      question3Other,
-      question4,
-      question5
+      question4
     }))
   }
 
@@ -117,21 +117,47 @@ const BasicInfoForm = forwardRef((props, ref) => {
           maxWidth: '30rem',
         }}
       >
-        {/* Question 1 */}
+        {/* Description */}
         <TextField
-          id="question1"
+          id="description"
           label="Kerro nettisivujesi tarkoituksesta."
           required
-          error={q1Error}
+          error={dError}
           multiline
           minRows={5}
-          value={question1}
-          onChange={({ target }) => setQuestion1(target.value)}
+          value={description}
+          onChange={({ target }) => setDescription(target.value)}
           sx={{ marginBottom: '1rem',    marginTop: '1rem' }}
         />
 
-        {/* Question 2 */}
+        {/* Question 1 */}
         <Typography>Kenelle nettisivusi on suunnattu?</Typography>
+        <RadioGroup
+          aria-label="question2"
+          name="question2"
+          value={question1}
+          sx={{ marginBottom: '2rem' }}
+          onChange={(event) => setQuestion1(event.target.value)}
+        >
+          <FormControlLabel value="Kuluttajat" control={<Radio />} label="Kuluttajat" />
+          <FormControlLabel value="Yritykset tai yrittäjät" control={<Radio />} label="Yritykset tai yrittäjät" />
+          <FormControlLabel value="Sisäiset sidosryhmät" control={<Radio />} label="Sisäiset sidosryhmät" />
+          <FormControlLabel value="other" control={<Radio />} label="Muu, mikä?" />
+          {question1 === 'other' && (
+            <TextField
+              id="question1-other"
+              label="Muu. Kerro tarkemmin."
+              value={question1Other}
+              required
+              error={q1OError}
+              onChange={({ target }) => setQuestion1Other(target.value)}
+              sx={{ marginLeft: '1rem' }}
+            />
+          )}
+        </RadioGroup>
+
+        {/* Question 2 */}
+        <Typography>Onko olemassa teknologiasia rajoitteita?</Typography>
         <RadioGroup
           aria-label="question2"
           name="question2"
@@ -139,17 +165,16 @@ const BasicInfoForm = forwardRef((props, ref) => {
           sx={{ marginBottom: '2rem' }}
           onChange={(event) => setQuestion2(event.target.value)}
         >
-          <FormControlLabel value="Kuluttajat" control={<Radio />} label="Kuluttajat" />
-          <FormControlLabel value="Yritykset tai yrittäjät" control={<Radio />} label="Yritykset tai yrittäjät" />
-          <FormControlLabel value="Sisäiset sidosryhmät" control={<Radio />} label="Sisäiset sidosryhmät" />
+          <FormControlLabel value="Tiettyjä ohjelmistoja ja teknologioita valittu, jotka voivat rajoittaa projektia." control={<Radio />} label="Tiettyjä ohjelmistoja ja teknologioita valittu, jotka voivat rajoittaa projektia." />
+          <FormControlLabel value="Ohjelmitoa ja teknologioita valittu, mutta joustoa on " control={<Radio />} label="Ohjelmitoa ja teknologioita valittu, mutta joustoa on " />
+          <FormControlLabel value="Ei rajoittavia tekijöitä" control={<Radio />} label="Ei rajoittavia tekijöitä" />
           <FormControlLabel value="other" control={<Radio />} label="Muu, mikä?" />
           {question2 === 'other' && (
             <TextField
-              id="question2-other"
+              id="question3-other"
               label="Muu. Kerro tarkemmin."
               value={question2Other}
-              required
-              error={q2OError}
+              required={q2OError}
               onChange={({ target }) => setQuestion2Other(target.value)}
               sx={{ marginLeft: '1rem' }}
             />
@@ -157,55 +182,30 @@ const BasicInfoForm = forwardRef((props, ref) => {
         </RadioGroup>
 
         {/* Question 3 */}
-        <Typography>Onko olemassa teknologiasia rajoitteita?</Typography>
+        <Typography>Tarvitsetko sivuillesi sisällönhallintatyökaluja?</Typography>
         <RadioGroup
           aria-label="question3"
           name="question3"
           value={question3}
-          sx={{ marginBottom: '2rem' }}
-          onChange={(event) => setQuestion3(event.target.value)}
-        >
-          <FormControlLabel value="Tiettyjä ohjelmistoja ja teknologioita valittu, jotka voivat rajoittaa projektia." control={<Radio />} label="Tiettyjä ohjelmistoja ja teknologioita valittu, jotka voivat rajoittaa projektia." />
-          <FormControlLabel value="Ohjelmitoa ja teknologioita valittu, mutta joustoa on " control={<Radio />} label="Ohjelmitoa ja teknologioita valittu, mutta joustoa on " />
-          <FormControlLabel value="Ei rajoittavia tekijöitä" control={<Radio />} label="Ei rajoittavia tekijöitä" />
-          <FormControlLabel value="other" control={<Radio />} label="Muu, mikä?" />
-          {question3 === 'other' && (
-            <TextField
-              id="question3-other"
-              label="Muu. Kerro tarkemmin."
-              value={question3Other}
-              required={q3OError}
-              onChange={({ target }) => setQuestion3Other(target.value)}
-              sx={{ marginLeft: '1rem' }}
-            />
-          )}
-        </RadioGroup>
-
-        {/* Question 4 */}
-        <Typography>Tarvitsetko sivuillesi sisällönhallintatyökaluja?</Typography>
-        <RadioGroup
-          aria-label="question4"
-          name="question4"
-          value={question4}
           required
           sx={{ marginBottom: '2rem' }}
-          onChange={(event) => setQuestion4(event.target.value)}
+          onChange={(event) => setQuestion3(event.target.value)}
         >
           <FormControlLabel value="Laaja CMS" control={<Radio />} label="Laaja CMS" />
           <FormControlLabel value="Suppea CMS" control={<Radio />} label="Suppea CMS" />
           <FormControlLabel value="Ei tarvetta" control={<Radio />} label="Ei tarvetta" />
         </RadioGroup>
 
-        {/* Question 5 */}
+        {/* Question 4 */}
         <TextField
-          id="question5"
+          id="functionality"
           label="Mitä toiminnallisuuksia sivuillasi tulee olla?"
           required
           multiline
           minRows={5}
-          error={q5Error}
-          value={question5}
-          onChange={({ target }) => setQuestion5(target.value)}
+          error={q4Error}
+          value={question4}
+          onChange={({ target }) => setQuestion4(target.value)}
           sx={{ marginBottom: '1rem' }}
         />
 

@@ -13,17 +13,17 @@ const FeedHeader = () => {
             fontSize: '1.5rem',
           },
         }}
-      >Avoimet tarjouskilpailut</Typography>
+      >Avoimet ilmoitukset</Typography>
 
       <Typography
         sx={{
-          fontSize: '1.7rem',
+          fontSize: '1.3rem',
           textAlign: 'center',
           '@media (max-width: 442px)': {
             fontSize: '1rem',
           },
         }}
-      >Seuraa meneillään olevia tarjouskilpailuja nettisivuista</Typography>
+      >Selaa avoimia ilmoituksia nettisivuista ja muista verkkopohjaisista ohjelmistoprojekteista</Typography>
       <Button
         component={Link}
         to="/lisaailmoitus"

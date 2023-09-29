@@ -89,10 +89,10 @@ const Navbar = ({ logout }) => {
             <ListItemText primary="Etusivu" />
           </ListItemButton>
           <ListItemButton component={Link} to="/yritykset" onClick={toggleDrawer}>
-            <ListItemText primary="Yritykset" />
+            <ListItemText primary="Kehittäjät" />
           </ListItemButton>
           <ListItemButton component={Link} to="/yrityksille" onClick={toggleDrawer}>
-            <ListItemText primary="Yrityksille" />
+            <ListItemText primary="Kehittäjille" />
           </ListItemButton>
           <ListItemButton component={Link} to="/blogit" onClick={toggleDrawer}>
             <ListItemText primary="Blogit" />

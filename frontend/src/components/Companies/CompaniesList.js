@@ -15,7 +15,7 @@ const CompaniesList = () => {
           },
         }}
       >
-        Yritykset
+        Kehittäjät
       </Typography>
 
       <Typography
@@ -29,7 +29,7 @@ const CompaniesList = () => {
           },
         }}
       >
-        Tutustu yrityksiin, jotka aktiivisesti osallistuvat tarjouskilpailuihin
+        Tutustu alustalla toimiviin kehittäjiin. Selaa yrityksiä, freelancereitä ja muita kehittäjiä.
       </Typography>
       <FeedItems />
     </Container>

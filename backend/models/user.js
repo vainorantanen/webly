@@ -27,6 +27,12 @@ const userSchema = mongoose.Schema({
     type: Boolean,
     required: true
   },
+  userType: {
+    type: String,
+    enum: ['regular', 'company', 'freelancer', 'otherDev'],
+    default: 'regular',
+    required: true
+  },
   feedPosts: [
     {
       type: mongoose.Schema.Types.ObjectId,

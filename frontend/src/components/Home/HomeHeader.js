@@ -16,12 +16,13 @@ const HomeHeader = () => {
         sx={{
           fontSize: '2.5rem',
           textAlign: 'center',
+          fontWeight: 'bold',
           '@media (max-width: 442px)': {
             fontSize: '1.5rem',
             marginBottom: '2rem'
           },
         }}
-      >Webly</Typography>
+      >Webly.fi</Typography>
 
       <Box sx={{
         display: 'flex',
@@ -42,6 +43,7 @@ const HomeHeader = () => {
         }}>
           <Typography
             sx={{
+              fontWeight: 'bold',
               fontSize: '1.7rem',
               textAlign: 'center',
               '@media (max-width: 442px)': {

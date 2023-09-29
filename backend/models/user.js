@@ -50,7 +50,29 @@ const userSchema = mongoose.Schema({
       type: mongoose.Schema.Types.ObjectId,
       ref: 'PortalPost'
     }
-  ]
+  ],
+  blogs: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Blog'
+    }
+  ],
+  ratings: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Rating'
+    }
+  ],
+  disabled: {
+    type: Boolean,
+    default: false
+  },
+  givenRatings: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Rating'
+    }
+  ],
 })
 
 userSchema.plugin(uniqueValidator)

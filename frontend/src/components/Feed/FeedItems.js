@@ -65,17 +65,17 @@ const FeedItems = () => {
         {/* Left Column - Filtering options */}
         <Box sx={{ flex: 1, maxWidth: '15rem' }}>
           <Typography sx={{ marginBottom: '1rem' }}>Suodata</Typography>
-          <Typography>Kuinka monta sivua haluat nettisivuillesi?</Typography>
+          <Typography>Kenelle nettisivusi on suunnattu?</Typography>
           <FormControl variant="outlined" fullWidth sx={{ marginBottom: '1rem', marginTop: '1rem' }}>
             <Select
               value={filter1}
               onChange={(e) => setFilter1(e.target.value)}
             >
               <MenuItem value="All">Kaikki</MenuItem>
-              <MenuItem value="Yksisivuinen (one-page) verkkosivu">Yksisivuinen (one-page) verkkosivu</MenuItem>
-              <MenuItem value="2-5 sivua">2-5 sivua</MenuItem>
-              <MenuItem value="6-10 sivua">6-10 sivua</MenuItem>
-              <MenuItem value="Yli 10 sivua">Yli 10 sivua</MenuItem>
+              <MenuItem value="Kuluttajat">Kuluttajat</MenuItem>
+              <MenuItem value="Yritykset tai yrittäjät">Yritykset tai yrittäjät</MenuItem>
+              <MenuItem value="Sisäiset sidosryhmät">Sisäiset sidosryhmät</MenuItem>
+              <MenuItem value="other">Muut</MenuItem>
             </Select>
           </FormControl>
 

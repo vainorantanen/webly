@@ -14,14 +14,15 @@ const Company = ({ dev }) => {
         backgroundColor: '#f0f0f0',
         textAlign: 'flex-start',
         textDecoration: 'none',
+        color: 'black',
         padding: '2rem',
         boxShadow: '0.3rem 0.3rem 0.3rem rgba(0, 0, 0, 0.2)',
         width: '70vw',
         borderRadius: '1rem',
         marginBottom: '1rem',
-        transition: '0.4s',
+        transition: '0.3s',
         '&:hover': {
-          transform: 'scale(1.05)',
+          transform: 'scale(1.01)',
           boxShadow: '0.3rem 0.3rem 0.5rem rgba(0, 0, 0, 0.3)',
         },
       }}
@@ -29,22 +30,17 @@ const Company = ({ dev }) => {
       <Typography
         variant="h4"
         sx={{
-          color: '#2c3e50',
-          textDecoration: 'none',
           marginBottom: '0.5rem',
-          '&:hover': {
-            textDecoration: 'underline',
-          },
         }}
       >
         {dev.name}
       </Typography>
       <Typography sx={{
-        color: '#666',
         overflow: 'hidden',
         textOverflow: 'ellipsis',
+        whiteSpace: 'break-spaces',
         display: '-webkit-box',
-        WebkitLineClamp: 2, // Show only one line of description
+        WebkitLineClamp: 5,
         WebkitBoxOrient: 'vertical',
         lineHeight: '1.4', // Increase line height for better readability
       }}>{dev.description}</Typography>

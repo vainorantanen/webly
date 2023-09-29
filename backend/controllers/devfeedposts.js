@@ -11,9 +11,15 @@ router.get('/', async (request, response) => {
 })
 
 router.post('/', userExtractor, async (request, response) => {
-  const { description } = request.body
+  const { description, title, price, postType, time, location } = request.body
   const devfeedPost = new DevFeedPost({
     description,
+    timeStamp: new Date(),
+    title,
+    price,
+    postType,
+    time,
+    location
   })
 
   const user = request.user

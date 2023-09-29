@@ -5,10 +5,29 @@ const schema = mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User'
   },
+  title: {
+    type: String,
+    required: true
+  },
   description : {
     type: String,
     required: true
   },
+  timeStamp: {
+    type: Date,
+    required: true
+  },
+  postType: {
+    type: String,
+    enum: ['normal', 'event', 'course'],
+    required: true,
+  },
+  price: {
+    type: String,
+    required: true
+  },
+  time: String,
+  location: String
 })
 
 schema.set('toJSON', {

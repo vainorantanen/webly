@@ -24,13 +24,11 @@ const CompanyInfoPage = () => {
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'center',
-        alignItems: 'center',
         marginTop: '5rem',
         minHeight: '70vh',
-        backgroundColor: '#fff', // White background
-        padding: '2rem',
+        backgroundColor: '#f0f0f0',
         boxShadow: '0.3rem 0.3rem 0.5rem rgba(0, 0, 0, 0.2)',
-        borderRadius: '1rem',
+        borderRadius: '0.5rem',
       }}
     >
       <Typography
@@ -47,7 +45,7 @@ const CompanyInfoPage = () => {
       </Typography>
       <Box>
         <Typography variant="h5" sx={{ marginBottom: '2rem', fontWeight: 'bold' }}>
-          Tietoa yrityksestä
+          Tietoa kehittäjästä
         </Typography>
         <Typography style={{ whiteSpace: 'break-spaces' }}>{dev.description}</Typography>
       </Box>
@@ -65,7 +63,7 @@ const CompanyInfoPage = () => {
           Kotisivut: {dev.url || 'Ei saatavilla'}
         </Typography>
       </Box>
-      <Box sx={{ marginTop: '2rem', borderTop: '1px solid white' }}>
+      <Box sx={{ marginTop: '2rem', borderTop: '1px solid black' }}>
             <Typography sx={{ fontSize: '1.3rem' }}>Arvostelut</Typography>
             {user && user.id !== dev.id ? (
               <Typography>Oletko tehnyt yhteistyötä tämän kehittäjän kanssa?<Button component={Link} to={`/anna-arvostelu/${dev.id}`}>Anna arvostelu</Button></Typography>

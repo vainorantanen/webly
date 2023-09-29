@@ -8,10 +8,9 @@ const FeedPostCard = ({ post }) => {
   return (
     <Box
       sx={{
-        backgroundColor: 'white',
         padding: '2rem',
-        border: '1px solid black',
-        borderRadius: '1rem',
+        backgroundColor: '#f0f0f0',
+        borderRadius: '0.5rem',
         marginLeft: '5rem',
         marginRight: '5rem',
         display: 'flex',

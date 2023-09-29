@@ -46,7 +46,7 @@ const FeedBidCard = ({ bid }) => {
   }
 
   return (
-    <Box sx={{ backgroundColor: 'white', borderRadius: '1rem', padding: '1rem', marginBottom: '1rem' }}>
+    <Box sx={{ backgroundColor: '#f0f0f0', borderRadius: '0.5rem', padding: '1rem', marginBottom: '1rem' }}>
       {bid.isApproved ? (
         <Box>
           <Typography>Hyväksytty ilmoittajan toimesta</Typography>

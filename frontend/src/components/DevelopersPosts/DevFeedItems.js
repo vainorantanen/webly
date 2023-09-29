@@ -12,7 +12,7 @@ import { useSelector } from 'react-redux'
 
 const DevFeedItems = () => {
 
-  const devFeedPosts = useSelector(({devPosts}) => devPosts)
+  const devFeedPosts = useSelector(({devsPosts}) => devsPosts)
 
   if (!devFeedPosts || devFeedPosts.length === 0) {
     return (

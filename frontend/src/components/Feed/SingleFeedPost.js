@@ -56,12 +56,11 @@ const SingleFeedPost = () => {
     <Container  sx={{ marginTop: '7rem', minHeight: '100vh' }}>
       <Box
         sx={{
-          backgroundColor: 'white',
-          padding: '2rem',
-          border: '1px solid black',
-          borderRadius: '1rem',
-          marginLeft: '8rem',
-          marginRight: '8rem',
+          padding: '0.5rem',
+          backgroundColor: '#f0f0f0',
+          borderRadius: '0.5rem',
+          marginLeft: '5rem',
+          marginRight: '5rem',
           display: 'flex',
           flexDirection: 'column',
           '@media (max-width: 820px)': {
@@ -104,7 +103,7 @@ const SingleFeedPost = () => {
     marginBottom: '1rem', borderBottom: '1px solid black' }}>Tarjoukset</Typography>
       <Box>
         {post.feedBids.map(offer => (
-          <Box key={offer.id} sx={{ color: 'black', backgroundColor: 'white', borderRadius: '0.5rem', padding: '1rem', marginBottom: '1rem' }}>
+          <Box key={offer.id} sx={{ backgroundColor: '#f0f0f0', borderRadius: '0.5rem', padding: '1rem', marginBottom: '1rem' }}>
             {offer.isApproved && (
               <Typography>Tarjous hyväksytty <CheckCircleIcon/></Typography>
             )}

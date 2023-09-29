@@ -166,7 +166,7 @@ const BasicInfoForm = forwardRef((props, ref) => {
           onChange={(event) => setQuestion2(event.target.value)}
         >
           <FormControlLabel value="Tiettyjä ohjelmistoja ja teknologioita valittu, jotka voivat rajoittaa projektia." control={<Radio />} label="Tiettyjä ohjelmistoja ja teknologioita valittu, jotka voivat rajoittaa projektia." />
-          <FormControlLabel value="Ohjelmitoa ja teknologioita valittu, mutta joustoa on " control={<Radio />} label="Ohjelmitoa ja teknologioita valittu, mutta joustoa on " />
+          <FormControlLabel value="Ohjelmistoa ja teknologioita valittu, mutta joustoa on " control={<Radio />} label="Ohjelmistoa ja teknologioita valittu, mutta joustoa on " />
           <FormControlLabel value="Ei rajoittavia tekijöitä" control={<Radio />} label="Ei rajoittavia tekijöitä" />
           <FormControlLabel value="other" control={<Radio />} label="Muu, mikä?" />
           {question2 === 'other' && (

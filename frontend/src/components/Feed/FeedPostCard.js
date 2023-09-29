@@ -1,6 +1,7 @@
 import React from 'react'
 import { Typography, Box, Button } from '@mui/material'
 import { Link } from 'react-router-dom'
+import EuroIcon from '@mui/icons-material/Euro';
 
 const FeedPostCard = ({ post }) => {
 
@@ -45,11 +46,15 @@ const FeedPostCard = ({ post }) => {
 
       {/* Displaying answers */}
       <Box sx={{ marginTop: '1rem', marginBottom: '1rem' }}>
-        <Typography>Sivujen määrä: {post.question1}</Typography>
-        <Typography>Pääasiallinen tarkoitus: {post.question2}</Typography>
-        <Typography>Ominaisuudet: {post.question3}</Typography>
+        <Typography>Ilmoitus sulkeutuu: {post.dueDate}</Typography>
+        <Typography><EuroIcon />{post.minPrice} - {post.maxPrice}</Typography>
+        <Typography>Tarkoitus:</Typography>
+        <Typography style={{ whiteSpace: 'break-spaces' }}>{post.description}</Typography>
+        <Typography>Sivut on suunnattu: {post.question1}</Typography>
+        <Typography>Teknologiset rajoitteet: {post.question2}</Typography>
+        <Typography>Sisällönhallintatyökalut: {post.question3}</Typography>
+        <Typography>Toiminnallisuudet: {post.question4}</Typography>
       </Box>
-      <Typography style={{ whiteSpace: 'break-spaces' }}>{post.description}</Typography>
       <Button
         component={Link}
         to={`/tarjouskilpailut/${post.id}`}

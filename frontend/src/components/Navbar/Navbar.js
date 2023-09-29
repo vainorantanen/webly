@@ -60,33 +60,17 @@ const Navbar = ({ logout }) => {
             <StyledButton color="inherit" component={Link} to="/">
               Etusivu
             </StyledButton>
-            <StyledButton color="inherit" component={Link} to="/yritykset">
-              Yritykset
-            </StyledButton>
-            <StyledButton color="inherit" component={Link} to="/yrityksille">
-              Yrityksille
-            </StyledButton>
             <StyledButton color="inherit" component={Link} to="/kehittajienilmoitukset">
               Kehittäjien ilmoitukset
             </StyledButton>
             <StyledButton color="inherit" component={Link} to="/tarjouskilpailut">
-              Avoimet tarjouskilpailut
+              Avoimet ilmoitukset
             </StyledButton>
-            {user && user.isCompany === false ? (
+            {user ? (
               <StyledButton color="inherit" component={Link} to="/lisaailmoitus">
                 Lisää ilmoitus
               </StyledButton>
             ) : null}
-            {user && (
-              <StyledButton color="inherit" component={Link} to="/profiili">
-                Profiili
-              </StyledButton>
-            )}
-            <Typography className='logged-user' sx={{ marginLeft: '1rem', fontWeight: 'bold' }}>
-              {user && (
-                <>{user.name} Kirjautuneena sisään</>
-              )}
-            </Typography>
             {user ? (
               <StyledButton onClick={logout} >
                 Kirjaudu ulos
@@ -99,6 +83,9 @@ const Navbar = ({ logout }) => {
       </AppBar>
       <Drawer anchor="left" open={isDrawerOpen} onClose={toggleDrawer}>
         <List>
+        {user && (
+            <ListItemText sx={{ marginLeft: '8px' }}>{user.name} kirjautunut</ListItemText>
+          )}
           <ListItemButton component={Link} to="/" onClick={toggleDrawer}>
             <ListItemText primary="Etusivu" />
           </ListItemButton>
@@ -112,7 +99,7 @@ const Navbar = ({ logout }) => {
             <ListItemText primary="Kehittäjien ilmoitukset" />
           </ListItemButton>
           <ListItemButton component={Link} to="/tarjouskilpailut" onClick={toggleDrawer}>
-            <ListItemText primary="Avoimet tarjouskilpailut" />
+            <ListItemText primary="Avoimet ilmoitukset" />
           </ListItemButton>
           {user && user.isCompany === false ? (
             <ListItemButton component={Link} to="/lisaailmoitus" onClick={toggleDrawer}>

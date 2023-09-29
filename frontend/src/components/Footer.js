@@ -9,43 +9,33 @@ const Footer = () => {
     <footer>
       <Box sx={{
         textAlign: 'center',
-        padding: '20px',
-        fontFamily: 'Arial, sans-serif',
+        padding: '1rem',
         lineHeight: '3rem',
-        color: 'white',
-        borderRadius: '1rem',
+        color: 'black',
+        marginTop: '1.5rem',
+        borderTop: '1px solid gray'
       }}>
-        <Typography variant="body1" sx={{
-          fontSize: '24px',
-          fontWeight: 'bold',
-          color: '#ffffff',
-        }}>
-          Webly
-        </Typography>
 
         <Typography variant="body1" className="copyright">
-          &copy; {new Date().getFullYear()} Your Company Name. All rights reserved.
+          Webly.fi
         </Typography>
 
         <Typography variant="body1" className="address" sx={{
-          fontSize: '16px',
-          color: '#ffffff',
+          fontSize: '1rem',
         }}>
-          123 Main Street, City, State, Country
+          Tampere
         </Typography>
 
         <Typography variant="body1" className="contact" sx={{
-          fontSize: '16px',
-          color: '#ffffff',
+          fontSize: '1rem',
         }}>
-          +1 123-456-7890
+          +358 505517322
         </Typography>
 
         <Typography variant="body1" className="contact" sx={{
-          fontSize: '16px',
-          color: '#ffffff',
+          fontSize: '1rem',
         }}>
-          info@example.com
+          webline@webline.fi
         </Typography>
 
         <Box sx={{
@@ -54,8 +44,8 @@ const Footer = () => {
           <a href="https://www.instagram.com" target="_blank" rel="noopener noreferrer">
             <InstagramIcon sx={{
               marginRight: '10px',
-              fontSize: '20px',
-              color: 'white',
+              fontSize: '2rem',
+              color: 'black',
               transition: 'color 0.3s ease',
               '&:hover': {
                 color: 'rgb(87, 86, 86)',
@@ -65,8 +55,8 @@ const Footer = () => {
           <a href="https://www.facebook.com" target="_blank" rel="noopener noreferrer">
             <FacebookIcon sx={{
               marginRight: '10px',
-              fontSize: '20px',
-              color: 'white',
+              fontSize: '2rem',
+              color: 'black',
               transition: 'color 0.3s ease',
               '&:hover': {
                 color: 'rgb(87, 86, 86)',
@@ -76,8 +66,8 @@ const Footer = () => {
           <a href="https://www.linkedin.com" target="_blank" rel="noopener noreferrer">
             <LinkedInIcon sx={{
               marginRight: '10px',
-              fontSize: '20px',
-              color: 'white',
+              fontSize: '2rem',
+              color: 'black',
               transition: 'color 0.3s ease',
               '&:hover': {
                 color: 'rgb(87, 86, 86)',
@@ -85,14 +75,8 @@ const Footer = () => {
             }} />
           </a>
         </Box>
-
-        <Typography variant="body1" className="poweredBy" sx={{
-          marginTop: '20px',
-          fontSize: '14px',
-          color: 'rgb(255, 255, 255)',
-          fontStyle: 'italic',
-        }}>
-          Powered by Webline Software
+        <Typography variant="body1" className="copyright" style={{ fontStyle: 'italic' }}>
+          Powered by Webline Software Oy
         </Typography>
       </Box>
     </footer>

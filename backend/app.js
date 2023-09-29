@@ -12,6 +12,7 @@ const feedPostsRouter = require('./controllers/feedposts')
 const feedBidsRouter = require('./controllers/feedbids')
 const devfeedPostsRouter = require('./controllers/devfeedposts')
 const portalPostRouter = require('./controllers/portalposts')
+const blogsRouter = require('./controllers/blogs')
 
 if (process.env.NODE_ENV === 'test') {
   const testingRouter = require('./controllers/testing')
@@ -43,6 +44,7 @@ app.use('/api/feedposts', feedPostsRouter)
 app.use('/api/feedbids', feedBidsRouter)
 app.use('/api/devfeedposts', devfeedPostsRouter)
 app.use('/api/portalposts', portalPostRouter)
+app.use('/api/blogs', blogsRouter)
 
 app.use(middleware.unknownEndpoint)
 app.use(middleware.errorHandler)

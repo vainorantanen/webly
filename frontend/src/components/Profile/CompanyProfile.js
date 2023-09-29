@@ -1,10 +1,11 @@
 import React from 'react'
-import { Container, Typography, Box } from '@mui/material'
-import FeedBidCard from '../Feed/FeedBidCard'
+import { Container, Typography, Box, Button } from '@mui/material'
+import CheckCircleIcon from '@mui/icons-material/CheckCircle'
 import { useSelector, useDispatch } from 'react-redux'
 import { useNotification } from '../../hooks'
 import ModifyBasicInfo from './ModifyBasicInfo'
 import ModifyDescriptionForm from './ModifyDescriptionForm'
+import { Link } from 'react-router-dom'
 
 
 const CompanyProfile = () => {
@@ -21,15 +22,28 @@ const CompanyProfile = () => {
   }
 
   return (
-    <Container sx={{ marginTop: '7rem', minHeight: '100vh', backgroundColor: 'white', borderRadius: '1rem', marginBottom: '1rem' }}>
+    <Container sx={{ marginTop: '7rem', minHeight: '50vh', backgroundColor: 'white', borderRadius: '1rem', marginBottom: '1rem' }}>
       <Typography>Toimijan {user.name} Profiili</Typography>
       <ModifyBasicInfo />
       <ModifyDescriptionForm />
+      <Button component={Link}
+      to='/lisaa-blogi'
+      >Lisää blogi</Button>
       <Typography>Seuraa tekemiesi tarjousten tilannetta</Typography>
-      {userFeedBids.length > 0 ? (userFeedBids.map(m => (
-        <Box key={m.id} sx={{ border: '1px solid black', borderRadius: '1rem', marginTop: '1rem' }}>
-          <FeedBidCard bid={m}/>
-        </Box>
+      {userFeedBids.length > 0 ? (userFeedBids.map(bid => (
+        <Box key={bid.id} sx={{ backgroundColor: 'white', borderRadius: '1rem', padding: '1rem', marginBottom: '1rem' }}>
+        {bid.isApproved ? (
+          <Box>
+            <Typography>Hyväksytty ilmoittajan toimesta</Typography>
+            <CheckCircleIcon />
+          </Box>
+        ) : (
+          <Typography>Avoinna oleva tarjous</Typography>
+        )}
+        <Typography>Hinta: {bid.price} euroa</Typography>
+        <Typography>Tarjous jätetty: {bid.timeStamp.split('T')[0]}</Typography>
+        <Typography>{bid.description}</Typography>
+      </Box>
       ))): (
         <Typography>Ei vielä tarjouksia</Typography>
       )}

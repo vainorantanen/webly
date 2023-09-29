@@ -8,6 +8,8 @@ import CheckCircleIcon from '@mui/icons-material/CheckCircle'
 import { useNotification } from '../../hooks'
 import { useDispatch } from 'react-redux'
 import { modifyBidApprovedState, removBidFromFeedPost } from '../../reducers/feedPosts'
+import EuroIcon from '@mui/icons-material/Euro';
+
 
 const SingleFeedPost = () => {
 
@@ -82,14 +84,24 @@ const SingleFeedPost = () => {
             ) : <Typography>Julkaistu yli vuosi sitten</Typography>}
           </div>
         </Box>
+        <Typography>Ilmoitus sulkeutuu: {post.dueDate}</Typography>
+        <Typography><EuroIcon />{post.minPrice} - {post.maxPrice}</Typography>
+        <Typography>Tarkoitus:</Typography>
         <Typography style={{ whiteSpace: 'break-spaces' }}>{post.description}</Typography>
+        <Typography>Sivut on suunnattu: {post.question1}</Typography>
+        <Typography>Teknologiset rajoitteet: {post.question2}</Typography>
+        <Typography>Sisällönhallintatyökalut: {post.question3}</Typography>
+        <Typography>Toiminnallisuudet: {post.question4}</Typography>
+        <Typography>Muut toiveet:</Typography>
+        <Typography>{post.other}</Typography>
       </Box>
       {user && user.isCompany === true && (
         <Togglable buttonLabel='Tee tarjous'>
           <MakeBidForm post={post}/>
         </Togglable>
       )}
-      <Typography>Tarjoukset</Typography>
+      <Typography sx={{ fontSize: '1.5rem', marginTop: '1rem',
+    marginBottom: '1rem', borderBottom: '1px solid black' }}>Tarjoukset</Typography>
       <Box>
         {post.feedBids.map(offer => (
           <Box key={offer.id} sx={{ color: 'black', backgroundColor: 'white', borderRadius: '0.5rem', padding: '1rem', marginBottom: '1rem' }}>

@@ -42,10 +42,10 @@ const AddFeedPostForm = () => {
         console.log('addPortalpost')
       }
 
-      notify('Postaus lisätty onnistuneesti', 'success')
+      notify('Ilmoitus lisätty onnistuneesti', 'success')
       dispatch(resetFormData())
     } catch (error) {
-      notify('Ilmeni jokin ongelma postauksen teossa, yritä myöhemmin uudelleen', 'error')
+      notify('Ilmeni jokin ongelma ilmoituksen lisäyksessä, yritä myöhemmin uudelleen', 'error')
     } 
   }
 
@@ -120,7 +120,7 @@ const AddFeedPostForm = () => {
         flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'center',
-        minHeight: '50vh',
+        minHeight: '80vh',
         backgroundColor: 'white',
         borderRadius: '1rem',
       }}
@@ -152,8 +152,8 @@ const AddFeedPostForm = () => {
         </Stepper>
         {activeStep === steps.length ? (
           <Fragment>
-            <Typography sx={{ mt: 2, mb: 1 }}>
-              All steps completed - you&apos;re finished
+            <Typography sx={{ mt: 2, mb: 1, fontSize: '1.5rem', textAlign: 'center' }}>
+              Valmista tuli - Ilmoitus lisätty onnistuneesti!
             </Typography>
             <Box sx={{ display: 'flex', flexDirection: 'row', pt: 2 }}>
               <Box sx={{ flex: '1 1 auto' }} />

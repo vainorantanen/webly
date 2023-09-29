@@ -34,10 +34,11 @@ import ModifyDevPost from './components/Profile/ModifyDevPost'
 import ModifyPortalPost from './components/Profile/ModifyPortalPost'
 import Portal from './components/Portal/Portal'
 import SinglePostPortalView from './components/Portal/SinglePostPortalView'
+import AddBlogForm from './components/Blogs/AddBlogForm'
 
 const theme = createTheme({
   typography: {
-    fontFamily: 'Montserrat'
+    fontFamily: 'Lato'
   },
 })
 
@@ -82,6 +83,7 @@ const App = () => {
           <Route path='/tarjouskilpailut/:id' element={<SingleFeedPost />} />
           <Route path='/yrityksille' element={ <ForCompaniesMain /> } />
           <Route path='/kehittajienilmoitukset' element={<DevPostFeed />} />
+          <Route path='/lisaa-blogi' element={<AddBlogForm />} />
         </Routes>
         <Footer />
       </Box>

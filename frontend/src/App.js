@@ -35,6 +35,8 @@ import ModifyPortalPost from './components/Profile/ModifyPortalPost'
 import Portal from './components/Portal/Portal'
 import SinglePostPortalView from './components/Portal/SinglePostPortalView'
 import AddBlogForm from './components/Blogs/AddBlogForm'
+import AddRatingForm from './components/RatingForm/AddRatingForm'
+import AllBlogsList from './components/Blogs/AllBlogsList'
 
 const theme = createTheme({
   typography: {
@@ -84,6 +86,8 @@ const App = () => {
           <Route path='/yrityksille' element={ <ForCompaniesMain /> } />
           <Route path='/kehittajienilmoitukset' element={<DevPostFeed />} />
           <Route path='/lisaa-blogi' element={<AddBlogForm />} />
+          <Route path='/anna-arvostelu/:id' element={<AddRatingForm />} />
+          <Route path='/blogit' element={<AllBlogsList />} />
         </Routes>
         <Footer />
       </Box>

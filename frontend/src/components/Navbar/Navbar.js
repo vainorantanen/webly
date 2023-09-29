@@ -11,7 +11,6 @@ import {
   ListItemText,
   ListItemButton,
   styled,
-  Typography
 } from '@mui/material'
 import { Menu as MenuIcon } from '@mui/icons-material'
 import './navbar.css'
@@ -94,6 +93,9 @@ const Navbar = ({ logout }) => {
           </ListItemButton>
           <ListItemButton component={Link} to="/yrityksille" onClick={toggleDrawer}>
             <ListItemText primary="Yrityksille" />
+          </ListItemButton>
+          <ListItemButton component={Link} to="/blogit" onClick={toggleDrawer}>
+            <ListItemText primary="Blogit" />
           </ListItemButton>
           <ListItemButton component={Link} to="/kehittajienilmoitukset" onClick={toggleDrawer}>
             <ListItemText primary="Kehittäjien ilmoitukset" />

@@ -7,6 +7,8 @@ import notificationReducer from './reducers/notification'
 import portalPostsReducer from './reducers/portalPosts'
 import userReducer from './reducers/user'
 import usersReducer from './reducers/users'
+import blogsReducer from './reducers/blogs'
+import ratingsReducer from './reducers/ratings'
 
 const store = configureStore({
   reducer: {
@@ -17,7 +19,9 @@ const store = configureStore({
     feedPosts: feedPostsReducer,
     feedBids: feedBidsReducer,
     portalPosts: portalPostsReducer,
-    formData: formDataReducer
+    formData: formDataReducer,
+    blogs: blogsReducer,
+    ratings: ratingsReducer
   }
 })
 

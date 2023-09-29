@@ -1,14 +1,21 @@
-import { Container, Typography, Box } from '@mui/material'
+import { Container, Typography, Box, Button, Rating } from '@mui/material'
 import React from 'react'
-import { useParams } from 'react-router-dom'
+import { Link, useParams } from 'react-router-dom'
 import {  useSelector } from 'react-redux'
 
 const CompanyInfoPage = () => {
   const id = useParams().id
-  const company = useSelector(({ users }) => users.find(p => p.id === id))
 
-  if (!company) {
-    return null
+  const user = useSelector(({user}) => user)
+  const dev = useSelector(({ users }) => users.find(p => p.id === id))
+  const devRatings = useSelector(({ratings}) => ratings).filter(r => r.targetUser.id === dev.id)
+
+  if (!dev) {
+    return (
+      <Container sx={{ minHeight: '90vh', marginTop: '5rem', backgroundColor: '#393939', borderRadius: '0.5rem' }}>
+        <Typography>Ladataan...</Typography>
+      </Container>
+    )
   }
 
   return (
@@ -18,8 +25,8 @@ const CompanyInfoPage = () => {
         flexDirection: 'column',
         justifyContent: 'center',
         alignItems: 'center',
-        marginTop: '1rem',
-        minHeight: '100vh',
+        marginTop: '5rem',
+        minHeight: '70vh',
         backgroundColor: '#fff', // White background
         padding: '2rem',
         boxShadow: '0.3rem 0.3rem 0.5rem rgba(0, 0, 0, 0.2)',
@@ -36,29 +43,63 @@ const CompanyInfoPage = () => {
           },
         }}
       >
-        {company.name}
+        {dev.name}
       </Typography>
       <Box>
         <Typography variant="h5" sx={{ marginBottom: '2rem', fontWeight: 'bold' }}>
           Tietoa yrityksestä
         </Typography>
-        <Typography style={{ whiteSpace: 'break-spaces' }}>{company.description}</Typography>
+        <Typography style={{ whiteSpace: 'break-spaces' }}>{dev.description}</Typography>
       </Box>
       <Box sx={{ marginTop: '2rem' }}>
         <Typography variant="h5" sx={{ marginBottom: '1rem', fontWeight: 'bold' }}>
           Yhteystiedot
         </Typography>
         <Typography>
-          Sähköposti: {company.email || 'Ei saatavilla'}
+          Sähköposti: {dev.email || 'Ei saatavilla'}
           <br />
-          Puhelin: {company.phone || 'Ei saatavilla'}
+          Puhelin: {dev.phone || 'Ei saatavilla'}
           <br />
-          Osoite: {company.address || 'Ei saatavilla'}
+          Osoite: {dev.address || 'Ei saatavilla'}
           <br />
-          Kotisivut: {company.url || 'Ei saatavilla'}
+          Kotisivut: {dev.url || 'Ei saatavilla'}
         </Typography>
       </Box>
-      {/* Add more information as needed */}
+      <Box sx={{ marginTop: '2rem', borderTop: '1px solid white' }}>
+            <Typography sx={{ fontSize: '1.3rem' }}>Arvostelut</Typography>
+            {user && user.id !== dev.id ? (
+              <Typography>Oletko tehnyt yhteistyötä tämän kehittäjän kanssa?<Button component={Link} to={`/anna-arvostelu/${dev.id}`}>Anna arvostelu</Button></Typography>
+            ): null}
+            {
+            devRatings.length > 0 ? (
+              // Calculate the average of devratings scores
+              (() => {
+                const totalScore = devRatings.reduce((acc, rating) => acc + rating.score, 0);
+                const ratingAverage = totalScore / devRatings.length;
+
+                return (
+                  <Box>
+                    <Typography>Kokonaisarvoasana</Typography>
+                    <Rating value={ratingAverage} readOnly precision={0.5} max={5} />
+                  </Box>
+                );
+              })()
+            ) : null
+          }
+            {devRatings.length > 0 ? (
+              devRatings.map(rating => (
+                <Box key={rating.id} sx={{ margin: '1rem', borderRadius: '0.5rem', padding: '1rem', 
+                backgroundColor: 'white', color: 'black' }}>
+                  <Rating value={rating.score} readOnly precision={1} max={5} />
+                  <Typography sx={{ fontSize: '0.8rem' }}>{rating.user.name}</Typography>
+                  <Typography sx={{ fontSize: '0.8rem' }}>{rating.timeStamp.split('T')[0]}</Typography>
+                  <Typography>{rating.description}</Typography>
+                  </Box>
+              ))
+            ): (
+              <Typography>Ei vielä arvosteluja</Typography>
+            )}
+          </Box>
     </Container>
   )
 }

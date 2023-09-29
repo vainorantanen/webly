@@ -95,7 +95,7 @@ const SingleFeedPost = () => {
         <Typography>Muut toiveet:</Typography>
         <Typography>{post.other}</Typography>
       </Box>
-      {user && user.isCompany === true && (
+      {user && user.userType !== 'regular' && (
         <Togglable buttonLabel='Tee tarjous'>
           <MakeBidForm post={post}/>
         </Togglable>

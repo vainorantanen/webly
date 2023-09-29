@@ -94,7 +94,7 @@ const AddFeedPostForm = () => {
   }
   
   
-  if (!user || user.isCompany) {
+  if (!user || user.userType !== 'regular') {
     return (
       <Container sx={{ marginTop: '8rem', minHeight: '100vh' }}>
         <Typography

@@ -28,14 +28,14 @@ const theme = createTheme({
 const StyledButton = styled(Button)({
   marginLeft: '1rem',
   padding: '0.1rem 1rem 0.1rem 1rem',
-  borderRadius: '1rem',
+  borderRadius: '0.5rem',
   border: 0,
   color: 'black',
   fontWeight: 'bold',
   boxShadow: 'none',
   transition: 'transform 0.3s',
   '&:hover': {
-    transform: 'scale(1.05)',
+    transform: 'scale(1.02)',
     backgroundImage: 'linear-gradient(to bottom, #C4C4C4, #BCBCBC)' }
 })
 
@@ -97,17 +97,15 @@ const Navbar = ({ logout }) => {
           <ListItemButton component={Link} to="/blogit" onClick={toggleDrawer}>
             <ListItemText primary="Blogit" />
           </ListItemButton>
+          <ListItemButton component={Link} to="/lisaailmoitus" onClick={toggleDrawer}>
+            <ListItemText primary="Lisää ilmoitus" />
+          </ListItemButton>
           <ListItemButton component={Link} to="/kehittajienilmoitukset" onClick={toggleDrawer}>
             <ListItemText primary="Kehittäjien ilmoitukset" />
           </ListItemButton>
           <ListItemButton component={Link} to="/tarjouskilpailut" onClick={toggleDrawer}>
             <ListItemText primary="Avoimet ilmoitukset" />
           </ListItemButton>
-          {user && user.isCompany === false ? (
-            <ListItemButton component={Link} to="/lisaailmoitus" onClick={toggleDrawer}>
-              <ListItemText primary="Lisää ilmoitus" />
-            </ListItemButton>
-          ) : null}
           {user && (
             <ListItemButton component={Link} to="/profiili" onClick={toggleDrawer}>
               <ListItemText primary="Profiili" />

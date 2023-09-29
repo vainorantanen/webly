@@ -11,18 +11,15 @@ router.get('/', async (request, response) => {
 })
 
 router.post('/', userExtractor, async (request, response) => {
-  //console.log("RBODY", request.body)
   const { description } = request.body
-  //console.log("aINFO", additionalinfo)
   const devfeedPost = new DevFeedPost({
     description,
   })
 
   const user = request.user
 
-  console.log('user devfeedpostisa: ', user)
-
-  if (!user || user.isCompany === false) {
+  // vain kehittäjät voi lisätä devposteja eli regularit ei voi
+  if (!user || user.userType === 'regular') {
     return response.status(401).json({ error: 'operation not permitted' })
   }
 

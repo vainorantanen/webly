@@ -13,9 +13,7 @@ router.get('/', async (request, response) => {
 })
 
 router.post('/', userExtractor, async (request, response) => {
-  //console.log("RBODY", request.body)
   const { description, other, question1, question1Other, question2, question2Other, question3, question4, date, minPrice, maxPrice } = request.body
-  //console.log("aINFO", additionalinfo)
   console.log('request.body', request.body)
   const feedPost = new FeedPost({
     description,
@@ -49,7 +47,8 @@ router.post('/', userExtractor, async (request, response) => {
 
   const user = request.user
 
-  if (!user || user.isCompany === true) {
+  // kehittäjät ei voi lisätä näitä avoimia ilmoituksia, devpostit on erikseen
+  if (!user || !(user.userType === 'regular')) {
     return response.status(401).json({ error: 'operation not permitted' })
   }
 
@@ -90,7 +89,8 @@ router.post('/:id/feedbids', userExtractor, async (request, response) => {
 
   const user = request.user
 
-  if (!user || user.isCompany === false) {
+  // vain kehittäjät voi tarjota
+  if (!user || user.userType === 'regular') {
     return response.status(401).json({ error: 'operation not permitted' })
   }
 

@@ -16,7 +16,7 @@ const Profile = () => {
   )
   }
 
-  if (user.isCompany === true) {
+  if (user.userType !== 'regular') {
     return (
       <Container>
         <CompanyProfile />

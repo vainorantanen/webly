@@ -29,7 +29,7 @@ const Portal = () => {
             Portaali
         </Typography>
 
-        {user && user.isCompany ? (
+        {user && user.userType !== 'regular' ? (
           <DevPortal />
         ) : (
           <BuyerPortal />

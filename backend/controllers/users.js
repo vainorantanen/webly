@@ -4,7 +4,7 @@ const User = require('../models/user')
 const { userExtractor } = require('../utils/middleware')
 
 router.post('/', async (request, response) => {
-  const { username, name, password, description, isCompany, email } = request.body
+  const { username, name, password, description, userType, email } = request.body
 
   if ( !password || password.length < 3) {
     return response.status(400).json({
@@ -21,7 +21,7 @@ router.post('/', async (request, response) => {
     email,
     passwordHash,
     description,
-    isCompany
+    userType
   })
 
   const savedUser = await user.save()

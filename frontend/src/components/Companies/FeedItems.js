@@ -16,7 +16,7 @@ const FeedItems = () => {
     setCurrentPage(1)
   }, [])
 
-  const devs = useSelector(({users}) => users).filter(d => d.isCompany === true)
+  const devs = useSelector(({users}) => users).filter(d => d.userType !== 'regular')
 
   if (!devs || devs.length === 0) {
     return (

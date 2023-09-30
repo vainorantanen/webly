@@ -6,10 +6,17 @@ import { TextField, Button, Typography, Box,
   DialogTitle,
   DialogContent,
   DialogActions,
-
+  Radio,
+  RadioGroup,
+  FormControl,
+  FormLabel,
+  InputAdornment
 } from '@mui/material'
-import usersService from '../services/users'
 import { useNotification } from '../hooks'
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import CancelIcon from '@mui/icons-material/Cancel';
+import { useDispatch } from 'react-redux';
+import { addUser } from '../reducers/users';
 
 const RegisterPage = () => {
   const [username, setUsername] = useState('')
@@ -18,13 +25,14 @@ const RegisterPage = () => {
   const [ description, setDescription ] = useState('')
   const [isTermsAccepted, setIsTermsAccepted] = useState(false)
   const [openTermsDialog, setOpenTermsDialog] = useState(false)
-  const [ isCompany, setIsCompany ] = useState(false)
+  const [ userType, setUserType ] = useState('regular')
   const [confirmPassword, setConfirmPassword] = useState('')
   const [ email, setEmail ] = useState('')
 
   const notify = useNotification()
+  const dispatch = useDispatch()
 
-  const handleSubmit = async (event) => {
+  const handleSubmit = (event) => {
     event.preventDefault()
 
     if (password !== confirmPassword) {
@@ -35,13 +43,13 @@ const RegisterPage = () => {
 
     try {
 
-    await usersService.create({ username, name, password, description,
-      isCompany, email })
+    dispatch(addUser({ username, name, password, description,
+      userType, email }))
     setName('')
     setPassword('')
     setUsername('')
     setDescription('')
-    setIsCompany(false)
+    setUserType('regular')
     setIsTermsAccepted(false)
     setEmail('')
     setConfirmPassword('')
@@ -63,9 +71,11 @@ const RegisterPage = () => {
     setIsTermsAccepted(e.target.checked)
   }
 
-  const handleCompanyCheckboxChange = (e) => {
-    setIsCompany(e.target.checked)
-  }
+  const handleUserTypeChange = (e) => {
+    setUserType(e.target.value);
+  };
+
+  const passwordsMatch = password === confirmPassword;
 
   return (
     <Box sx={{ marginTop: '5rem',
@@ -84,11 +94,36 @@ const RegisterPage = () => {
         Luo uusi käyttäjä
       </Typography>
       <Box sx={{ maxWidth: '30rem', }} component="form" onSubmit={handleSubmit}>
-        <FormControlLabel
-          control={<Checkbox checked={isCompany} onChange={handleCompanyCheckboxChange} />}
-          label="Haluan rekisteröidä käyttäjän nettisivuja valmistavana yrityksenä"
-          sx={{ marginBottom: '1rem' }}
-        />
+      <FormControl component="fieldset">
+          <FormLabel component="legend">Valitse käyttäjätyyppi</FormLabel>
+          <RadioGroup
+            aria-label="userType"
+            name="userType"
+            value={userType}
+            onChange={handleUserTypeChange}
+          >
+            <FormControlLabel
+              value="regular"
+              control={<Radio />}
+              label="Projektia etsivä asiakas"
+            />
+            <FormControlLabel
+              value="company"
+              control={<Radio />}
+              label="Kehittäjäyritys"
+            />
+            <FormControlLabel
+              value="freelancer"
+              control={<Radio />}
+              label="Freelancer"
+            />
+            <FormControlLabel
+              value="otherDev"
+              control={<Radio />}
+              label="Muu kehittäjä"
+            />
+          </RadioGroup>
+        </FormControl>
         <TextField
           id="register-username"
           label="Käyttäjätunnus"
@@ -100,7 +135,7 @@ const RegisterPage = () => {
         />
         <TextField
           id="name"
-          label="Nimi (halutessasi tämä näkyy muille käyttäjille)"
+          label="Nimi (näkyy muille käyttäjille)"
           required
           fullWidth
           value={name}
@@ -119,13 +154,21 @@ const RegisterPage = () => {
         />
         <TextField
           id="register-password"
-          label="Salasana"
+          label="Salasana (vähintään 3 merkkiä pitkä)"
           type="password"
           required
           fullWidth
           value={password}
           onChange={({ target }) => setPassword(target.value)}
           margin="normal"
+          InputProps={{
+            endAdornment: (
+              <InputAdornment position="end">
+                {password.length > 0 && password.length < 3 ? <CancelIcon /> : null}
+                {password.length >= 3 ? <CheckCircleIcon /> : null}
+              </InputAdornment>
+            ),
+          }}
         />
         <TextField
           id="confirm-password"
@@ -136,6 +179,14 @@ const RegisterPage = () => {
           value={confirmPassword}
           onChange={({ target }) => setConfirmPassword(target.value)}
           margin="normal"
+          InputProps={{
+            endAdornment: (
+              <InputAdornment position="end">
+                {passwordsMatch && password.length !== 0 && (
+            <CheckCircleIcon />
+        )}
+              </InputAdornment>
+            ),}}
         />
         <TextField
           id="description"
@@ -160,7 +211,7 @@ const RegisterPage = () => {
               sx={{ cursor: 'pointer', textDecoration: 'underline' }}
               onClick={handleTermsDialogOpen}
             >
-              I accepts the terms of service
+              Hyväksyn palvelun käyttöehdot
             </Typography>
           }
           sx={{ marginBottom: '1rem' }}
@@ -184,11 +235,11 @@ const RegisterPage = () => {
         </Box>
       </Box>
       <Dialog open={openTermsDialog} onClose={handleTermsDialogClose}>
-        <DialogTitle>Terms of service</DialogTitle>
+        <DialogTitle>Palvelun käyttöehdot</DialogTitle>
         <DialogContent>
           {/* Add your terms of service content here */}
           <Typography>
-            Lorem ipsum
+          Hyväksyn kaiken tietojen käytön. Huom! Ohjelmistomme on vielä kehitysvaiheessa.
           </Typography>
         </DialogContent>
         <DialogActions>

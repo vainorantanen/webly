@@ -6,16 +6,12 @@ import { Typography, Box, Button,
   TableContainer,
   TableRow,
   Paper, } from '@mui/material'
-import { Link } from 'react-router-dom'
 import EuroIcon from '@mui/icons-material/Euro';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 
-const FeedPostCard = ({ post }) => {
-
+const SingleFeedPostInfo = ({post}) => {
   return (
     <Box
-    component={Link}
-        to={`/tarjouskilpailut/${post.id}`}
       sx={{
         padding: '1rem',
         backgroundColor: '#f0f0f0',
@@ -30,9 +26,6 @@ const FeedPostCard = ({ post }) => {
         '@media (max-width: 820px)': {
           marginLeft: '0.1rem',
           marginRight: '0.1rem',
-        },
-        '&:hover': {
-          transform: 'scale(1.01)',
         },
       }}
     >
@@ -63,13 +56,7 @@ const FeedPostCard = ({ post }) => {
         <Typography sx={{ borderBottom: '1px solid black', fontSize: '1.2rem'
        }}>Tarkoitus</Typography>
         <Typography style={{ 
-          overflow: 'hidden',
-          textOverflow: 'ellipsis',
           whiteSpace: 'break-spaces',
-          display: '-webkit-box',
-          WebkitLineClamp: 5,
-          WebkitBoxOrient: 'vertical',
-          lineHeight: '1.4',
          }}>{post.description}</Typography>
         <Typography sx={{ borderBottom: '1px solid black', fontSize: '1.2rem',
         marginBottom: '0.5rem', marginTop: '1rem'}}
@@ -96,27 +83,19 @@ const FeedPostCard = ({ post }) => {
           </TableBody>
         </Table>
       </TableContainer>
+      {post.other.length > 0 && (
+        <Box>
+            <Typography sx={{ borderBottom: '1px solid black', fontSize: '1.2rem',
+        marginBottom: '0.5rem', marginTop: '1rem'}}
+        >Muuta</Typography>
+            <Typography style={{ 
+                whiteSpace: 'break-spaces',
+               }}>{post.other}</Typography>
+            </Box>
+      )}
       </Box>
-      <Button
-        
-        variant="contained"
-        sx={{
-          backgroundColor: 'blue',
-          color: 'white',
-          transition: 'transform 0.3s',
-          marginTop: '1rem',
-          maxWidth: '9rem',
-          marginBottom: '1rem',
-          '&:hover': {
-            transform: 'scale(1.05)',
-            backgroundImage: 'linear-gradient(to bottom, #003eff, #006eff)',
-          },
-        }}
-      >
-        Tarkastele
-      </Button>
     </Box>
   )
 }
 
-export default FeedPostCard
+export default SingleFeedPostInfo

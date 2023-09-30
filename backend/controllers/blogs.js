@@ -20,7 +20,8 @@ router.post('/', userExtractor, async (request, response) => {
 
   const user = request.user
 
-  if (!user || user.isCompany === false) {
+  // vain kehittäjät voi lisätä blogeja, eli regular tyypit ei voi lisätä
+  if (!user || user.userType === 'regular') {
     return response.status(401).json({ error: 'operation not permitted' })
   }
 

@@ -4,19 +4,23 @@ import {
   Button,
   Container,
   Typography,
+  FormControl,
+  Select,
+  MenuItem,
 } from '@mui/material'
 import { useSelector } from 'react-redux'
 import Company from './Company'
 
 const FeedItems = () => {
+  const [filter1, setFilter1] = useState('All')
     const [currentPage, setCurrentPage] = useState(1)
   const postsPerPage = 5
 
   useEffect(() => {
     setCurrentPage(1)
-  }, [])
+  }, [filter1])
 
-  const devs = useSelector(({users}) => users).filter(d => d.isCompany === true)
+  const devs = useSelector(({users}) => users).filter(d => d.userType !== 'regular')
 
   if (!devs || devs.length === 0) {
     return (
@@ -26,9 +30,20 @@ const FeedItems = () => {
     )
   }
 
+  const filteredDevs = devs
+    .filter((d) => {
+      // Filtering based on filter1
+      if (filter1 === 'All' || d.userType === filter1) {
+        return true
+      }
+      return false
+    })
+
+    const numOfFilteredDevs = filteredDevs.length
+
   const indexOfLastPost = currentPage * postsPerPage
   const indexOfFirstPost = indexOfLastPost - postsPerPage
-  const currentDevs = devs.slice(indexOfFirstPost, indexOfLastPost)
+  const currentDevs = filteredDevs.slice(indexOfFirstPost, indexOfLastPost)
 
   const paginate = (pageNumber) => setCurrentPage(pageNumber)
 
@@ -45,16 +60,33 @@ const FeedItems = () => {
           },
         }}
       >
+        {/* Left Column - Filtering options */}
+        <Box sx={{ flex: 1, maxWidth: '15rem' }}>
+        <Typography sx={{ marginBottom: '1rem', fontSize: '1.2rem' }}>Suodata</Typography>
+          <Typography sx={{ marginBottom: '1rem',}}>Hakutulokset: {numOfFilteredDevs}</Typography>
+          <Typography>Valitse kehittäjän tyyppi</Typography>
+          <FormControl variant="outlined" fullWidth sx={{ marginBottom: '1rem', marginTop: '1rem' }}>
+            <Select
+              value={filter1}
+              onChange={(e) => setFilter1(e.target.value)}
+            >
+              <MenuItem value="All">Kaikki</MenuItem>
+              <MenuItem value="company">Yritys</MenuItem>
+              <MenuItem value="freelancer">Freelancer</MenuItem>
+              <MenuItem value="other">Muut</MenuItem>
+            </Select>
+          </FormControl>
+        </Box>
         {/* Right Column - Filtered posts */}
         <Box sx={{ flex: 2 }}>
           <Box
             sx={{
               display: 'flex',
-              flexDirection: 'row',
-              flexWrap: 'wrap',
+              flexDirection: 'column',
               justifyContent: 'center',
               gap: '1rem',
               marginBottom: '1rem',
+              borderRadius: '1rem',
             }}
           >
             {/* Rendering the current page of filtered posts */}
@@ -64,7 +96,7 @@ const FeedItems = () => {
           </Box>
           {/* Pagination */}
           <Box className="pagination" sx={{ textAlign: 'center', marginBottom: '1rem' }}>
-            {Array.from({ length: Math.ceil(devs.length / postsPerPage) }).map((_, index) => (
+            {Array.from({ length: Math.ceil(filteredDevs.length / postsPerPage) }).map((_, index) => (
               <Button
                 sx={{
                   backgroundColor: currentPage === index + 1 ? 'blue' : 'transparent',

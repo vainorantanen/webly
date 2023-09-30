@@ -20,7 +20,7 @@ const SinglePostPortalView = () => {
     <Box sx={{ marginTop: '5rem', minHeight: '90vh' }}>
 
 
-        {user && user.isCompany ? (
+        {user && user.userType !== 'regular' ? (
           <SinglePostDevView />
         ) : (
           <SinglePostBuyerView />

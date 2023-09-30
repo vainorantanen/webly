@@ -1,50 +1,93 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
-import { Typography, Box } from '@mui/material'
+import { Typography, Box, Rating } from '@mui/material'
+import { useSelector } from 'react-redux'
 
 const Company = ({ dev }) => {
+
+  const devRatings = useSelector(({ratings}) => ratings).filter(r => r.targetUser.id === dev.id)
+
+
   return (
     <Box
       component={Link}
       to={`/yritykset/${dev.id}`}
       sx={{
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'flex-start', // Start the content from the top (left-aligned)
+        padding: '1rem',
         backgroundColor: '#f0f0f0',
-        textAlign: 'flex-start',
+        borderRadius: '0.5rem',
         textDecoration: 'none',
-        padding: '2rem',
-        boxShadow: '0.3rem 0.3rem 0.3rem rgba(0, 0, 0, 0.2)',
-        width: '70vw',
-        borderRadius: '1rem',
-        marginBottom: '1rem',
-        transition: '0.4s',
+        color: 'black',
+        marginLeft: '3rem',
+        marginRight: '3rem',
+        display: 'flex',
+        transition: '0.3s ease',
+        flexDirection: 'column',
+        '@media (max-width: 820px)': {
+          marginLeft: '0.1rem',
+          marginRight: '0.1rem',
+        },
         '&:hover': {
-          transform: 'scale(1.05)',
-          boxShadow: '0.3rem 0.3rem 0.5rem rgba(0, 0, 0, 0.3)',
+          transform: 'scale(1.01)',
         },
       }}
     >
+      <Box sx={{ display: 'flex', flexDirection: 'row',
+    flexWrap: 'wrap', justifyContent: 'space-between' }}>
+      <Box>
       <Typography
-        variant="h4"
         sx={{
-          color: '#2c3e50',
-          textDecoration: 'none',
-          marginBottom: '0.5rem',
-          '&:hover': {
-            textDecoration: 'underline',
-          },
+          fontSize: '1.5rem',
         }}
       >
         {dev.name}
       </Typography>
+      </Box>
+      {
+            devRatings.length > 0 ? (
+              // Calculate the average of devratings scores
+              (() => {
+                const totalScore = devRatings.reduce((acc, rating) => acc + rating.score, 0);
+                const ratingAverage = totalScore / devRatings.length;
+
+                return (
+                  <Box>
+                    <Typography><Rating value={ratingAverage} readOnly precision={0.5} max={5} />({devRatings.length})</Typography>
+                  </Box>
+                );
+              })()
+            ) : (
+              <Typography>0 arvostelua</Typography>
+            )
+          }
+        </Box>
+      {dev.userType === 'freelancer' && (
+        <Typography sx={{
+          marginBottom: '0.5rem',
+          borderBottom: '1px solid black'
+        }}>Freelancer
+        </Typography>
+        )}
+      {dev.userType === 'company' && (
+        <Typography sx={{
+          marginBottom: '0.5rem',
+          borderBottom: '1px solid black'
+        }}>Yritys
+        </Typography>
+        )}
+        {dev.userType === 'otherDev' && (
+        <Typography sx={{
+          marginBottom: '0.5rem',
+          borderBottom: '1px solid black'
+        }}>Muu kehittäjä
+        </Typography>
+        )}
       <Typography sx={{
-        color: '#666',
         overflow: 'hidden',
         textOverflow: 'ellipsis',
+        whiteSpace: 'break-spaces',
         display: '-webkit-box',
-        WebkitLineClamp: 2, // Show only one line of description
+        WebkitLineClamp: 5,
         WebkitBoxOrient: 'vertical',
         lineHeight: '1.4', // Increase line height for better readability
       }}>{dev.description}</Typography>

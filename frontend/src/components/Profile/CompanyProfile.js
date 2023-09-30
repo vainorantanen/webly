@@ -1,8 +1,7 @@
 import React from 'react'
 import { Container, Typography, Box, Button } from '@mui/material'
 import CheckCircleIcon from '@mui/icons-material/CheckCircle'
-import { useSelector, useDispatch } from 'react-redux'
-import { useNotification } from '../../hooks'
+import { useSelector } from 'react-redux'
 import ModifyBasicInfo from './ModifyBasicInfo'
 import ModifyDescriptionForm from './ModifyDescriptionForm'
 import { Link } from 'react-router-dom'
@@ -11,9 +10,6 @@ import { Link } from 'react-router-dom'
 const CompanyProfile = () => {
   const localUser = useSelector(({user}) => user)
   const user = useSelector(({users}) => users).find(u => u.id === localUser.id)
-
-  const notify = useNotification()
-  const dispatch = useDispatch()
 
   const userFeedBids = useSelector(({feedBids}) => feedBids).filter(p => p.user.id === user.id)
 

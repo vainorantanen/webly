@@ -13,7 +13,7 @@ const schema = mongoose.Schema({
     type: String
   },
   timeStamp: {
-    type: Date,
+    type: String,
     required: true
   },
   isOpen: {
@@ -36,9 +36,6 @@ const schema = mongoose.Schema({
     type: String
   },
   question4: {
-    type: String
-  },
-  duedate: {
     type: String
   },
   dueDate: {

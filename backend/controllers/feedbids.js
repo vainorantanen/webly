@@ -13,10 +13,7 @@ router.get('/', async (request, response) => {
 })
 
 router.post('/', userExtractor, async (request, response) => {
-  //console.log("RBODY", request.body)
   const { description, timeStamp, isApproved, price, target } = request.body
-  console.log({ description, timeStamp, isApproved, price, target })
-  //console.log("aINFO", additionalinfo)
   const feedBid = new FeedBid({
     description,
     timeStamp,
@@ -25,9 +22,9 @@ router.post('/', userExtractor, async (request, response) => {
   })
 
   const user = request.user
-  console.log('user feedbid: ', user)
 
-  if (!user || user.isCompany === false) {
+  // normikäyttäjät ei voi tarjota
+  if (!user || user.userType === 'regular') {
     return response.status(401).json({ error: 'operation not permitted' })
   }
 

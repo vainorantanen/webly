@@ -1,14 +1,13 @@
 import React from 'react'
-import Company from './Company'
-import { Box, Container, Typography } from '@mui/material'
+import { Container, Typography } from '@mui/material'
 import FeedItems from './FeedItems'
 
 const CompaniesList = () => {
   return (
-    <Container sx={{ marginTop: '8rem', minHeight: '100vh', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+    <Container sx={{ marginTop: '8rem', minHeight: '100vh' }}>
       <Typography
         sx={{
-          fontSize: '2.5rem',
+          fontSize: '2rem',
           textAlign: 'center',
           '@media (max-width: 442px)': {
             fontSize: '1.4rem',
@@ -20,7 +19,7 @@ const CompaniesList = () => {
 
       <Typography
         sx={{
-          fontSize: '1.6rem',
+          fontSize: '1.3rem',
           textAlign: 'center',
           marginTop: '2rem',
           marginBottom: '3rem',

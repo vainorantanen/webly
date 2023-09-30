@@ -23,10 +23,6 @@ const userSchema = mongoose.Schema({
   description: {
     type: String
   },
-  isCompany: {
-    type: Boolean,
-    required: true
-  },
   userType: {
     type: String,
     enum: ['regular', 'company', 'freelancer', 'otherDev'],

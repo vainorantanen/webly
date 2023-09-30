@@ -78,7 +78,7 @@ const SinglePostDevView = () => {
         </Box>
         <Typography style={{ whiteSpace: 'break-spaces' }}>{post.description}</Typography>
       </Box>
-      {user && user.isCompany === true && (
+      {user && user.userType !== 'regular' && (
         <Togglable buttonLabel='Tee tarjous'>
           <MakeBidForm post={post}/>
         </Togglable>

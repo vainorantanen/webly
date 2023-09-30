@@ -20,6 +20,7 @@ import { addPortalpost } from '../../../reducers/portalPosts'
 import BasicInfoForm from './BasicInfoForm'
 import FormSummary from './FormSummary'
 import TermsForm from './TermsForm'
+import AddDevPost from './AddDevPost'
 
 const AddFeedPostForm = () => {
 
@@ -94,7 +95,7 @@ const AddFeedPostForm = () => {
   }
   
   
-  if (!user || user.isCompany) {
+  if (!user) {
     return (
       <Container sx={{ marginTop: '8rem', minHeight: '100vh' }}>
         <Typography
@@ -107,9 +108,15 @@ const AddFeedPostForm = () => {
             },
           }}
         >
-          Kirjaudu kuluttajatilillä sisään lisätäksesi ilmoitus.
+          Kirjaudu sisään lisätäksesi ilmoitus.
         </Typography>
       </Container>
+    )
+  }
+
+  if (user && user.userType !== 'regular') {
+    return (
+      <AddDevPost />
     )
   }
 

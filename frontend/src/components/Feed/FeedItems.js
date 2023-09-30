@@ -17,7 +17,7 @@ const FeedItems = () => {
   const [currentPage, setCurrentPage] = useState(1)
   const postsPerPage = 5
 
-  const feedPosts = useSelector(({feedPosts}) => feedPosts)
+  const feedPosts = useSelector(({feedPosts}) => feedPosts).filter(p => p.isOpen)
 
   useEffect(() => {
     setCurrentPage(1)
@@ -30,10 +30,11 @@ const FeedItems = () => {
   const filteredPosts = feedPosts
     .filter((post) => {
       // Filtering based on filter1
-      if (filter1 === 'All' || post.question1 === filter1) {
+      if (filter1 === 'All' || (filter1 === 'other' && !['Kuluttajat', 'Yritykset tai yrittäjät', 'Sisäiset sidosryhmät'].includes(post.question1)) || filter1 === post.question1) {
         // Filtering based on filter2
-        if (filter2 === 'All' || post.question2 === filter2) {
-          // Filtering based on filter3
+        if (filter2 === 'All' || (filter2 === 'other' && !['Tiettyjä ohjelmistoja ja teknologioita valittu, jotka voivat rajoittaa projektia.'
+        , 'Ohjelmistoa ja teknologioita valittu, mutta joustoa on', 'Ei rajoittavia tekijöitä'].includes(post.question2)) || filter2 === post.question2) {
+        // Filtering based on filter3
           if (filter3 === 'All' || post.question3 === filter3) {
             return true
           }
@@ -42,6 +43,8 @@ const FeedItems = () => {
       return false
     })
     .sort((a, b) => new Date(b.timeStamp) - new Date(a.timeStamp))
+
+  const numOfFilteredPosts = filteredPosts.length
 
   const indexOfLastPost = currentPage * postsPerPage
   const indexOfFirstPost = indexOfLastPost - postsPerPage
@@ -64,7 +67,8 @@ const FeedItems = () => {
       >
         {/* Left Column - Filtering options */}
         <Box sx={{ flex: 1, maxWidth: '15rem' }}>
-          <Typography sx={{ marginBottom: '1rem' }}>Suodata</Typography>
+          <Typography sx={{ marginBottom: '1rem', fontSize: '1.2rem' }}>Suodata</Typography>
+          <Typography sx={{ marginBottom: '1rem',}}>Hakutulokset: {numOfFilteredPosts}</Typography>
           <Typography>Kenelle nettisivusi on suunnattu?</Typography>
           <FormControl variant="outlined" fullWidth sx={{ marginBottom: '1rem', marginTop: '1rem' }}>
             <Select
@@ -79,35 +83,28 @@ const FeedItems = () => {
             </Select>
           </FormControl>
 
-          <Typography>Mikä on verkkosivunne pääasiallinen tarkoitus?</Typography>
+          <Typography>Teknologiset rajoitteet</Typography>
           <FormControl variant="outlined" fullWidth sx={{ marginTop: '1rem', marginBottom: '1rem' }}>
             <Select
               value={filter2}
               onChange={(e) => setFilter2(e.target.value)}
             >
-              <MenuItem value="All">Kaikki</MenuItem>
-              <MenuItem value="Tuotteiden tai palveluiden esittely">Tuotteiden tai palveluiden esittely</MenuItem>
-              <MenuItem value="Liidien ja tiedustelujen generointi">Liidien ja tiedustelujen generointi</MenuItem>
-              <MenuItem value="Tuotteiden myynti verkossa (verkkokauppa)">
-                Tuotteiden myynti verkossa (verkkokauppa)
-              </MenuItem>
-              <MenuItem value="Tiedon jakaminen tai blogiartikkelit">Tiedon jakaminen tai blogiartikkelit</MenuItem>
+              <MenuItem value="All">Ei mitään</MenuItem>
+              <MenuItem value="Tiettyjä ohjelmistoja ja teknologioita valittu, jotka voivat rajoittaa projektia.">Tiettyjä ohjelmistoja ja teknologioita valittu, jotka voivat rajoittaa projektia.</MenuItem>
+              <MenuItem value="Ohjelmistoa ja teknologioita valittu, mutta joustoa on">Ohjelmistoa ja teknologioita valittu, mutta joustoa on</MenuItem>
+              <MenuItem value="other">Muut</MenuItem>
             </Select>
           </FormControl>
 
-          <Typography>Mitä ominaisuuksia haluatte sisällyttää verkkosivullenne?</Typography>
+          <Typography>Sisällönhallintatyökalut</Typography>
           <FormControl variant="outlined" fullWidth sx={{ marginTop: '1rem', marginBottom: '1rem' }}>
             <Select
               value={filter3}
               onChange={(e) => setFilter3(e.target.value)}
             >
-              <MenuItem value="All">Kaikki</MenuItem>
-              <MenuItem value="Yhteydenottolomake ja yhteystiedot">Yhteydenottolomake ja yhteystiedot</MenuItem>
-              <MenuItem value="Kuvagalleria tai portfoliokuvat">Kuvagalleria tai portfoliokuvat</MenuItem>
-              <MenuItem value="Suosittelut tai arvostelut -osio">Suosittelut tai arvostelut -osio</MenuItem>
-              <MenuItem value="Sosiaalisen median integraatio (jakopainikkeet, syötteet jne.)">
-                Sosiaalisen median integraatio (jakopainikkeet, syötteet jne.)
-              </MenuItem>
+              <MenuItem value="All">Ei tarvetta</MenuItem>
+              <MenuItem value="Laaja CMS">Laaja CMS</MenuItem>
+              <MenuItem value="Suppea CMS">Suppea CMS</MenuItem>
             </Select>
           </FormControl>
         </Box>

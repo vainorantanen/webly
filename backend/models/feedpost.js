@@ -38,9 +38,6 @@ const schema = mongoose.Schema({
   question4: {
     type: String
   },
-  duedate: {
-    type: String
-  },
   dueDate: {
     type: String
   },

@@ -4,7 +4,6 @@ import { Typography, Box, Button,
   TableBody,
   TableCell,
   TableContainer,
-  TableHead,
   TableRow,
   Paper, } from '@mui/material'
 import { Link } from 'react-router-dom'
@@ -18,7 +17,7 @@ const FeedPostCard = ({ post }) => {
     component={Link}
         to={`/tarjouskilpailut/${post.id}`}
       sx={{
-        padding: '2rem',
+        padding: '1rem',
         backgroundColor: '#f0f0f0',
         borderRadius: '0.5rem',
         textDecoration: 'none',

@@ -39,6 +39,8 @@ const FeedItems = () => {
       return false
     })
 
+    const numOfFilteredDevs = filteredDevs.length
+
   const indexOfLastPost = currentPage * postsPerPage
   const indexOfFirstPost = indexOfLastPost - postsPerPage
   const currentDevs = filteredDevs.slice(indexOfFirstPost, indexOfLastPost)
@@ -60,7 +62,8 @@ const FeedItems = () => {
       >
         {/* Left Column - Filtering options */}
         <Box sx={{ flex: 1, maxWidth: '15rem' }}>
-          <Typography sx={{ marginBottom: '1rem', fontSize: '1.2rem' }}>Suodata</Typography>
+        <Typography sx={{ marginBottom: '1rem', fontSize: '1.2rem' }}>Suodata</Typography>
+          <Typography sx={{ marginBottom: '1rem',}}>Hakutulokset: {numOfFilteredDevs}</Typography>
           <Typography>Valitse kehittäjän tyyppi</Typography>
           <FormControl variant="outlined" fullWidth sx={{ marginBottom: '1rem', marginTop: '1rem' }}>
             <Select
@@ -79,11 +82,11 @@ const FeedItems = () => {
           <Box
             sx={{
               display: 'flex',
-              flexDirection: 'row',
-              flexWrap: 'wrap',
+              flexDirection: 'column',
               justifyContent: 'center',
               gap: '1rem',
               marginBottom: '1rem',
+              borderRadius: '1rem',
             }}
           >
             {/* Rendering the current page of filtered posts */}
@@ -93,7 +96,7 @@ const FeedItems = () => {
           </Box>
           {/* Pagination */}
           <Box className="pagination" sx={{ textAlign: 'center', marginBottom: '1rem' }}>
-            {Array.from({ length: Math.ceil(devs.length / postsPerPage) }).map((_, index) => (
+            {Array.from({ length: Math.ceil(filteredDevs.length / postsPerPage) }).map((_, index) => (
               <Button
                 sx={{
                   backgroundColor: currentPage === index + 1 ? 'blue' : 'transparent',

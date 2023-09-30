@@ -4,7 +4,7 @@ import FeedItems from './FeedItems'
 
 const CompaniesList = () => {
   return (
-    <Container sx={{ marginTop: '8rem', minHeight: '100vh', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+    <Container sx={{ marginTop: '8rem', minHeight: '100vh' }}>
       <Typography
         sx={{
           fontSize: '2rem',

@@ -1,5 +1,5 @@
 import { Typography, Box, Container, Button } from '@mui/material'
-import React, { useState } from 'react'
+import React from 'react'
 import { useParams } from 'react-router-dom'
 import Togglable from '../Togglable'
 import MakeBidForm from './MakeBidForm'
@@ -8,7 +8,7 @@ import CheckCircleIcon from '@mui/icons-material/CheckCircle'
 import { useNotification } from '../../hooks'
 import { useDispatch } from 'react-redux'
 import { modifyBidApprovedState, removBidFromFeedPost } from '../../reducers/feedPosts'
-import EuroIcon from '@mui/icons-material/Euro';
+import SingleFeedPostInfo from './SingleFeedPostInfo'
 
 
 const SingleFeedPost = () => {
@@ -54,56 +54,34 @@ const SingleFeedPost = () => {
 
   return (
     <Container  sx={{ marginTop: '7rem', minHeight: '100vh' }}>
-      <Box
-        sx={{
-          padding: '0.5rem',
-          backgroundColor: '#f0f0f0',
-          borderRadius: '0.5rem',
-          marginLeft: '5rem',
-          marginRight: '5rem',
-          display: 'flex',
-          flexDirection: 'column',
-          '@media (max-width: 820px)': {
-            marginLeft: '0.1rem',
-            marginRight: '0.1rem',
-          },
-        }}
-      >
-        <Box
-          sx={{
-            display: 'flex',
-            marginBottom: '1rem',
-            flexWrap: 'wrap',
-          }}
-        >
-          <div>
-            <Typography>{post.user.name}</Typography>
-            {post.timeStamp ? (
-              <Typography>Julkaistu {post.timeStamp.split('T')[0]}</Typography>
-            ) : <Typography>Julkaistu yli vuosi sitten</Typography>}
-          </div>
-        </Box>
-        <Typography>Ilmoitus sulkeutuu: {post.dueDate}</Typography>
-        <Typography><EuroIcon />{post.minPrice} - {post.maxPrice}</Typography>
-        <Typography>Tarkoitus:</Typography>
-        <Typography style={{ whiteSpace: 'break-spaces' }}>{post.description}</Typography>
-        <Typography>Sivut on suunnattu: {post.question1}</Typography>
-        <Typography>Teknologiset rajoitteet: {post.question2}</Typography>
-        <Typography>Sisällönhallintatyökalut: {post.question3}</Typography>
-        <Typography>Toiminnallisuudet: {post.question4}</Typography>
-        <Typography>Muut toiveet:</Typography>
-        <Typography>{post.other}</Typography>
-      </Box>
+      <SingleFeedPostInfo post={post}/>
       {user && user.userType !== 'regular' && (
         <Togglable buttonLabel='Tee tarjous'>
           <MakeBidForm post={post}/>
         </Togglable>
       )}
       <Typography sx={{ fontSize: '1.5rem', marginTop: '1rem',
-    marginBottom: '1rem', borderBottom: '1px solid black' }}>Tarjoukset</Typography>
+    marginBottom: '1rem', borderBottom: '1px solid black', textAlign: 'center' }}>Tarjoukset</Typography>
       <Box>
-        {post.feedBids.map(offer => (
-          <Box key={offer.id} sx={{ backgroundColor: '#f0f0f0', borderRadius: '0.5rem', padding: '1rem', marginBottom: '1rem' }}>
+        {post.feedBids.length > 0 ? post.feedBids.map(offer => (
+          <Box key={offer.id}
+          sx={{
+            padding: '1rem',
+            backgroundColor: '#f0f0f0',
+            borderRadius: '0.5rem',
+            textDecoration: 'none',
+            color: 'black',
+            marginLeft: '3rem',
+            marginRight: '3rem',
+            display: 'flex',
+            transition: '0.3s ease',
+            flexDirection: 'column',
+            '@media (max-width: 820px)': {
+              marginLeft: '0.1rem',
+              marginRight: '0.1rem',
+            },
+          }}
+          >
             {offer.isApproved && (
               <Typography>Tarjous hyväksytty <CheckCircleIcon/></Typography>
             )}
@@ -118,7 +96,9 @@ const SingleFeedPost = () => {
               <Button sx={{ color: 'red' }} onClick={() => handleDeletebid(offer.id)}>Poista tarjous</Button>
             )}
           </Box>
-        ))}
+        )) : (
+          <Typography sx={{ textAlign: 'center' }}>Ei vielä tarjouksia</Typography>
+        )}
       </Box>
     </Container>
   )

@@ -44,7 +44,7 @@ const DevFeedItems = () => {
   const paginate = (pageNumber) => setCurrentPage(pageNumber)
 
   return (
-    <Box sx={{ marginTop: '4rem' }}>
+    <Box>
       <Box
         sx={{
           display: 'flex',

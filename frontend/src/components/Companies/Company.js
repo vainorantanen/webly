@@ -21,15 +21,16 @@ const Company = ({ dev }) => {
         marginLeft: '3rem',
         marginRight: '3rem',
         display: 'flex',
-        transition: '0.3s ease',
+        transition: '0.3s linear all',
         flexDirection: 'column',
         '@media (max-width: 820px)': {
           marginLeft: '0.1rem',
           marginRight: '0.1rem',
         },
         '&:hover': {
-          transform: 'scale(1.01)',
-        },
+          backgroundColor: '#DDDDDD',
+          boxShadow: '0rem 0.1rem 0.3rem gray'
+      },
       }}
     >
       <Box sx={{ display: 'flex', flexDirection: 'row',

@@ -1,7 +1,6 @@
 const router = require('express').Router()
 const FeedPost = require('../models/feedpost')
 const FeedBid = require('../models/feedbid')
-const dayjs = require('dayjs')
 
 const { userExtractor } = require('../utils/middleware')
 
@@ -16,13 +15,10 @@ router.get('/', async (request, response) => {
 router.post('/', userExtractor, async (request, response) => {
   const { description, other, question1, question1Other, question2, question2Other, question3, question4, date, minPrice, maxPrice } = request.body
 
-  const publishDay = new Date()
-
-  const formattedDate = dayjs(publishDay).format('D.M.YYYY')
 
   const feedPost = new FeedPost({
     description,
-    timeStamp: formattedDate,
+    timeStamp: new Date(),
     isOpen: true,
     question1,
     question2,

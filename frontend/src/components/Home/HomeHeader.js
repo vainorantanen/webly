@@ -8,10 +8,16 @@ import TimelineSeparator from '@mui/lab/TimelineSeparator'
 import TimelineConnector from '@mui/lab/TimelineConnector'
 import TimelineContent from '@mui/lab/TimelineContent'
 import TimelineDot from '@mui/lab/TimelineDot'
+import './homeheader.css'
 
 const HomeHeader = () => {
   return (
-    <Box sx={{ marginTop: '6rem' }}>
+    <Box sx={{ marginTop: '3rem', position: 'relative'}}>
+      <Box className='spacer layer1' sx={{ marginBottom: '-12rem',
+      '@media (max-width: 800px)': {
+        marginBottom: '-2rem',
+      },
+     }}></Box>
       <Typography
         sx={{
           fontSize: '2.5rem',

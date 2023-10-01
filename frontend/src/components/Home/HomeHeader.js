@@ -13,7 +13,7 @@ import './homeheader.css'
 const HomeHeader = () => {
   return (
     <Box sx={{ marginTop: '3rem', position: 'relative'}}>
-      <Box className='spacer layer1' sx={{ marginBottom: '-12rem',
+      <Box className='spacer layer1' sx={{ marginBottom: '-15rem',
       '@media (max-width: 800px)': {
         marginBottom: '-2rem',
       },
@@ -130,8 +130,12 @@ const HomeHeader = () => {
             </Button>
           </Box>
         </Box>
-        <Box>
-          <img src={mobileAppPic} alt='pic of mobile app' style={{ maxWidth: '40vw', height: 'auto' }}/>
+        <Box sx={{ maxWidth: '25rem',
+        '@media (max-width: 442px)': {
+          maxWidth: '40vw',
+        }, }}
+          component="img"
+        src={mobileAppPic} alt='pic of mobile app'>
         </Box>
       </Box>
     </Box>

@@ -1,7 +1,7 @@
-import { Box, Button, Typography } from '@mui/material'
+import { Box, Container, Typography } from '@mui/material'
 import React from 'react'
 import { useSelector } from 'react-redux'
-import { Link } from 'react-router-dom'
+import PortalPostCard from './PortalPostCard'
 
 const DevPortal = () => {
 
@@ -12,16 +12,15 @@ const DevPortal = () => {
     }
 
   return (
-    <Box>
-        <Typography>Avoimet portaaliprojektit</Typography>
-        {portalProjects.map(proj => (
-            <Box key={proj.id} sx={{ backgroundColor: 'white', color: 'black', borderRadius: '0.5rem', padding: '1rem', marginBottom: '1rem' }}>
-                <Typography sx={{ fontSize: '1.3rem' }}>{proj.title}</Typography>
-                <Typography sx={{ whiteSpace: 'break-spaces' }}>{proj.description}</Typography>
-                <Button component={Link} to={`/portaali/ilmoitukset/${proj.id}`}>Siirry ilmoitukseen</Button>
+    <Container>
+        <Typography sx={{ fontSize: '1.2rem', marginBottom: '1rem',
+    borderBottom: '1px solid black' }}>Avoimet portaali-ilmoitukset</Typography>
+        {portalProjects.filter(p => p.isOpen).map(proj => (
+            <Box key={proj.id}>
+                <PortalPostCard post={proj}/>
             </Box>
         ))}
-    </Box>
+    </Container>
   )
 }
 

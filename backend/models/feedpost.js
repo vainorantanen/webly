@@ -13,7 +13,7 @@ const schema = mongoose.Schema({
     type: String
   },
   timeStamp: {
-    type: String,
+    type: Date,
     required: true
   },
   isOpen: {

@@ -1,6 +1,6 @@
 import { Typography, Box, Container, Button } from '@mui/material'
 import React from 'react'
-import { useParams } from 'react-router-dom'
+import { Link, useParams } from 'react-router-dom'
 import Togglable from '../Togglable'
 import MakeBidForm from './MakeBidForm'
 import { useSelector } from 'react-redux'
@@ -86,7 +86,7 @@ const SingleFeedPost = () => {
               <Typography>Tarjous hyväksytty <CheckCircleIcon/></Typography>
             )}
             <Typography>Hinta: {offer.price} euroa</Typography>
-            <Typography>{offer.offeror}</Typography>
+            <Typography><Button component={Link} to={`/kehittajat/${offer.user}`}>{offer.offeror}</Button></Typography>
             <Typography>{offer.timeStamp.split('T')[0]}</Typography>
             <Typography sx={{ whiteSpace: 'break-spaces' }}>{offer.description}</Typography>
             {user && user.id === post.user.id && !offer.isApproved ? (

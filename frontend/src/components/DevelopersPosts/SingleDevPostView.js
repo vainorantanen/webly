@@ -1,15 +1,23 @@
+import { Typography, Box, Container, Button,} from '@mui/material'
 import React from 'react'
-import { Typography, Box, Button,} from '@mui/material'
-import { Link } from 'react-router-dom'
+import { Link, useParams } from 'react-router-dom'
+import { useSelector } from 'react-redux'
 import EuroIcon from '@mui/icons-material/Euro';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 
-const FeedPostCard = ({ post }) => {
+const SingleDevPostView = () => {
+
+    const { id } = useParams()
+
+    const devPost = useSelector(({devsPosts}) => devsPosts).find(p => p.id === id)
+
+    if (!devPost) {
+        return null
+    } 
 
   return (
-    <Box
-    component={Link}
-        to={`/kehittajien-ilmoitukset/${post.id}`}
+    <Container sx={{ marginTop: '5rem', minHeight: '80vh' }}>
+            <Box
       sx={{
         padding: '1rem',
         backgroundColor: '#f0f0f0',
@@ -19,38 +27,33 @@ const FeedPostCard = ({ post }) => {
         marginLeft: '3rem',
         marginRight: '3rem',
         display: 'flex',
-        transition: '0.3s linear all',
         flexDirection: 'column',
         '@media (max-width: 820px)': {
           marginLeft: '0.1rem',
           marginRight: '0.1rem',
         },
-        '&:hover': {
-          backgroundColor: '#DDDDDD',
-          boxShadow: '0rem 0.1rem 0.3rem gray'
-      },
       }}
     >
       <Typography sx={{ fontSize: '1.2rem', marginBottom: '0.5rem',
-    borderBottom: '1px solid black' }}>{post.title}</Typography>
+    borderBottom: '1px solid black' }}>{devPost.title}</Typography>
         <Box sx={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap',
       justifyContent: 'space-between', padding: '0.3rem', borderRadius: '0.3rem',
       backgroundColor: 'white', boxShadow: '0rem 0.1rem 0.3rem gray' }}>
           <Box>
-          <Typography>{post.user.name}</Typography>
-          {post.timeStamp ? (
-            <Typography>Julkaistu {post.timeStamp.split('T')[0]}</Typography>
+          <Typography><Button component={Link} to={`/kehittajat/${devPost.user.id}`}>{devPost.user.name}</Button></Typography>
+          {devPost.timeStamp ? (
+            <Typography>Julkaistu {devPost.timeStamp.split('T')[0]}</Typography>
           ) : (
             <Typography>Julkaistu yli vuosi sitten</Typography>
           )}
           </Box>
           <Box>
-          <Typography><EuroIcon />{post.price}</Typography>
-          {post.time && post.location &&
+          <Typography><EuroIcon />{devPost.price}</Typography>
+          {devPost.time && devPost.location &&
           (
             <Box>
-              <Typography><AccessTimeIcon />{post.time}</Typography>
-          <Typography><AccessTimeIcon />{post.location}</Typography>
+              <Typography><AccessTimeIcon />{devPost.time}</Typography>
+          <Typography><AccessTimeIcon />{devPost.location}</Typography>
               </Box>
           )}
           </Box>
@@ -68,26 +71,11 @@ const FeedPostCard = ({ post }) => {
           WebkitLineClamp: 5,
           WebkitBoxOrient: 'vertical',
           lineHeight: '1.4',
-         }}>{post.description}</Typography>
+         }}>{devPost.description}</Typography>
       </Box>
-      <Button
-        variant="contained"
-        sx={{
-          backgroundColor: 'blue',
-          color: 'white',
-          transition: 'transform 0.3s',
-          marginTop: '1rem',
-          maxWidth: '9rem',
-          '&:hover': {
-            transform: 'scale(1.05)',
-            backgroundImage: 'linear-gradient(to bottom, #003eff, #006eff)',
-          },
-        }}
-      >
-        Tarkastele
-      </Button>
-    </Box>
+      </Box>
+    </Container>
   )
 }
 
-export default FeedPostCard
+export default SingleDevPostView

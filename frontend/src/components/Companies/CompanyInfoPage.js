@@ -1,9 +1,18 @@
 import { Container, Typography, Box, Button, Rating } from '@mui/material'
-import React from 'react'
+import React, { useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import {  useSelector } from 'react-redux'
 
 const CompanyInfoPage = () => {
+  const [ratingDescriptions, setRatingDescriptions] = useState([]);
+  
+  const toggleDescription = (index) => {
+    const newDescriptions = [...ratingDescriptions];
+    newDescriptions[index] = !newDescriptions[index];
+    setRatingDescriptions(newDescriptions);
+  };
+
+
   const id = useParams().id
 
   const user = useSelector(({user}) => user)
@@ -85,13 +94,37 @@ const CompanyInfoPage = () => {
             ) : null
           }
             {devRatings.length > 0 ? (
-              devRatings.map(rating => (
+              devRatings.map((rating, index) => (
                 <Box key={rating.id} sx={{ margin: '1rem', borderRadius: '0.5rem', padding: '1rem', 
                 backgroundColor: 'white', color: 'black' }}>
                   <Rating value={rating.score} readOnly precision={1} max={5} />
                   <Typography sx={{ fontSize: '0.8rem' }}>{rating.user.name}</Typography>
-                  <Typography sx={{ fontSize: '0.8rem' }}>{rating.timeStamp.split('T')[0]}</Typography>
-                  <Typography>{rating.description}</Typography>
+                  <Typography sx={{ fontSize: '0.8rem' }}>{rating.timeStamp.split('T')[0].split('-').reverse().join('.')}</Typography>
+                  <Typography
+            sx={{
+              whiteSpace: rating.description.length > 100 ? 'break-spaces' : 'normal',
+              overflow: 'hidden',
+              textOverflow: 'ellipsis',
+              display: '-webkit-box',
+              WebkitLineClamp: ratingDescriptions[index] ? Infinity : 2,
+              WebkitBoxOrient: 'vertical',
+            }}
+          >
+            {ratingDescriptions[index]
+              ? rating.description
+              : `${rating.description.slice(0, 100)}${rating.description.length > 100 ? '...' : ''}`}
+          </Typography>
+          {rating.description.length > 100 && (
+            <Button
+              variant="text"
+              size="small"
+              onClick={() => toggleDescription(index)}
+              sx={{ fontSize: '0.8rem', textDecoration: 'underline', cursor: 'pointer' }}
+            >
+              {ratingDescriptions[index] ? 'Näytä vähemmän' : 'Näytä enemmän'}
+            </Button>
+          )}
+
                   </Box>
               ))
             ): (

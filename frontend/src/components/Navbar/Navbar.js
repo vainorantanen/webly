@@ -59,7 +59,7 @@ const Navbar = ({ logout }) => {
             <StyledButton color="inherit" component={Link} to="/">
               Etusivu
             </StyledButton>
-            <StyledButton color="inherit" component={Link} to="/kehittajienilmoitukset">
+            <StyledButton color="inherit" component={Link} to="/kehittajien-ilmoitukset">
               Kehittäjien ilmoitukset
             </StyledButton>
             <StyledButton color="inherit" component={Link} to="/tarjouskilpailut">
@@ -88,10 +88,10 @@ const Navbar = ({ logout }) => {
           <ListItemButton component={Link} to="/" onClick={toggleDrawer}>
             <ListItemText primary="Etusivu" />
           </ListItemButton>
-          <ListItemButton component={Link} to="/yritykset" onClick={toggleDrawer}>
+          <ListItemButton component={Link} to="/kehittajat" onClick={toggleDrawer}>
             <ListItemText primary="Kehittäjät" />
           </ListItemButton>
-          <ListItemButton component={Link} to="/yrityksille" onClick={toggleDrawer}>
+          <ListItemButton component={Link} to="/kehittajille" onClick={toggleDrawer}>
             <ListItemText primary="Kehittäjille" />
           </ListItemButton>
           <ListItemButton component={Link} to="/blogit" onClick={toggleDrawer}>
@@ -100,7 +100,7 @@ const Navbar = ({ logout }) => {
           <ListItemButton component={Link} to="/lisaailmoitus" onClick={toggleDrawer}>
             <ListItemText primary="Lisää ilmoitus" />
           </ListItemButton>
-          <ListItemButton component={Link} to="/kehittajienilmoitukset" onClick={toggleDrawer}>
+          <ListItemButton component={Link} to="/kehittajien-ilmoitukset" onClick={toggleDrawer}>
             <ListItemText primary="Kehittäjien ilmoitukset" />
           </ListItemButton>
           <ListItemButton component={Link} to="/tarjouskilpailut" onClick={toggleDrawer}>

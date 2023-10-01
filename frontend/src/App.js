@@ -37,6 +37,8 @@ import SinglePostPortalView from './components/Portal/SinglePostPortalView'
 import AddBlogForm from './components/Blogs/AddBlogForm'
 import AddRatingForm from './components/RatingForm/AddRatingForm'
 import AllBlogsList from './components/Blogs/AllBlogsList'
+import SingleBlogView from './components/Blogs/SingleBlogView'
+import SingleDevPostView from './components/DevelopersPosts/SingleDevPostView'
 
 const theme = createTheme({
   typography: {
@@ -50,8 +52,6 @@ const App = () => {
   const notifyWith = useNotification()
 
   const clearUser = useClearUser()
-
-  const user = useSelector(({ user }) => user)
 
   useEffect(() => {
     stateInitializer()
@@ -70,8 +70,8 @@ const App = () => {
         <ScrollToTop />
         <Routes>
           <Route path='/' element={<Home />}/>
-          <Route path='/yritykset' element={<CompaniesList />} />
-          <Route path='/yritykset/:id' element={<CompanyInfoPage />} />
+          <Route path='/kehittajat' element={<CompaniesList />} />
+          <Route path='/kehittajat/:id' element={<CompanyInfoPage />} />
           <Route path='/login' element={<LoginForm/>} />
           <Route path='/register' element={<RegisterPage />} />
           <Route path='/tarjouskilpailut' element={<Feed />} />
@@ -83,11 +83,13 @@ const App = () => {
           <Route path='/portaali' element={<Portal />} />
           <Route path='/portaali/ilmoitukset/:id' element={<SinglePostPortalView />} />
           <Route path='/tarjouskilpailut/:id' element={<SingleFeedPost />} />
-          <Route path='/yrityksille' element={ <ForCompaniesMain /> } />
-          <Route path='/kehittajienilmoitukset' element={<DevPostFeed />} />
+          <Route path='/kehittajille' element={ <ForCompaniesMain /> } />
+          <Route path='/kehittajien-ilmoitukset' element={<DevPostFeed />} />
+          <Route path='/kehittajien-ilmoitukset/:id' element={<SingleDevPostView />} />
           <Route path='/lisaa-blogi' element={<AddBlogForm />} />
           <Route path='/anna-arvostelu/:id' element={<AddRatingForm />} />
           <Route path='/blogit' element={<AllBlogsList />} />
+          <Route path='/blogit/:id' element={<SingleBlogView /> } />
         </Routes>
         <Footer />
       </Box>

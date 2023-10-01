@@ -11,7 +11,7 @@ const Company = ({ dev }) => {
   return (
     <Box
       component={Link}
-      to={`/yritykset/${dev.id}`}
+      to={`/kehittajat/${dev.id}`}
       sx={{
         padding: '1rem',
         backgroundColor: '#f0f0f0',

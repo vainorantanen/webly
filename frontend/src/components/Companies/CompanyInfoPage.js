@@ -2,6 +2,7 @@ import { Container, Typography, Box, Button, Rating } from '@mui/material'
 import React, { useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import {  useSelector } from 'react-redux'
+import BlogCard from '../Blogs/BlogCard'
 
 const CompanyInfoPage = () => {
   const [ratingDescriptions, setRatingDescriptions] = useState([]);
@@ -18,6 +19,7 @@ const CompanyInfoPage = () => {
   const user = useSelector(({user}) => user)
   const dev = useSelector(({ users }) => users.find(p => p.id === id))
   const devRatings = useSelector(({ratings}) => ratings).filter(r => r.targetUser.id === dev.id)
+  const devBlogs = useSelector(({blogs}) => blogs).filter(b => b.user.id === dev.id)
 
   if (!dev) {
     return (
@@ -72,8 +74,21 @@ const CompanyInfoPage = () => {
           Kotisivut: {dev.url || 'Ei saatavilla'}
         </Typography>
       </Box>
-      <Box sx={{ marginTop: '2rem', borderTop: '1px solid black' }}>
-            <Typography sx={{ fontSize: '1.3rem' }}>Arvostelut</Typography>
+      <Box sx={{ marginTop: '2rem' }}>
+        <Typography sx={{ fontSize: '1.3rem', borderBottom: '1px solid black',
+      marginBottom: '1rem' }}>Kehittäjän blogit</Typography>
+        {devBlogs && devBlogs.length > 0 ? (
+          devBlogs.map(b => (
+            <Box key={b.id} sx={{ padding: '0.5rem', backgroundColor: 'white', borderRadius: '0.3rem',
+            display: 'flex', flexDirection: 'row', flexWrap: 'wrap',
+            justifyContent: 'flex-start', gap: '1rem' }}>
+              <BlogCard blog={b} />
+              </Box>
+          ))
+        ): <Typography>Ei blogeja</Typography>}
+      </Box>
+      <Box sx={{ marginTop: '2rem' }}>
+            <Typography sx={{ fontSize: '1.3rem', borderBottom: '1px solid black' }}>Arvostelut</Typography>
             {user && user.id !== dev.id ? (
               <Typography>Oletko tehnyt yhteistyötä tämän kehittäjän kanssa?<Button component={Link} to={`/anna-arvostelu/${dev.id}`}>Anna arvostelu</Button></Typography>
             ): null}

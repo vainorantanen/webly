@@ -18,7 +18,7 @@ const BlogCard = ({blog}) => {
     transition: 'all 0.3s linear',
     flexDirection: 'column',
     '@media (max-width: 400px)': {
-        width: '80vw'
+        width: '70vw'
     },
     '&:hover': {
         backgroundColor: '#DDDDDD',

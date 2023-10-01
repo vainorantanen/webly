@@ -5,6 +5,8 @@ import { Link } from 'react-router-dom'
 import { useNotification } from '../../hooks'
 import { removeFeedPost, updateFeedPost } from '../../reducers/feedPosts'
 import { removePortalpost, updatePortalpost } from '../../reducers/portalPosts'
+import FeedPostCard from '../Feed/FeedPostCard'
+import PortalPostCard from '../Portal/PortalPostCard'
 
 const BuyersPosts = () => {
     const notify = useNotification()
@@ -81,52 +83,64 @@ const BuyersPosts = () => {
 
   return (
     <Box>
-        <Typography sx={{ marginBottom: '2rem' }}>Omat avoimet ilmoitukset</Typography>
+        <Typography
+        id='openPosts'
+        sx={{ marginBottom: '1rem', fontSize: '1.3rem',
+      borderBottom: '1px solid black' }}>Omat avoimet ilmoitukset ({userPosts.filter(p => p.isOpen).length})</Typography>
         <Box>
         {userPosts.filter(p => p.isOpen).length > 0 ? userPosts.filter(p => p.isOpen).map(p => (
-            <Box key={p.id} sx={{ backgroundColor: 'white', color: 'black', padding: '0.5rem',
+            <Box key={p.id} sx={{ backgroundColor: 'white',
             borderRadius: '0.5rem', marginBottom: '1rem', border: '1px solid black'}}>
-                <Typography sx={{ fontSize: '1.3rem' }}>{p.title}</Typography>
-                <Typography sx={{ whiteSpace: 'break-spaces' }}>{p.description}</Typography>
+                <FeedPostCard post={p}/>
+                <Box sx={{ textAlign: 'center' }}>
                 <Button component={Link} to={`/profiili/kayttaja/muokkaa/ilmoitus/${p.id}`} >Muokkaa ilmoituksen sisältöä</Button>
                 <Button component={Link} to={`/tarjouskilpailut/${p.id}`}>Siirry ilmoitukseen</Button>
                 <Button sx={{ color: 'red' }} onClick={() => handleCloseOrOpenFeedPost(p)}>{p.isOpen ? 'Aseta ilmoitus suljetuksi'
                 : 'Aseta ilmoitus avoimeksi'}</Button>
                 <Button sx={{ color: 'red' }} onClick={() => handleDeleteFeedPost(p.id)}>Poista ilmoitus</Button>
+                  </Box>
             </Box>  
         )) : (
             <Typography>Ei vielä ilmoituksia</Typography>
         )}
         </Box>
-        <Typography sx={{ marginBottom: '2rem' }}>Omat portaali-ilmoitukset</Typography>
+        <Typography sx={{ marginBottom: '1rem', fontSize: '1.3rem',
+      borderBottom: '1px solid black' }}
+      id="portal"
+      >Omat portaali-ilmoitukset ({userPortalPosts.length})</Typography>
         <Box>
         {userPortalPosts.length > 0 ? userPortalPosts.map(p => (
             <Box key={p.id} sx={{ backgroundColor: 'white', color: 'black', padding: '0.5rem',
             borderRadius: '0.5rem', marginBottom: '1rem', border: '1px solid black'}}>
-                <Typography sx={{ fontSize: '1.3rem' }}>{p.title}</Typography>
-                <Typography sx={{ whiteSpace: 'break-spaces' }}>{p.description}</Typography>
+                <PortalPostCard post={p}/>
+                <Box sx={{ textAlign: 'center' }}>
                 <Button component={Link} to={`/profiili/kayttaja/muokkaa/portaaliilmoitus/${p.id}`} >Muokkaa ilmoituksen sisältöä</Button>
                 <Button component={Link} to={`/portaali/ilmoitukset/${p.id}`}>Siirry ilmoitukseen</Button>
                 <Button sx={{ color: 'red' }} onClick={() => handleCloseOrOpenPortalPost(p)}>{p.isOpen ? 'Aseta ilmoitus suljetuksi'
                 : 'Aseta ilmoitus avoimeksi'}</Button>
                 <Button sx={{ color: 'red' }} onClick={() => handleDeletePortalPost(p.id)}>Poista ilmoitus</Button>
+                  </Box>
             </Box>  
         )) : (
             <Typography>Ei vielä ilmoituksia</Typography>
         )}
         </Box>
-        <Typography sx={{ marginBottom: '2rem' }}>Omat suljetut ilmoitukset</Typography>
+        <Typography
+        id='closedPosts'
+        sx={{ marginBottom: '1rem', fontSize: '1.3rem',
+      borderBottom: '1px solid black' }}>Omat suljetut ilmoitukset ({userPosts.filter(p => !p.isOpen).length})</Typography>
         <Box>
         {userPosts.filter(p => !p.isOpen).length > 0 ? userPosts.filter(p => !p.isOpen).map(p => (
             <Box key={p.id} sx={{ backgroundColor: 'white', color: 'black', padding: '0.5rem',
             borderRadius: '0.5rem', marginBottom: '1rem', border: '1px solid black'}}>
-                <Typography sx={{ fontSize: '1.3rem' }}>{p.title}</Typography>
-                <Typography sx={{ whiteSpace: 'break-spaces' }}>{p.description}</Typography>
+                <FeedPostCard post={p}/>
+                <Box sx={{ textAlign: 'center' }}>
                 <Button component={Link} to={`/profiili/kayttaja/muokkaa/ilmoitus/${p.id}`} >Muokkaa ilmoituksen sisältöä</Button>
                 <Button component={Link} to={`/tarjouskilpailut/${p.id}`}>Siirry ilmoitukseen</Button>
                 <Button sx={{ color: 'red' }} onClick={() => handleCloseOrOpenFeedPost(p)}>{p.isOpen ? 'Aseta ilmoitus suljetuksi'
                 : 'Aseta ilmoitus avoimeksi'}</Button>
                 <Button sx={{ color: 'red' }} onClick={() => handleDeleteFeedPost(p.id)}>Poista ilmoitus</Button>
+                  </Box>
             </Box>  
         )) : (
             <Typography>Ei vielä ilmoituksia</Typography>

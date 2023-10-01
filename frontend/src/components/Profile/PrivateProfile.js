@@ -1,5 +1,5 @@
 import React from 'react'
-import { Container, Typography, Box } from '@mui/material'
+import { Container, Typography, Button } from '@mui/material'
 import { useSelector } from 'react-redux'
 import BuyersPosts from './BuyersPosts'
 import ModifyBasicInfo from './ModifyBasicInfo'
@@ -9,6 +9,16 @@ const PrivateProfile = () => {
   const localUser = useSelector(({user}) => user)
   const user = useSelector(({users}) => users).find(u => u.id === localUser.id)
 
+  const scrollToSection = (sectionId) => {
+    const targetElement = document.getElementById(sectionId);
+
+    if (targetElement) {
+      window.scrollTo({
+        top: targetElement.offsetTop - 70,
+        behavior: 'smooth',
+      });
+    }
+  };
 
   if (!user) {
     return null
@@ -20,9 +30,12 @@ const PrivateProfile = () => {
         <Typography sx={{ marginBottom: '1rem' }}>Tietoja minusta:</Typography>
         <ModifyBasicInfo />
         <ModifyDescriptionForm />
-        <Box sx={{ border: '2px solid white', borderRadius: '0.5rem', padding: '0.5rem', marginTop: '1rem', marginBottom: '1rem' }}>
-            <Typography sx={{ whiteSpace: 'break-spaces' }}>{user.description}</Typography>
-        </Box>
+        <Typography sx={{ marginBottom: '1rem', fontSize: '1.3rem',
+      borderBottom: '1px solid black', marginTop: '1rem' }}>Navigoi</Typography>
+      <Button onClick={() => scrollToSection('openPosts')}>Omat avoimet ilmoitukset</Button>
+      <Button onClick={() => scrollToSection('portal')}>Omat portaali-ilmoitukset</Button>
+      <Button onClick={() => scrollToSection('closedPosts')}>Omat suljetut ilmoitukset</Button>
+      
         <BuyersPosts />
     </Container>
   )

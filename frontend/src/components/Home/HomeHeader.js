@@ -1,7 +1,7 @@
 import { Box, Typography, Button } from '@mui/material'
 import React from 'react'
 import { Link } from 'react-router-dom'
-import mobileAppPic from '../../Assets/mobileapp.png'
+import computertabPic from '../../Assets/computertab.png'
 import Timeline from '@mui/lab/Timeline'
 import TimelineItem, { timelineItemClasses } from '@mui/lab/TimelineItem'
 import TimelineSeparator from '@mui/lab/TimelineSeparator'
@@ -130,12 +130,13 @@ const HomeHeader = () => {
             </Button>
           </Box>
         </Box>
-        <Box sx={{ maxWidth: '25rem',
-        '@media (max-width: 442px)': {
-          maxWidth: '40vw',
+        <Box sx={{ maxWidth: '30rem', borderRadius: '0.5rem', height: 'auto',
+        boxShadow: '0.2rem 0.3rem 1.5rem black',
+        '@media (max-width: 510px)': {
+          maxWidth: '60vw',
         }, }}
           component="img"
-        src={mobileAppPic} alt='pic of mobile app'>
+        src={computertabPic} alt='pic of computer tab'>
         </Box>
       </Box>
     </Box>

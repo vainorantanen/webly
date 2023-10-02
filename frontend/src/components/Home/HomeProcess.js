@@ -3,6 +3,7 @@ import { Box, Typography, Button } from '@mui/material'
 import devicesPic from '../../Assets/devices.png'
 import laptopPic from '../../Assets/laptop.png'
 import locationsPic from '../../Assets/locations.png'
+import mobileAppPic from '../../Assets/mobileapp.png'
 import { Link } from 'react-router-dom'
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward'
 
@@ -52,8 +53,12 @@ const HomeProcess = () => {
             Jätä ilmoitus <ArrowForwardIcon />
           </Button>
         </Box>
-        <Box>
-          <img src={devicesPic} alt='pic of mobile app' style={{ maxWidth: '40vw', height: 'auto' }}/>
+        <Box sx={{ maxWidth: '23rem', height: 'auto',
+        '@media (max-width: 510px)': {
+          maxWidth: '60vw',
+        }, }}
+          component="img"
+        src={mobileAppPic} alt='pic of mobile app'>
         </Box>
       </Box>
 

@@ -1,10 +1,11 @@
 import React from 'react'
-import { Container, Typography } from '@mui/material'
+import { Box, Container, Typography } from '@mui/material'
 import FeedItems from './FeedItems'
+import developerPic from '../../Assets/developer.png'
 
 const CompaniesList = () => {
   return (
-    <Container sx={{ marginTop: '8rem', minHeight: '100vh' }}>
+    <Container sx={{ marginTop: '5rem', minHeight: '100vh' }}>
       <Typography
         sx={{
           fontSize: '2rem',
@@ -17,7 +18,28 @@ const CompaniesList = () => {
         Kehittäjät
       </Typography>
 
-      <Typography
+        <Box sx={{
+        display: 'flex',
+        flexDirection: 'row',
+        flexWrap: 'wrap',
+        justifyContent: 'center',
+        alignItems: 'center',
+        textAlign: 'flex-start',
+        gap: '1rem'
+      }}>
+        <Box sx={{
+          display: 'flex',
+          flexDirection: 'column',
+          flexWrap: 'wrap',
+          width: '40vw',
+          backgroundColor: 'white',
+          borderRadius: '1rem',
+          padding: '1rem',
+          '@media (max-width: 600px)': {
+            width: '80vw',
+          }
+        }}>
+          <Typography
         sx={{
           fontSize: '1.3rem',
           textAlign: 'center',
@@ -28,8 +50,19 @@ const CompaniesList = () => {
           },
         }}
       >
-        Tutustu alustalla toimiviin kehittäjiin. Selaa yrityksiä, freelancereitä ja muita kehittäjiä.
+        Tutustu alustalla toimiviin kehittäjiin.
+        <br></br>Selaa yrityksiä, freelancereitä ja muita kehittäjiä.
       </Typography>
+        </Box>
+        <Box sx={{ maxWidth: '23rem', height: 'auto',
+        marginBottom: '1.3rem',
+        '@media (max-width: 510px)': {
+          maxWidth: '60vw',
+        }, }}
+          component="img"
+        src={developerPic} alt='pic of mobile app'>
+        </Box>
+      </Box>
       <FeedItems />
     </Container>
   )

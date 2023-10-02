@@ -13,12 +13,14 @@ router.get('/', async (request, response) => {
 })
 
 router.post('/', userExtractor, async (request, response) => {
-  const { description, timeStamp, isApproved, price, target } = request.body
+  const { description, timeStamp, isApproved, price, target, dueDate } = request.body
+  console.log(dueDate)
   const feedBid = new FeedBid({
     description,
     timeStamp,
     isApproved,
     price,
+    dueDate
   })
 
   const user = request.user

@@ -106,7 +106,7 @@ const BuyersPosts = () => {
         </Box>
         <Typography sx={{ marginBottom: '1rem', fontSize: '1.3rem',
       borderBottom: '1px solid black' }}
-      id="portal"
+      id="portalPosts"
       >Omat portaali-ilmoitukset ({userPortalPosts.length})</Typography>
         <Box>
         {userPortalPosts.length > 0 ? userPortalPosts.map(p => (

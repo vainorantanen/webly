@@ -1,5 +1,5 @@
 import React from 'react'
-import { Typography, Box, Button,
+import { Typography, Box,
   Table,
   TableBody,
   TableCell,
@@ -10,6 +10,11 @@ import EuroIcon from '@mui/icons-material/Euro';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 
 const SingleFeedPostInfo = ({post}) => {
+
+  if (!post) {
+    return null
+  }
+
   return (
     <Box
       sx={{

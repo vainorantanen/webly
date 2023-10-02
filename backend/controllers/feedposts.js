@@ -86,7 +86,7 @@ router.put('/:id', userExtractor, async (request, response) => {
 })
 
 router.post('/:id/feedbids', userExtractor, async (request, response) => {
-  const { description, price } = request.body
+  const { description, price, dueDate } = request.body
 
   const user = request.user
 
@@ -104,6 +104,7 @@ router.post('/:id/feedbids', userExtractor, async (request, response) => {
     offeror: user.name,
     targetPost: feedPost._id,
     price,
+    dueDate
   })
 
   offerToAdd.user = user._id

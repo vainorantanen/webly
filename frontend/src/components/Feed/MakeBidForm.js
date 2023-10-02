@@ -4,27 +4,41 @@ import { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNotification } from '../../hooks'
 import { makeOffer } from '../../reducers/feedPosts'
-
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import dayjs from 'dayjs';
 
 const MakeBidForm = ({ post }) => {
   const [description, setDescription] = useState('')
   const [ price, setPrice ] = useState(0)
+  const [date, setDate] = useState('')
+  const [dateError, setDateError] = useState(false)
 
-  const user = useSelector(({ user }) => user)
   const notify = useNotification()
   
   const dispatch = useDispatch()
-  /*
-  const addFeedBid = async (newPost) => {
-    const addedBid = await feedBidService.create(newPost)
-    //notifyWith(`A new course '${newCourse.title}' by '${newCourse.company}' added`)
-    setPost({ ...post, feedBids: post.feedBids.concat(addedBid) })
+
+  const validDate = () => {
+    if (!date) {
+      return null
+    } else {
+      const dateArray = date.split('.')
+      const validDateString = dateArray.reverse().join('-')
+      const dateObject = dayjs(validDateString)
+      return dateObject
+    }
   }
-*/
+
   const handleSubmit = async (event) => {
     event.preventDefault()
+    if (!validateFields()) {
+      return
+    }
+
     try {
-      dispatch(makeOffer(post.id, { description, price }))
+      dispatch(makeOffer(post.id, { description, price,
+        dueDate: dayjs(date).format('DD.MM.YYYY').toString(), }))
       setDescription('')
       setPrice(0)
       notify('Tarjous lisätty onnistuneesti', 'success')
@@ -32,6 +46,20 @@ const MakeBidForm = ({ post }) => {
       notify('Ilmeni jokin ongelma tarjouksen teossa, yritä myöhemmin uudelleen', 'error')
     }
     
+  }
+
+  const validateFields = () => {
+    let isValid = true
+    if (!validDate) {
+      console.log('date', date)
+      notify('Aseta takaraja', 'error')
+      setDateError(true)
+      isValid = false
+    } else {
+      setDateError(false)
+    }
+
+    return isValid
   }
 
   return (
@@ -50,6 +78,7 @@ const MakeBidForm = ({ post }) => {
         <TextField
           id="price"
           label="Hintapyyntö"
+          required
           type='number'
           value={price}
           onChange={({ target }) => setPrice(target.value)}
@@ -58,12 +87,27 @@ const MakeBidForm = ({ post }) => {
         <TextField
           id="description"
           label="Kerro tarjouksestasi tarkemmin"
+          required
           multiline
           rows={12}
           value={description}
           onChange={({ target }) => setDescription(target.value)}
           sx={{ marginBottom: '1rem' }}
         />
+        {/* Question about dueDate */}
+        <Typography>Aseta tarjouskilpailullesi takaraja</Typography>
+        <LocalizationProvider dateAdapter={AdapterDayjs}>
+          <DatePicker
+            label="Aseta takaraja"
+            error={dateError}
+            value={date}
+            format="DD.MM.YYYY"
+            minDate={dayjs().add(1, 'day')}
+            onChange={(newValue) => {
+              setDate(newValue)
+            }}
+          />
+        </LocalizationProvider>
         <Button
           type="submit"
           variant="contained"

@@ -28,6 +28,10 @@ const schema = mongoose.Schema({
   offeror: {
     type: String,
     required: true
+  },
+  dueDate: {
+    type: String,
+    required: true
   }
 })
 

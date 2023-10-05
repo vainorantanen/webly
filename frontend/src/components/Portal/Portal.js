@@ -1,10 +1,9 @@
 import { Box, Container, Typography } from '@mui/material'
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import DevPortal from './DevPortal'
-import BuyerPortal from './BuyerPortal'
 import { initializePortalposts } from '../../reducers/portalPosts'
 import { initializePortalBids } from '../../reducers/portalBids'
+import PortalPostCard from './PortalPostCard'
 
 const Portal = () => {
 
@@ -21,6 +20,8 @@ const Portal = () => {
         console.error('Error fetching portal posts:', error);
     }
   }, [dispatch]);
+
+  const portalProjects = useSelector(({portalPosts}) => portalPosts)
 
   if (!user) {
     return (
@@ -43,11 +44,20 @@ const Portal = () => {
             Portaali
         </Typography>
 
-        {user && user.userType !== 'regular' ? (
-          <DevPortal />
-        ) : (
-          <BuyerPortal />
+        <Container>
+        {user.userType === 'regular' ? (
+          <Typography sx={{ fontSize: '1.2rem', marginBottom: '1rem',
+          borderBottom: '1px solid black' }}>Omat portaali-ilmoitukseni</Typography>
+        ): (
+          <Typography sx={{ fontSize: '1.2rem', marginBottom: '1rem',
+    borderBottom: '1px solid black' }}>Avoimet portaali-ilmoitukset</Typography>
         )}
+        {portalProjects.map(proj => (
+            <Box key={proj.id}>
+                <PortalPostCard post={proj}/>
+            </Box>
+        ))}
+    </Container>
     </Box>
   )
 }

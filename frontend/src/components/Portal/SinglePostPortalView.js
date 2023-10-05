@@ -58,7 +58,7 @@ const SinglePostPortalView = () => {
       )
     }
 
-    const userBidsOnPost = post.feedBids.filter(bid =>
+    const userBidsOnPost = post.portalBids.filter(bid =>
       bid.user === user.id
     );
 
@@ -118,7 +118,7 @@ const SinglePostPortalView = () => {
           <Typography sx={{ fontSize: '1.5rem', marginTop: '1rem',
     marginBottom: '1rem', borderBottom: '1px solid black', textAlign: 'center' }}>Tarjoukset</Typography>
       <Box>
-        {post.feedBids.map(offer => (
+        {post.portalBids.map(offer => (
           <Box key={offer.id}
           sx={{
             padding: '1rem',
@@ -143,7 +143,7 @@ const SinglePostPortalView = () => {
             )}
             <Typography>Hinta: {offer.price} euroa</Typography>
             <Typography><Button component={Link} to={`/kehittajat/${offer.user}`}>{offer.offeror}</Button></Typography>
-            <Typography>{offer.timeStamp.split('T')[0]}</Typography>
+            <Typography>{offer.timeStamp.split('T')[0] || 'ei tietoa'}</Typography>
             <Typography sx={{ whiteSpace: 'break-spaces' }}>{offer.description}</Typography>
             {user && user.id === post.user.id && !offer.isApproved ? (
               <Button onClick={() => handleAcceptbid(offer.id)}>Hyväksy tarjous</Button>

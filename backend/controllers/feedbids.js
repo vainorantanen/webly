@@ -8,7 +8,6 @@ router.get('/', async (request, response) => {
   const feedBids = await FeedBid
     .find({})
     .populate('user', { name: 1 })
-
   response.json(feedBids)
 })
 
@@ -57,22 +56,5 @@ router.put('/:id', async (request, response) => {
 
   response.json(updatedFeedBid)
 })
-/*
-router.delete('/:id', userExtractor, async (request, response) => {
-  const blog = await Blog.findById(request.params.id)
 
-  const user = request.user
-
-  if (!user || blog.user.toString() !== user.id.toString()) {
-    return response.status(401).json({ error: 'operation not permitted' })
-  }
-
-  user.blogs = user.blogs.filter(b => b.toString() !== blog.id.toString() )
-
-  await user.save()
-  await blog.remove()
-
-  response.status(204).end()
-})
-*/
 module.exports = router

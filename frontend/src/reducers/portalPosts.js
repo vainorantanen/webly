@@ -50,7 +50,7 @@ export const commentPortalpost = (id, comment) => {
   }
 }
 
-export const makeOffer = (id, content) => {
+export const makePortalOffer = (id, content) => {
   return async dispatch => {
     const data = await portalpostsService.makeoffer(id, content)
     dispatch(alter(data))

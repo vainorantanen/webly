@@ -1,9 +1,9 @@
-import feedbidsService from '../services/feedbids'
+import portalbidsService from '../services/portalbids'
 
 import { createSlice } from '@reduxjs/toolkit'
 
 const slice = createSlice({
-  name: 'feedBids',
+  name: 'portalBids',
   initialState: [],
   reducers: {
     set(state, { payload }) {
@@ -14,9 +14,9 @@ const slice = createSlice({
 
 const { set } = slice.actions
 
-export const initializeFeedBids = () => {
+export const initializePortalBids = () => {
   return async dispatch => {
-    const data = await feedbidsService.getAll()
+    const data = await portalbidsService.getAll()
     dispatch(set(data))
   }
 }

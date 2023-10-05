@@ -3,7 +3,7 @@ import React from 'react'
 import { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNotification } from '../../hooks'
-import { makeOffer } from '../../reducers/portalPosts'
+import { makePortalOffer } from '../../reducers/portalPosts'
 
 
 
@@ -19,7 +19,7 @@ const MakeBidForm = ({ post }) => {
   const handleSubmit = async (event) => {
     event.preventDefault()
     try {
-      dispatch(makeOffer(post.id, { description, price }))
+      dispatch(makePortalOffer(post.id, { description, price }))
       setDescription('')
       setPrice(0)
       notify('Tarjous lisätty onnistuneesti', 'success')

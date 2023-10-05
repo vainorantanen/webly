@@ -9,43 +9,25 @@ const schema = mongoose.Schema({
     type: String,
     required: true
   },
-  other: {
-    type: String
-  },
   timeStamp: {
     type: Date,
     required: true
   },
-  isOpen: {
+  isApproved: {
     type: Boolean,
     required: true
   },
-  portalBids: [
-    {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'PortalBid'
-    }
-  ],
-  question1: {
-    type: String
+  price: {
+    type: Number,
+    required: true
   },
-  question2: {
-    type: String
+  targetPost: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'FeedPost'
   },
-  question3: {
-    type: String
-  },
-  question4: {
-    type: String
-  },
-  dueDate: {
-    type: String
-  },
-  minPrice: {
-    type: Number
-  },
-  maxPrice: {
-    type: Number
+  offeror: {
+    type: String,
+    required: true
   },
 })
 
@@ -57,4 +39,4 @@ schema.set('toJSON', {
   }
 })
 
-module.exports = mongoose.model('PortalPost', schema)
+module.exports = mongoose.model('PortalBid', schema)

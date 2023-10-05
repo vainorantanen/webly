@@ -3,10 +3,7 @@ import React from 'react'
 import { useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { useNotification } from '../../hooks'
-import { addPortalBid, initializePortalBids } from '../../reducers/portalBids'
-import { makePortalOffer } from '../../reducers/portalPosts'
-
-
+import { addPortalBid } from '../../reducers/portalBids'
 
 const MakeBidForm = ({ post }) => {
   const [description, setDescription] = useState('')
@@ -23,7 +20,6 @@ const MakeBidForm = ({ post }) => {
       setDescription('')
       setPrice(0)
       notify('Tarjous lisätty onnistuneesti', 'success')
-      //dispatch(initializePortalBids())
     } catch (error) {
       notify('Ilmeni jokin ongelma tarjouksen teossa, yritä myöhemmin uudelleen', 'error')
     }

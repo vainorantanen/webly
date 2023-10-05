@@ -32,7 +32,7 @@ const Portal = () => {
   }
 
   return (
-    <Box sx={{ marginTop: '5rem', minHeight: '90vh' }}>
+    <Container sx={{ marginTop: '5rem', minHeight: '90vh' }}>
         <Typography sx={{
           fontSize: '1.8rem',
           textAlign: 'center',
@@ -58,7 +58,7 @@ const Portal = () => {
             </Box>
         ))}
     </Container>
-    </Box>
+    </Container>
   )
 }
 

@@ -33,7 +33,7 @@ const SinglePostPortalView = () => {
     );
 
   return (
-    <Box sx={{ marginTop: '5rem', minHeight: '90vh' }}>
+    <Container sx={{ marginTop: '5rem', minHeight: '90vh' }}>
       <Typography sx={{ textAlign: 'center', fontSize: '1.3rem',
     marginBottom: '1rem' }}>Portaali-ilmoitus</Typography>
       <SingleFeedPostInfo post={post}/>
@@ -72,7 +72,7 @@ const SinglePostPortalView = () => {
       </Box>
           </Box>
       )}
-    </Box>
+    </Container>
   )
 }
 

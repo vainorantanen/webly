@@ -5,10 +5,10 @@ import PortalPostCard from './PortalPostCard'
 
 const DevPortal = () => {
 
-    const portalProjects = useSelector(({ portalPosts }) => portalPosts)
+  const portalProjects = useSelector(({ portalPosts }) => portalPosts);
 
     if (!portalProjects || portalProjects.length === 0) {
-        return <Typography>Loading...</Typography>
+        return <Typography>Ei portaali-ilmoituksia</Typography>
     }
 
   return (

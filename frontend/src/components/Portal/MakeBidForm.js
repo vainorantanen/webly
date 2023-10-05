@@ -1,8 +1,9 @@
 import { Container, Typography, Button, TextField, Box } from '@mui/material'
 import React from 'react'
 import { useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import { useNotification } from '../../hooks'
+import { addPortalBid, initializePortalBids } from '../../reducers/portalBids'
 import { makePortalOffer } from '../../reducers/portalPosts'
 
 
@@ -11,7 +12,6 @@ const MakeBidForm = ({ post }) => {
   const [description, setDescription] = useState('')
   const [ price, setPrice ] = useState(0)
 
-  const user = useSelector(({ user }) => user)
   const notify = useNotification()
   
   const dispatch = useDispatch()
@@ -19,10 +19,11 @@ const MakeBidForm = ({ post }) => {
   const handleSubmit = async (event) => {
     event.preventDefault()
     try {
-      dispatch(makePortalOffer(post.id, { description, price }))
+      dispatch(addPortalBid({description, price, target: post}))
       setDescription('')
       setPrice(0)
       notify('Tarjous lisätty onnistuneesti', 'success')
+      //dispatch(initializePortalBids())
     } catch (error) {
       notify('Ilmeni jokin ongelma tarjouksen teossa, yritä myöhemmin uudelleen', 'error')
     }

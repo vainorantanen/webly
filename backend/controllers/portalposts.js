@@ -6,7 +6,12 @@ const { userExtractor } = require('../utils/middleware')
 
 router.get('/', userExtractor, async (request, response) => {
   const user = request.user
-
+  /*const portalPosts = await PortalPost
+    .find({})
+    .populate('user', { name: 1 })
+    //.populate('portalBids')
+  response.json(portalPosts)*/
+  
   if (!user) {
     response.json({
       error: 'Access denied'
@@ -17,14 +22,12 @@ router.get('/', userExtractor, async (request, response) => {
       const portalPosts = await PortalPost
         .find({})
         .populate('user', { name: 1 })
-        .populate('portalBids')
       response.json(portalPosts)
     } else {
       // muulloin vain käyttäjän itsensä tekemät postaukset
       const portalPosts = await PortalPost
         .find({ user: user._id.toString() })
         .populate('user', { name: 1 })
-        .populate('portalBids')
       response.json(portalPosts)
     }
   }
@@ -134,7 +137,7 @@ router.post('/:id/portalBids', userExtractor, async (request, response) => {
   user.portalBids = user.portalBids.concat(offerToAdd._id)
   await user.save()
 
-  updatedportalPost = await PortalPost.findById(portalPost.id).populate('user').populate({ path: 'portalBids' })
+  updatedportalPost = await PortalPost.findById(portalPost.id).populate('user') //.populate({ path: 'portalBids' })
   response.status(201).json(updatedportalPost)
 
 })

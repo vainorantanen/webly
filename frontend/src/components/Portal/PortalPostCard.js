@@ -27,6 +27,7 @@ const PortalPostCard = ({ post }) => {
         display: 'flex',
         transition: 'all 0.3s linear',
         flexDirection: 'column',
+        marginTop: '1rem',
         '@media (max-width: 820px)': {
           marginLeft: '0.1rem',
           marginRight: '0.1rem',

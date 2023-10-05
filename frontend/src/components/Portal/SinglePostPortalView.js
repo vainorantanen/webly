@@ -8,6 +8,7 @@ import { modifyBidApprovedState, removBidFromPortalpost } from '../../reducers/p
 import Togglable from '../Togglable'
 import MakeBidForm from './MakeBidForm'
 import CheckCircleIcon from '@mui/icons-material/CheckCircle'
+import { removePortalBid, updatePortalBid } from '../../reducers/portalBids'
 
 const SinglePostPortalView = () => {
     const user = useSelector(({user}) => user)
@@ -19,7 +20,8 @@ const SinglePostPortalView = () => {
     const {id} = useParams()
 
     const post = useSelector(({portalPosts}) => portalPosts).find(p => p.id === id)
-    
+    const portalBidsToShow = useSelector(({portalBids}) => portalBids)
+
   // Funktioita
   const handleAcceptbid = async (bidId) => {
     const confirmed = window.confirm('Haluatko varmasti hyväksyä tämän tarjouksen?')
@@ -27,7 +29,9 @@ const SinglePostPortalView = () => {
       return // If the user clicks "Cancel," do nothing
     }
     try {
-      dispatch(modifyBidApprovedState(bidId, post.id))
+      // tää pitää muuttaa myös käyttään eri statee
+      //dispatch(modifyBidApprovedState(bidId, post.id))
+      dispatch(updatePortalBid(bidId))
       notifyWith('Tarjous hyväksytty', 'success')
     } catch (error) {
       notifyWith('Tarjouksen hyväksyntä epäonnistui', 'error')
@@ -41,8 +45,10 @@ const SinglePostPortalView = () => {
       return // If the user clicks "Cancel," do nothing
     }
     try {
-      dispatch(removBidFromPortalpost(bidId, post.id))
+      dispatch(removePortalBid(bidId))
+      // tämä on vanha dispatch(removBidFromPortalpost(bidId, post.id))
       notifyWith('Poistettu onnistuneesti', 'success')
+      //dispatch(initializePortalBids())
     } catch (error) {
       notifyWith('Tarjouksen poisto epäonnistui', 'error')
     }
@@ -58,8 +64,9 @@ const SinglePostPortalView = () => {
       )
     }
 
-    const userBidsOnPost = post.portalBids.filter(bid =>
-      bid.user === user.id
+    // pakko hakea bidit siten, että looppaa portalbidsejä, joiden tekijä on user
+    const developerBidsOnPost = portalBidsToShow.filter(bid =>
+      bid.targetPost === id
     );
 
   return (
@@ -77,7 +84,7 @@ const SinglePostPortalView = () => {
           <Typography sx={{ fontSize: '1.5rem', marginTop: '1rem',
     marginBottom: '1rem', borderBottom: '1px solid black', textAlign: 'center' }}>Tarjouksesi tähän ilmoitukseen</Typography>
         <Box>
-          {user && userBidsOnPost.length > 0 ? userBidsOnPost.map(offer => (
+          {user && developerBidsOnPost.length > 0 ? developerBidsOnPost.map(offer => (
             <Box key={offer.id}
             sx={{
               padding: '1rem',
@@ -104,7 +111,7 @@ const SinglePostPortalView = () => {
               <Typography><Button component={Link} to={`/kehittajat/${offer.user}`}>{offer.offeror}</Button></Typography>
               <Typography>{offer.timeStamp.split('T')[0]}</Typography>
               <Typography sx={{ whiteSpace: 'break-spaces' }}>{offer.description}</Typography>
-              {user && (user.id === post.user.id || user.id === offer.user) && (
+              {user && (user.id === post.user.id || user.id === offer.user.id) && (
                 <Button sx={{ color: 'red' }} onClick={() => handleDeletebid(offer.id)}>Poista tarjous</Button>
               )}
             </Box>
@@ -118,7 +125,7 @@ const SinglePostPortalView = () => {
           <Typography sx={{ fontSize: '1.5rem', marginTop: '1rem',
     marginBottom: '1rem', borderBottom: '1px solid black', textAlign: 'center' }}>Tarjoukset</Typography>
       <Box>
-        {post.portalBids.map(offer => (
+        {portalBidsToShow && portalBidsToShow.map(offer => (
           <Box key={offer.id}
           sx={{
             padding: '1rem',
@@ -147,6 +154,9 @@ const SinglePostPortalView = () => {
             <Typography sx={{ whiteSpace: 'break-spaces' }}>{offer.description}</Typography>
             {user && user.id === post.user.id && !offer.isApproved ? (
               <Button onClick={() => handleAcceptbid(offer.id)}>Hyväksy tarjous</Button>
+            ): null}
+            {user && user.id === post.user.id && offer.isApproved ? (
+              <Button onClick={() => handleAcceptbid(offer.id)}>Epähyväksy tarjous</Button>
             ): null}
             {user && (user.id === post.user.id || user.id === offer.user) && (
               <Button sx={{ color: 'red' }} onClick={() => handleDeletebid(offer.id)}>Poista tarjous</Button>

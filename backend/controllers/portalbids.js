@@ -6,6 +6,7 @@ const { userExtractor } = require('../utils/middleware')
 
 router.get('/', userExtractor, async (request, response) => {
   const user = request.user;
+
   if (!user) {
     response.json({
       error: 'Access denied'
@@ -27,8 +28,7 @@ router.get('/', userExtractor, async (request, response) => {
       } else {
 
         // tehdään lista käyttäjän portaalipostauksien id:istä
-        const portalPostIds = listOfUsersPortalPosts.map(post => post._id.toString());
-        console.log(portalPostIds)
+        const portalPostIds = listOfUsersPortalPosts.map(post => post._id.toString())
         // Haetaan ne tarjoukset, joiden id on tässä listassa
         const portalbids = await PortalBid
           .find({ targetPost: { $in: portalPostIds } })
@@ -39,56 +39,78 @@ router.get('/', userExtractor, async (request, response) => {
 }
 })
 
-// hakee headerissa olevan käyttäjän portalbidsit
-router.get('/usersbids', userExtractor, async (request, response) => {
-  const user = request.user;
-
-  if (!user) {
-    response.json({
-      error: 'Access denied'
-    })
-  } else {
-    const portalbids = await PortalBid
-      .find({ user: user._id.toString()})
-      .populate('user', { name: 1 })
-    response.json(portalbids)
-  }
-})
-
-/*
 router.post('/', userExtractor, async (request, response) => {
-  const { description, timeStamp, isApproved, price, target, dueDate } = request.body
+  const { description, price, target } = request.body
+  const user = request.user
   const portalbid = new PortalBid({
     description,
-    timeStamp,
-    isApproved,
+    timeStamp: new Date(),
+    isApproved: false,
+    offeror: user.name,
     price,
-    dueDate
   })
-
-  const user = request.user
 
   // normikäyttäjät ei voi tarjota
   if (!user || user.userType === 'regular') {
     return response.status(401).json({ error: 'operation not permitted' })
   }
 
+  const targetPost = await PortalPost.findById(target.id)
   portalbid.user = user._id
-  portalbid.target = target.id
+  portalbid.targetPost = target.id
 
   let createdportalbid = await portalbid.save()
 
   user.portalBids = user.portalBids.concat(createdportalbid._id)
   await user.save()
 
-  const targetPost = await PortalPost.findById(target.id)
   targetPost.portalBids = targetPost.portalBids.concat(createdportalbid._id)
 
   await targetPost.save()
 
-  createdportalbid = await portalbid.findById(createdportalbid._id).populate('user')
+  createdportalbid = await PortalBid.findById(createdportalbid._id).populate('user')
 
   response.status(201).json(createdportalbid)
 })
-*/
+
+router.delete('/:id', userExtractor, async (request, response) => {
+  const portalBid = await PortalBid.findById(request.params.id)
+  const portalPost = await PortalPost.findById(portalBid.targetPost)
+
+  const user = request.user
+
+
+  // sekä lisännyt käyttäjä että postauksen omistaja voi poistaa
+  if (!user || !(portalBid.user.toString() === user.id.toString() || user.id.toString() === portalPost.user.toString())) {
+    return response.status(401).json({ error: 'operation not permitted' })
+  }
+
+  user.portalBids = user.portalBids.filter(b => b.toString() !== portalBid.id.toString() )
+  portalPost.portalBids = portalPost.portalBids.filter(b => b.toString() !== portalBid.id.toString() )
+
+  await user.save()
+  await portalPost.save()
+  await portalBid.remove()
+
+  response.status(204).end()
+})
+
+router.put('/:id/acceptBid', userExtractor, async (request, response) => {
+  const user = request.user
+
+  const portalBid = await PortalBid.findById(request.params.id)
+  const portalPost = await PortalPost.findById(portalBid.targetPost)
+
+  // vain portalPostin lisännyt käyttäjä voi hyväksyä tarjouksen
+  if (!user || !portalBid || !portalPost || portalPost.user.toString() !== user.id.toString()) {
+    return response.status(401).json({ error: 'operation not permitted' })
+  }
+  
+  let updatedportalBid = await PortalBid.findByIdAndUpdate(request.params.id,  { isApproved: !portalBid.isApproved }, { new: true })
+
+  updatedportalBid = await PortalBid.findById(updatedportalBid._id).populate('user')
+
+  response.json(updatedportalBid)
+})
+
 module.exports = router

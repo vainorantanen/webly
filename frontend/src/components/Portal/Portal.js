@@ -21,7 +21,8 @@ const Portal = () => {
     }
   }, [dispatch]);
 
-  const portalProjects = useSelector(({portalPosts}) => portalPosts)
+  const portalProjects = useSelector(({portalPosts}) => portalPosts).filter(p => p.isOpen)
+  const numberOfPortalProjects = portalProjects.length
 
   if (!user) {
     return (
@@ -47,16 +48,19 @@ const Portal = () => {
         <Container>
         {user.userType === 'regular' ? (
           <Typography sx={{ fontSize: '1.2rem', marginBottom: '1rem',
-          borderBottom: '1px solid black' }}>Omat portaali-ilmoitukseni</Typography>
+          borderBottom: '1px solid black' }}>Omat avoimet portaali-ilmoitukseni ({numberOfPortalProjects})</Typography>
         ): (
           <Typography sx={{ fontSize: '1.2rem', marginBottom: '1rem',
-    borderBottom: '1px solid black' }}>Avoimet portaali-ilmoitukset</Typography>
+    borderBottom: '1px solid black' }}>Avoimet portaali-ilmoitukset ({numberOfPortalProjects})</Typography>
         )}
-        {portalProjects.map(proj => (
+        {portalProjects && portalProjects.length > 0 ? (
+          portalProjects.map(proj => (
             <Box key={proj.id}>
                 <PortalPostCard post={proj}/>
             </Box>
-        ))}
+        ))): (
+          <Typography sx={{ textAlign: 'center' }}>Ei portaali-ilmoituksia</Typography>
+        )}
     </Container>
     </Container>
   )

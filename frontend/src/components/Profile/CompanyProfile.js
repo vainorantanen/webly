@@ -4,7 +4,7 @@ import { useSelector } from 'react-redux'
 import ModifyBasicInfo from './ModifyBasicInfo'
 import ModifyDescriptionForm from './ModifyDescriptionForm'
 import { Link } from 'react-router-dom'
-import DevFeedBids from './DevFeedBids'
+import DevBids from './DevBids'
 
 
 const CompanyProfile = () => {
@@ -23,8 +23,8 @@ const CompanyProfile = () => {
       <Button component={Link}
       to='/lisaa-blogi'
       >Lisää blogi</Button>
-      <Typography>Seuraa tekemiesi tarjousten tilannetta</Typography>
-      <DevFeedBids />
+      <Typography sx={{ fontSize: '1.2rem', borderBottom: '1px solid black' }}>Seuraa tekemiesi tarjousten tilannetta</Typography>
+      <DevBids />
     </Container>
   )
 }

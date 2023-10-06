@@ -4,10 +4,8 @@ import EuroIcon from '@mui/icons-material/Euro';
 import BusinessIcon from '@mui/icons-material/Business';
 import StartIcon from '@mui/icons-material/Start';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
-import DeleteIcon from '@mui/icons-material/Delete';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle'
 import { useSelector } from 'react-redux';
-import { Link } from 'react-router-dom';
 
 const SingleBidCard = ({offer}) => {
 
@@ -54,9 +52,6 @@ const SingleBidCard = ({offer}) => {
             <Typography><EuroIcon />Tarjoushinta: {offer.price} euroa</Typography>
             <Typography><StartIcon />Tarjous jätetty: {offer.timeStamp.split('T')[0].split('-').reverse().join('.')}</Typography>
             <Typography><AccessTimeIcon />Tarjous voimassa: {offer.dueDate || 'Ei tietoa'}</Typography>
-            {user && user.id === offer.user.id && (
-              <Button>Siirry ilmoitukseen</Button>
-            )}
             </Box>
             <Box sx={{ width: '65%',
             '@media (max-width: 650px)': {

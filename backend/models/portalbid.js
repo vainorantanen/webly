@@ -29,6 +29,10 @@ const schema = mongoose.Schema({
     type: String,
     required: true
   },
+  dueDate: {
+    type: String,
+    required: true
+  }
 })
 
 schema.set('toJSON', {

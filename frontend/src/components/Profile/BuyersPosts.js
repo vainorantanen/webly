@@ -7,6 +7,10 @@ import { removeFeedPost, updateFeedPost } from '../../reducers/feedPosts'
 import { removePortalpost, updatePortalpost } from '../../reducers/portalPosts'
 import FeedPostCard from '../Feed/FeedPostCard'
 import PortalPostCard from '../Portal/PortalPostCard'
+import DeleteIcon from '@mui/icons-material/Delete';
+import EditIcon from '@mui/icons-material/Edit';
+import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
+import ChangeCircleIcon from '@mui/icons-material/ChangeCircle';
 
 const BuyersPosts = () => {
     const notify = useNotification()
@@ -93,11 +97,11 @@ const BuyersPosts = () => {
             borderRadius: '0.5rem', marginBottom: '1rem', border: '1px solid black'}}>
                 <FeedPostCard post={p}/>
                 <Box sx={{ textAlign: 'center' }}>
-                <Button component={Link} to={`/profiili/kayttaja/muokkaa/ilmoitus/${p.id}`} >Muokkaa ilmoituksen sisältöä</Button>
-                <Button component={Link} to={`/tarjouskilpailut/${p.id}`}>Siirry ilmoitukseen</Button>
+                <Button component={Link} to={`/profiili/kayttaja/muokkaa/ilmoitus/${p.id}`} >Muokkaa ilmoituksen sisältöä<EditIcon /></Button>
+                <Button component={Link} to={`/tarjouskilpailut/${p.id}`}>Siirry ilmoitukseen<ArrowForwardIcon /></Button>
                 <Button sx={{ color: 'red' }} onClick={() => handleCloseOrOpenFeedPost(p)}>{p.isOpen ? 'Aseta ilmoitus suljetuksi'
-                : 'Aseta ilmoitus avoimeksi'}</Button>
-                <Button sx={{ color: 'red' }} onClick={() => handleDeleteFeedPost(p.id)}>Poista ilmoitus</Button>
+                : 'Aseta ilmoitus avoimeksi'}<ChangeCircleIcon /></Button>
+                <Button sx={{ color: 'red' }} onClick={() => handleDeleteFeedPost(p.id)}>Poista ilmoitus<DeleteIcon /></Button>
                   </Box>
             </Box>  
         )) : (
@@ -114,11 +118,11 @@ const BuyersPosts = () => {
             borderRadius: '0.5rem', marginBottom: '1rem', border: '1px solid black'}}>
                 <PortalPostCard post={p}/>
                 <Box sx={{ textAlign: 'center' }}>
-                <Button component={Link} to={`/profiili/kayttaja/muokkaa/portaaliilmoitus/${p.id}`} >Muokkaa ilmoituksen sisältöä</Button>
-                <Button component={Link} to={`/portaali/ilmoitukset/${p.id}`}>Siirry ilmoitukseen</Button>
+                <Button component={Link} to={`/profiili/kayttaja/muokkaa/portaaliilmoitus/${p.id}`} >Muokkaa ilmoituksen sisältöä<EditIcon/></Button>
+                <Button component={Link} to={`/portaali/ilmoitukset/${p.id}`}>Siirry ilmoitukseen<ArrowForwardIcon /></Button>
                 <Button sx={{ color: 'red' }} onClick={() => handleCloseOrOpenPortalPost(p)}>{p.isOpen ? 'Aseta ilmoitus suljetuksi'
-                : 'Aseta ilmoitus avoimeksi'}</Button>
-                <Button sx={{ color: 'red' }} onClick={() => handleDeletePortalPost(p.id)}>Poista ilmoitus</Button>
+                : 'Aseta ilmoitus avoimeksi'}<ChangeCircleIcon /></Button>
+                <Button sx={{ color: 'red' }} onClick={() => handleDeletePortalPost(p.id)}>Poista ilmoitus<DeleteIcon /></Button>
                   </Box>
             </Box>  
         )) : (
@@ -135,11 +139,11 @@ const BuyersPosts = () => {
             borderRadius: '0.5rem', marginBottom: '1rem', border: '1px solid black'}}>
                 <FeedPostCard post={p}/>
                 <Box sx={{ textAlign: 'center' }}>
-                <Button component={Link} to={`/profiili/kayttaja/muokkaa/ilmoitus/${p.id}`} >Muokkaa ilmoituksen sisältöä</Button>
-                <Button component={Link} to={`/tarjouskilpailut/${p.id}`}>Siirry ilmoitukseen</Button>
+                <Button component={Link} to={`/profiili/kayttaja/muokkaa/ilmoitus/${p.id}`} >Muokkaa ilmoituksen sisältöä<EditIcon /></Button>
+                <Button component={Link} to={`/tarjouskilpailut/${p.id}`}>Siirry ilmoitukseen<ArrowForwardIcon /></Button>
                 <Button sx={{ color: 'red' }} onClick={() => handleCloseOrOpenFeedPost(p)}>{p.isOpen ? 'Aseta ilmoitus suljetuksi'
-                : 'Aseta ilmoitus avoimeksi'}</Button>
-                <Button sx={{ color: 'red' }} onClick={() => handleDeleteFeedPost(p.id)}>Poista ilmoitus</Button>
+                : 'Aseta ilmoitus avoimeksi'}<ChangeCircleIcon /></Button>
+                <Button sx={{ color: 'red' }} onClick={() => handleDeleteFeedPost(p.id)}>Poista ilmoitus<DeleteIcon /></Button>
                   </Box>
             </Box>  
         )) : (

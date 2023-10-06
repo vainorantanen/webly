@@ -40,7 +40,7 @@ router.get('/', userExtractor, async (request, response) => {
 })
 
 router.post('/', userExtractor, async (request, response) => {
-  const { description, price, target } = request.body
+  const { description, price, target, dueDate } = request.body
   const user = request.user
   const portalbid = new PortalBid({
     description,
@@ -48,6 +48,7 @@ router.post('/', userExtractor, async (request, response) => {
     isApproved: false,
     offeror: user.name,
     price,
+    dueDate
   })
 
   // normikäyttäjät ei voi tarjota

@@ -95,7 +95,7 @@ const MakeBidForm = ({ post }) => {
           sx={{ marginBottom: '1rem' }}
         />
         {/* Question about dueDate */}
-        <Typography>Aseta tarjouskilpailullesi takaraja</Typography>
+        <Typography>Aseta tarjouksesi voimassaololle takaraja</Typography>
         <LocalizationProvider dateAdapter={AdapterDayjs}>
           <DatePicker
             label="Aseta takaraja"

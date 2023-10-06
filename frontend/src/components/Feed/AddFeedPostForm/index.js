@@ -42,18 +42,13 @@ const AddFeedPostForm = () => {
     }
     
     try {
-      if (formData.isOpen === true) {
+      if (formData.isOpenFeedPost === true) {
         const result = await dispatch(addFeedPost(formData));
-        console.log(result)
         if (result && result.error) {
-          console.log('errori handlessa', result.error)
           notify('Tapahtui virhe backendissa', 'error')
           return
         }
-        //dispatch(addFeedPost(formData))
-        console.log(formData)
-        console.log('addFeedPost')
-      } else if (formData.isOpen === false) {
+      } else if (formData.isOpenFeedPost === false) {
         dispatch(addPortalpost(formData))
         console.log('addPortalpost')
       }

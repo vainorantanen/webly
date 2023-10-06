@@ -10,6 +10,7 @@ import StartIcon from '@mui/icons-material/Start';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { removePortalBid, updatePortalBid } from '../../reducers/portalBids'
+import { formatDate } from '../../Functions/formatDate'
 
 const PortalBidCard = ({offer, post}) => {
 
@@ -89,10 +90,10 @@ const PortalBidCard = ({offer, post}) => {
             {offer.isApproved && (
               <Typography sx={{ fontSize: '1.2rem' }}>Tarjous hyväksytty <CheckCircleIcon/></Typography>
             )}
-            <Typography><EuroIcon />Tarjoushinta: {offer.price} euroa</Typography>
+            <Typography><EuroIcon />Hinta-arvio: {offer.minPrice} - {offer.maxPrice} euroa</Typography>
             <Typography><BusinessIcon />Tarjoaja: <Button component={Link} to={`/kehittajat/${offer.user.id}`}>{offer.offeror}</Button></Typography>
-            <Typography><StartIcon />Tarjous jätetty: {offer.timeStamp.split('T')[0].split('-').reverse().join('.')}</Typography>
-            <Typography><AccessTimeIcon />Tarjous voimassa: {offer.dueDate || 'Ei tietoa'}</Typography>
+            <Typography><StartIcon />Tarjous jätetty: {formatDate(offer.timeStamp)}</Typography>
+            <Typography><AccessTimeIcon />Tarjous voimassa: {formatDate(offer.dueDate) || 'Ei tietoa'}</Typography>
             {user && user.id === post.user.id && !offer.isApproved ? (
               <Button onClick={() => handleAcceptbid(offer.id)}>Hyväksy tarjous<CheckCircleIcon /></Button>
             ): null}

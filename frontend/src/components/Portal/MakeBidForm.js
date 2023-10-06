@@ -1,7 +1,7 @@
-import { Container, Typography, Button, TextField, Box } from '@mui/material'
+import { Container, Typography, Button, TextField, Box, InputAdornment } from '@mui/material'
 import React from 'react'
 import { useState } from 'react'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { useNotification } from '../../hooks'
 import { addPortalBid } from '../../reducers/portalBids'
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
@@ -11,34 +11,29 @@ import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 
 const MakeBidForm = ({ post }) => {
   const [description, setDescription] = useState('')
-  const [ price, setPrice ] = useState(0)
-  const [date, setDate] = useState('')
+  const [ minPrice, setMinPrice ] = useState(0)
+  const [date, setDate] = useState(dayjs().add(1, 'day'))
   const [dateError, setDateError] = useState(false)
+  const [ maxPrice, setMaxPrice ] = useState(0)
 
   const notify = useNotification()
   
   const dispatch = useDispatch()
-
-  const validDate = () => {
-    if (!date) {
-      return null
-    } else {
-      const dateArray = date.split('.')
-      const validDateString = dateArray.reverse().join('-')
-      const dateObject = dayjs(validDateString)
-      return dateObject
-    }
-  }
+  const user = useSelector(({user}) => user)
 
   const handleSubmit = async (event) => {
     event.preventDefault()
-    if (!validateFields()) {
+    if (user.disabled) {
+      notify('Käyttäjäsi on disabloitu!', 'error')
       return
     }
+
     try {
-      dispatch(addPortalBid({description, price, target: post, dueDate: date}))
+      dispatch(addPortalBid({description, minPrice, maxPrice, target: post,
+        dueDate: dayjs(date)}))
       setDescription('')
-      setPrice(0)
+      setMinPrice(0)
+      setMaxPrice(0)
       notify('Tarjous lisätty onnistuneesti', 'success')
     } catch (error) {
       notify('Ilmeni jokin ongelma tarjouksen teossa, yritä myöhemmin uudelleen', 'error')
@@ -46,22 +41,10 @@ const MakeBidForm = ({ post }) => {
     
   }
 
-  const validateFields = () => {
-    let isValid = true
-    if (!validDate) {
-      console.log('date', date)
-      notify('Aseta takaraja', 'error')
-      setDateError(true)
-      isValid = false
-    } else {
-      setDateError(false)
-    }
-
-    return isValid
-  }
-
   return (
-    <Container sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
+    <Container sx={{ display: 'flex', flexDirection: 'column', 
+    justifyContent: 'center', alignItems: 'center', background: '#f0f0f0',
+    borderRadius: '0.5rem' }}>
       <Typography sx={{ marginTop: '1rem' }}>Tarjoa</Typography>
       <Box component="form" onSubmit={handleSubmit}
         sx={{
@@ -73,14 +56,46 @@ const MakeBidForm = ({ post }) => {
           maxWidth: '30rem',
         }}
       >
-        <TextField
-          id="price"
-          label="Hintapyyntö"
-          type='number'
-          value={price}
-          onChange={({ target }) => setPrice(target.value)}
-          sx={{ marginBottom: '1rem' }}
-        />
+        <Typography sx={{ marginBottom: '1rem' }}>Hinta-arvio (esitä projektisi arvioitu hinta)</Typography>
+        {(minPrice < 0 || maxPrice < 0 || maxPrice < minPrice
+        || isNaN(minPrice) || isNaN(maxPrice)) && (
+          <Typography sx={{ color: 'red' }}>Tarkista hinta-arviosi</Typography>
+        )}
+        <Box sx={{ display: 'flex', alignItems: 'flex-end' }}>
+          <TextField
+            label="Minimihinta"
+            type='number'
+            id="minPrice"
+            sx={{ m: 1, width: '25ch' }}
+            InputProps={{
+              startAdornment: <InputAdornment position="start">€</InputAdornment>,
+            }}
+            value={minPrice}
+            required
+            onChange={({target}) => setMinPrice(parseInt(target.value))}
+          />
+          <Typography
+            sx={{
+              m: 1,
+              fontSize: '1.5rem',
+              fontWeight: 'bold',
+              marginBottom: '1.3rem',
+            }}
+          >-</Typography>
+          <TextField
+            label="Maksimihinta"
+            type='number'
+            id="maxPrice"
+            sx={{ m: 1, width: '25ch' }}
+            InputProps={{
+              startAdornment: <InputAdornment position="start">€</InputAdornment>,
+            }}
+            value={maxPrice}
+            required
+            onChange={({ target }) => setMaxPrice(parseInt(target.value))}
+          />
+        </Box>
+        <Typography sx={{ marginTop: '1rem', marginBottom: '1rem' }}>Kuvaus</Typography>
         <TextField
           id="description"
           label="Kerro tarjouksestasi tarkemmin"
@@ -97,6 +112,7 @@ const MakeBidForm = ({ post }) => {
             error={dateError}
             value={date}
             format="DD.MM.YYYY"
+            required
             minDate={dayjs().add(1, 'day')}
             onChange={(newValue) => {
               setDate(newValue)
@@ -108,6 +124,8 @@ const MakeBidForm = ({ post }) => {
           variant="contained"
           color="primary"
           fullWidth
+          disabled={(minPrice < 0 || maxPrice < 0 || maxPrice < minPrice
+            || isNaN(minPrice) || isNaN(maxPrice)) || dateError || !description}
           sx={{ backgroundColor: 'blue', color: 'white',
             transition: 'transform 0.3s',
             marginTop: '1rem',

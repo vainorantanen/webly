@@ -46,7 +46,8 @@ const MakeBidForm = ({ post }) => {
   }
 
   return (
-    <Container sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
+    <Container sx={{ display: 'flex', flexDirection: 'column',
+    justifyContent: 'center', alignItems: 'center', background: '#f0f0f0', borderRadius: '0.5rem' }}>
       <Typography sx={{ marginTop: '1rem' }}>Tarjoa</Typography>
       <Box component="form" onSubmit={handleSubmit}
         sx={{

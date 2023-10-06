@@ -1,5 +1,6 @@
 import { Container, Paper, Typography } from "@mui/material"
 import { useSelector } from "react-redux"
+import { formatDate } from "../../../Functions/formatDate"
 
 const FormSummary = () => {
   const formData = useSelector(state => state.formData)
@@ -23,8 +24,8 @@ const FormSummary = () => {
         <Typography>Muuta: {formData.other}</Typography>
 
         <Typography variant="h4" >Ehdot</Typography>
-        <Typography>Tarjouskilpailun takaraja: {formData.date}</Typography>
-        <Typography>Ilmoitus on auki: {formData.isOpen ? 'Kyllä' : 'Ei'}</Typography>
+        <Typography>Tarjouskilpailun takaraja: {formatDate(formData.date)}</Typography>
+        <Typography>Ilmoitus julkaistaan avoimien ilmoitusten palstalle: {formData.isOpenFeedPost ? 'Kyllä' : 'Ei'}</Typography>
         <Typography>Hintahaarukka: {formData.minPrice}€ - {formData.maxPrice}€</Typography>
       </Paper>
     </Container>

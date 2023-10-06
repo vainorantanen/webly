@@ -14,12 +14,18 @@ router.get('/', async (request, response) => {
 })
 
 router.post('/', userExtractor, async (request, response) => {
-  const { description, other, question1, question1Other, question2, question2Other, question3, question4, date, minPrice, maxPrice } = request.body
+  const { description, other, question1, question1Other, question2,
+ question2Other, question3, question4, date, minPrice, maxPrice } = request.body
+
+  const today = new Date()
+
+  if (date < today) {
+    return response.status(400).json({error: 'date wrong'})
+  }
 
   const feedPost = new FeedPost({
     description,
-    timeStamp: new Date(),
-    isOpen: true,
+    timeStamp: today,
     question1,
     question2,
     question3,

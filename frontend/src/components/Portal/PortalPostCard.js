@@ -9,6 +9,7 @@ import { Typography, Box, Button,
 import { Link } from 'react-router-dom'
 import EuroIcon from '@mui/icons-material/Euro';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
+import { formatDate } from '../../Functions/formatDate';
 
 const PortalPostCard = ({ post }) => {
 
@@ -49,14 +50,14 @@ const PortalPostCard = ({ post }) => {
           )}
           <Typography>{post.user.name}</Typography>
           {post.timeStamp ? (
-            <Typography>Julkaistu {post.timeStamp.split('T')[0]}</Typography>
+            <Typography>Julkaistu {formatDate(post.timeStamp)}</Typography>
           ) : (
             <Typography>Julkaistu yli vuosi sitten</Typography>
           )}
           </Box>
           <Box>
           <Typography><EuroIcon />{post.minPrice} - {post.maxPrice}</Typography>
-          <Typography><AccessTimeIcon />{post.dueDate}</Typography>
+          <Typography><AccessTimeIcon />{formatDate(post.dueDate)}</Typography>
           </Box>
       </Box>
 

@@ -23,19 +23,9 @@ import { useDispatch, useSelector } from 'react-redux';
 const TermsForm = forwardRef((props, ref) => {
   const formData = useSelector(state => state.formData)
 
-  const validDate = () => {
-    if (!formData.date) {
-      return null
-    } else {
-      const dateArray = formData.date.split('.')
-      const validDateString = dateArray.reverse().join('-')
-      const dateObject = dayjs(validDateString)
-      return dateObject
-    }
-  }
-
-  const [date, setDate] = useState(validDate())
-  const [isOpen, setIsOpen] = useState(formData.isOpen)
+  const [date, setDate] = useState(dayjs().add(1, 'day'))
+  // onko julkaisu avoin vai portaali-ilmoitus
+  const [isOpenFeedPost, setIsOpenFeedPost] = useState(formData.isOpenFeedPost)
   const [minPrice, setMinPrice] = useState(formData.minPrice)
   const [maxPrice, setMaxPrice] = useState(formData.maxPrice)
 
@@ -84,8 +74,8 @@ const TermsForm = forwardRef((props, ref) => {
       return
     }
     dispatch(update({
-      date: dayjs(date).format('DD.MM.YYYY').toString(),
-      isOpen,
+      date: dayjs(date).toISOString(),
+      isOpenFeedPost,
       minPrice,
       maxPrice
     }))
@@ -97,7 +87,7 @@ const TermsForm = forwardRef((props, ref) => {
   }))
 
   const handleRadioChange = (event) => {
-    setIsOpen(event.target.value === 'true')
+    setIsOpenFeedPost(event.target.value === 'true')
   }
 
   return (
@@ -132,6 +122,7 @@ const TermsForm = forwardRef((props, ref) => {
             error={dateError}
             value={date}
             format="DD.MM.YYYY"
+            required
             minDate={dayjs().add(1, 'day')}
             onChange={(newValue) => {
               setDate(newValue)
@@ -140,17 +131,18 @@ const TermsForm = forwardRef((props, ref) => {
         </LocalizationProvider>
 
         {/* Question 2 */}
-        <Typography>Avoin kilpailu (Jos kilpailu on avoin tarjoukset ovat julkisia.)</Typography>
+        <Typography>Avoin ilmoitus (Jos kilpailu on avoin, tarjoukset ovat julkisia.)
+        </Typography>
         <RadioGroup
-            aria-label="isOpen"
-            name="isOpen"
+            aria-label="isOpenFeedPost"
+            name="isOpenFeedPost"
             required
-            value={isOpen}
+            value={isOpenFeedPost}
             sx={{ marginBottom: '2rem' }}
             onChange={handleRadioChange}
           >
-            <FormControlLabel value='true' control={<Radio />} label="Kyllä" />
-            <FormControlLabel value='false' control={<Radio />} label="Ei" />
+            <FormControlLabel value='true' control={<Radio />} label="Kyllä (Ilmoitus menee kaikkien nähtäville, avoimien ilmoitusten sivulle)" />
+            <FormControlLabel value='false' control={<Radio />} label="Ei (Ilmoitus menee vain toimittajaportaaliin)" />
           </RadioGroup>
         {/* Question 3 */}
         <Typography>Hintahaarukka (esitä hintatoiveesi projektista)</Typography>

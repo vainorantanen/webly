@@ -13,7 +13,7 @@ const SinglePostPortalView = () => {
     const {id} = useParams()
 
     const post = useSelector(({portalPosts}) => portalPosts).find(p => p.id === id)
-    const portalBidsToShow = useSelector(({portalBids}) => portalBids)
+    const portalBidsToShow = useSelector(({portalBids}) => portalBids).filter(bid => bid.targetPost === id)
 
   // Funktioita
   
@@ -28,9 +28,9 @@ const SinglePostPortalView = () => {
     }
 
     // pakko hakea bidit siten, että looppaa portalbidsejä, joiden tekijä on user
-    const developerBidsOnPost = portalBidsToShow.filter(bid =>
-      bid.targetPost === id
-    );
+    //const developerBidsOnPost = portalBidsToShow.filter(bid =>
+      //bid.targetPost === id
+    //);
 
   return (
     <Container sx={{ marginTop: '5rem', minHeight: '90vh' }}>
@@ -47,7 +47,7 @@ const SinglePostPortalView = () => {
           <Typography sx={{ fontSize: '1.5rem', marginTop: '1rem',
     marginBottom: '1rem', borderBottom: '1px solid black', textAlign: 'center' }}>Tarjouksesi tähän ilmoitukseen</Typography>
         <Box>
-          {user && developerBidsOnPost.length > 0 ? developerBidsOnPost.map(offer => (
+          {user && portalBidsToShow.length > 0 ? portalBidsToShow.map(offer => (
             <Box key={offer.id}>
               <PortalBidCard offer={offer} post={post}/>
             </Box>

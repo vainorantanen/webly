@@ -38,14 +38,20 @@ router.get('/', userExtractor, async (request, response) => {
 })
 
 router.post('/', userExtractor, async (request, response) => {
-  const { description, price, target, dueDate } = request.body
+  const { description, minPrice, maxPrice, target, dueDate } = request.body
   const user = request.user
+  
+  const today = new Date()
+  if (dueDate < today) {
+    return response.status(400).json({error: 'duedate wrong'})
+  }
+
   const portalbid = new PortalBid({
     description,
-    timeStamp: new Date(),
-    isApproved: false,
+    timeStamp: today,
     offeror: user.name,
-    price,
+    minPrice,
+    maxPrice,
     dueDate
   })
 

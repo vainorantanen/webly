@@ -2,7 +2,7 @@ const router = require('express').Router()
 const FeedPost = require('../models/feedpost')
 const FeedBid = require('../models/feedbid')
 
-const { userExtractor } = require('../utils/middleware')
+const { userExtractor, isUserDisabled } = require('../utils/middleware')
 const User = require('../models/user')
 
 router.get('/', async (request, response) => {
@@ -54,11 +54,11 @@ router.post('/', userExtractor, async (request, response) => {
 
   const user = request.user
 
-  const userFromDb = await User.findById(user.id)
+  const checkIfUserDisabled = await isUserDisabled(user)
 
   // kehittäjät ei voi lisätä näitä avoimia ilmoituksia, devpostit on erikseen
   // tarkistetaan myös käyttäjä tietokannasta, että onko disabloitu
-  if (!user || user.userType !== 'regular' || user.disabled || !userFromDb || userFromDb.disabled) {
+  if (!user || user.userType !== 'regular' || checkIfUserDisabled === true) {
     return response.status(401).json({ error: 'operation not permitted' })
   }
 

@@ -10,6 +10,8 @@ import {
 import { useDispatch, useSelector } from 'react-redux'
 import { useNotification } from '../../hooks'
 import { addBlog } from '../../reducers/blogs'
+import LoginSuggestion from '../LoginSuggestion'
+import UserDisabledText from '../UserDisabledText'
 
 const AddBlogForm = () => {
   const [description, setDescription] = useState('')
@@ -22,11 +24,22 @@ const AddBlogForm = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault()
+
+    if (user.disabled) {
+      notify('Käyttäjäsi on disabloitu!', 'error')
+      return
+    }
+
     try {
-      dispatch(addBlog({title, description}))
-      notify('Blogi lisätty onnistuneesti', 'success')
-      setDescription('')
-      setTitle('')
+      const result = await dispatch(addBlog({title, description}))
+        if (result && result.error) {
+          notify('Tapahtui virhe backendissa', 'error')
+          return
+        } else {
+          notify('Blogi lisätty onnistuneesti', 'success')
+          setDescription('')
+          setTitle('')
+          }
     } catch (error) {
       notify('Ilmeni jokin ongelma, yritä myöhemmin uudelleen', 'error')
     }
@@ -35,19 +48,14 @@ const AddBlogForm = () => {
 
   if (!user || user.userType === 'regular') {
     return (
-      <Container sx={{ marginTop: '8rem', minHeight: '100vh' }}>
-        <Typography
-          sx={{
-            fontSize: '1.3rem',
-            textAlign: 'center',
-            marginTop: '2rem',
-            '@media (max-width: 442px)': {
-              fontSize: '1rem',
-            },
-          }}
-        >
-          Kirjaudu kehittäjätilillä sisään lisätäksesi ilmoitus.
-        </Typography>
+      <LoginSuggestion />
+    )
+  }
+
+  if (user && user.disabled) {
+    return (
+      <Container sx={{ marginTop: '6rem' }}>
+        <UserDisabledText />
       </Container>
     )
   }

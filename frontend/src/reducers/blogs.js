@@ -32,8 +32,13 @@ export const initializeBlogs = () => {
 
 export const addBlog = (object) => {
   return async dispatch => {
-    const data = await blogsService.create(object)
-    dispatch(add(data))
+    try {
+      const data = await blogsService.create(object)
+      dispatch(add(data))
+    } catch (error) {
+      // Handle the error and return it for displaying on the frontend.
+      return { error: 'error adding data' };
+    }
   }
 }
 

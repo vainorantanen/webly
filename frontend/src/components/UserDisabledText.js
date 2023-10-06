@@ -3,18 +3,13 @@ import React from 'react'
 
 const UserDisabledText = () => {
   return (
-    <Container sx={{ marginTop: '8rem', minHeight: '100vh', textAlign: 'center', }}>
-        <Typography
-          sx={{
-            fontSize: '1.3rem',
-            '@media (max-width: 442px)': {
-              fontSize: '1rem',
-            },
-          }}
-        >
-          Käyttäjäsi on disabloitu.<br></br>
-          Tarkempia tietoja varten ota yhteyttä ylläpitoon webline@webline.fi
-        </Typography>
+    <Container>
+          <Typography>Käyttäjäsi on disabloitu, et voi suorittaa tätä toimintoa</Typography>
+            <ul>
+              <li><Typography>Jos sinulla on kysyttävää, ota yhteyttä webline@webline.fi</Typography></li>
+              <li><Typography>Jos tiedät, että disablointisi on poistettu, mutta törmäät
+                silti tähän virheeseen: Yritä päivittää sivu ja kirjautua uudelleen sisään</Typography></li>
+            </ul>
       </Container>
   )
 }

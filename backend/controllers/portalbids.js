@@ -8,9 +8,7 @@ router.get('/', userExtractor, async (request, response) => {
   const user = request.user;
 
   if (!user) {
-    response.json({
-      error: 'Access denied'
-    })
+    response.json([])
   } else {
     // jos kyseessä on yritys, niin haetaan kaikki yrityksen tekemät tarjoukset
     if (user.userType !== 'regular') {

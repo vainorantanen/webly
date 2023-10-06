@@ -6,16 +6,8 @@ const { userExtractor } = require('../utils/middleware')
 
 router.get('/', userExtractor, async (request, response) => {
   const user = request.user
-  /*const portalPosts = await PortalPost
-    .find({})
-    .populate('user', { name: 1 })
-    //.populate('portalBids')
-  response.json(portalPosts)*/
-  
   if (!user) {
-    response.json({
-      error: 'Access denied'
-    })
+    response.json([])
   } else {
     // jos kyseessä on firma, joka maksaa, niin näytetään kaikki
     if (user.userType !== 'regular') {

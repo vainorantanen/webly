@@ -19,6 +19,8 @@ const MakeBidForm = ({ post }) => {
   
   const dispatch = useDispatch()
 
+  const user = useSelector(({user}) => user)
+
   const validDate = () => {
     if (!date) {
       return null
@@ -33,6 +35,11 @@ const MakeBidForm = ({ post }) => {
   const handleSubmit = async (event) => {
     event.preventDefault()
     if (!validateFields()) {
+      return
+    }
+
+    if (user.disabled) {
+      notify('Käyttäjäsi on disabloitu!', 'error')
       return
     }
 

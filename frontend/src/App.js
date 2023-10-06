@@ -39,6 +39,7 @@ import AddRatingForm from './components/RatingForm/AddRatingForm'
 import AllBlogsList from './components/Blogs/AllBlogsList'
 import SingleBlogView from './components/Blogs/SingleBlogView'
 import SingleDevPostView from './components/DevelopersPosts/SingleDevPostView'
+import AdminPanel from './components/AdminPanel/AdminPanel'
 
 const theme = createTheme({
   typography: {
@@ -90,6 +91,7 @@ const App = () => {
           <Route path='/anna-arvostelu/:id' element={<AddRatingForm />} />
           <Route path='/blogit' element={<AllBlogsList />} />
           <Route path='/blogit/:id' element={<SingleBlogView /> } />
+          <Route path='/adminpanel' element={<AdminPanel />} />
         </Routes>
         <Footer />
       </Box>

@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { initializePortalposts } from '../../reducers/portalPosts'
 import { initializePortalBids } from '../../reducers/portalBids'
 import PortalPostCard from './PortalPostCard'
+import LoginSuggestion from '../LoginSuggestion'
 
 const Portal = () => {
 
@@ -26,9 +27,7 @@ const Portal = () => {
 
   if (!user) {
     return (
-      <Container sx={{ marginTop: '5rem', minHeight: '90vh' }}>
-        <Typography>Kirjaudu sisään nähdäksesi portaali</Typography>
-      </Container>
+      <LoginSuggestion />
     )
   }
 

@@ -14,6 +14,8 @@ import {
 import { useDispatch, useSelector } from 'react-redux'
 import { useNotification } from '../../../hooks'
 import { addDevPost } from '../../../reducers/devsPosts'
+import LoginSuggestion from '../../LoginSuggestion'
+import UserDisabledText from '../../UserDisabledText'
 
 
 const AddDevPost = () => {
@@ -54,7 +56,15 @@ const AddDevPost = () => {
   }
 
   if (!user) {
-    return null
+    return (
+      <LoginSuggestion />
+    )
+  }
+
+  if (user && user.disabled) {
+    return (
+      <UserDisabledText />
+    )
   }
 
   return (

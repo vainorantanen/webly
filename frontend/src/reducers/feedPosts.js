@@ -32,8 +32,15 @@ export const initializeFeedPosts = () => {
 
 export const addFeedPost = (object) => {
   return async dispatch => {
-    const data = await feedPostService.create(object)
-    dispatch(add(data))
+    try {
+      const data = await feedPostService.create(object);
+      console.log(data)
+      dispatch(add(data));
+    } catch (error) {
+      console.log('error loopissa')
+      // Handle the error and return it for displaying on the frontend.
+      return { error: 'error adding data' };
+    }
   }
 }
 

@@ -3,6 +3,7 @@ const FeedPost = require('../models/feedpost')
 const FeedBid = require('../models/feedbid')
 
 const { userExtractor } = require('../utils/middleware')
+const User = require('../models/user')
 
 router.get('/', async (request, response) => {
   const feedPosts = await FeedPost
@@ -14,7 +15,6 @@ router.get('/', async (request, response) => {
 
 router.post('/', userExtractor, async (request, response) => {
   const { description, other, question1, question1Other, question2, question2Other, question3, question4, date, minPrice, maxPrice } = request.body
-
 
   const feedPost = new FeedPost({
     description,
@@ -48,8 +48,11 @@ router.post('/', userExtractor, async (request, response) => {
 
   const user = request.user
 
+  const userFromDb = await User.findById(user.id)
+
   // kehittäjät ei voi lisätä näitä avoimia ilmoituksia, devpostit on erikseen
-  if (!user || !(user.userType === 'regular')) {
+  // tarkistetaan myös käyttäjä tietokannasta, että onko disabloitu
+  if (!user || user.userType !== 'regular' || user.disabled || !userFromDb || userFromDb.disabled) {
     return response.status(401).json({ error: 'operation not permitted' })
   }
 

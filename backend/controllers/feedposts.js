@@ -3,6 +3,7 @@ const FeedPost = require('../models/feedpost')
 const FeedBid = require('../models/feedbid')
 
 const { userExtractor } = require('../utils/middleware')
+const User = require('../models/user')
 
 router.get('/', async (request, response) => {
   const feedPosts = await FeedPost
@@ -13,13 +14,18 @@ router.get('/', async (request, response) => {
 })
 
 router.post('/', userExtractor, async (request, response) => {
-  const { description, other, question1, question1Other, question2, question2Other, question3, question4, date, minPrice, maxPrice } = request.body
+  const { description, other, question1, question1Other, question2,
+ question2Other, question3, question4, date, minPrice, maxPrice } = request.body
 
+  const today = new Date()
+
+  if (date < today) {
+    return response.status(400).json({error: 'date wrong'})
+  }
 
   const feedPost = new FeedPost({
     description,
-    timeStamp: new Date(),
-    isOpen: true,
+    timeStamp: today,
     question1,
     question2,
     question3,
@@ -48,8 +54,11 @@ router.post('/', userExtractor, async (request, response) => {
 
   const user = request.user
 
+  const userFromDb = await User.findById(user.id)
+
   // kehittäjät ei voi lisätä näitä avoimia ilmoituksia, devpostit on erikseen
-  if (!user || !(user.userType === 'regular')) {
+  // tarkistetaan myös käyttäjä tietokannasta, että onko disabloitu
+  if (!user || user.userType !== 'regular' || user.disabled || !userFromDb || userFromDb.disabled) {
     return response.status(401).json({ error: 'operation not permitted' })
   }
 
@@ -86,7 +95,7 @@ router.put('/:id', userExtractor, async (request, response) => {
 })
 
 router.post('/:id/feedbids', userExtractor, async (request, response) => {
-  const { description, price, dueDate } = request.body
+  const { description, minPrice, maxPrice, dueDate } = request.body
 
   const user = request.user
 
@@ -97,13 +106,23 @@ router.post('/:id/feedbids', userExtractor, async (request, response) => {
 
   const feedPost = await FeedPost.findById(request.params.id)
 
+  if (!feedPost || !feedPost.isOpen) {
+    return response.status(400).json({error: 'feedpost doesnt exist or its closed'})
+  }
+
+  const today = new Date()
+
+  if (dueDate < today) {
+    return response.status(400).json({error: 'dueDate cant be in the past'})
+  }
+
   const offerToAdd = new FeedBid({
     description,
-    timeStamp: new Date(),
-    isApproved: false,
+    timeStamp: today,
     offeror: user.name,
     targetPost: feedPost._id,
-    price,
+    minPrice,
+    maxPrice,
     dueDate
   })
 
@@ -130,6 +149,10 @@ router.put('/:id/feedBidAccept/:oid', userExtractor, async (request, response) =
   const offerId = request.params.oid
 
   const feedPost = await FeedPost.findById(feedPostId)
+
+  if (!feedPost || !feedPost.isOpen) {
+    return response.status(400).json({error: 'feedpost doesnt exist or it is closed'})
+  }
 
   // vain feedPostin lisännyt käyttäjä voi hyväksyä tarjouksen
   if (!user || feedPost.user.toString() !== user.id.toString()) {

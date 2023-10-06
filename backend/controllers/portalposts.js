@@ -1,15 +1,28 @@
 const router = require('express').Router()
 const PortalPost = require('../models/portalpost')
-const FeedBid = require('../models/feedbid')
+const PortalBid = require('../models/portalbid')
 
 const { userExtractor } = require('../utils/middleware')
 
-router.get('/', async (request, response) => {
-  const portalPosts = await PortalPost
-    .find({})
-    .populate('user', { name: 1 })
-    .populate('feedBids')
-  response.json(portalPosts)
+router.get('/', userExtractor, async (request, response) => {
+  const user = request.user
+  if (!user) {
+    response.json([])
+  } else {
+    // jos kyseessä on firma, joka maksaa, niin näytetään kaikki
+    if (user.userType !== 'regular') {
+      const portalPosts = await PortalPost
+        .find({})
+        .populate('user', { name: 1 })
+      response.json(portalPosts)
+    } else {
+      // muulloin vain käyttäjän itsensä tekemät postaukset
+      const portalPosts = await PortalPost
+        .find({ user: user._id.toString() })
+        .populate('user', { name: 1 })
+      response.json(portalPosts)
+    }
+  }
 })
 
 router.post('/', userExtractor, async (request, response) => {
@@ -80,12 +93,12 @@ router.put('/:id', userExtractor, async (request, response) => {
 
   let updatedportalPost = await PortalPost.findByIdAndUpdate(request.params.id,  { description, isOpen }, { new: true })
 
-  updatedportalPost = await PortalPost.findById(updatedportalPost._id).populate('user').populate({ path: 'feedBids' })
+  updatedportalPost = await PortalPost.findById(updatedportalPost._id).populate('user').populate({ path: 'portalBids' })
 
   response.json(updatedportalPost)
 })
 
-router.post('/:id/feedbids', userExtractor, async (request, response) => {
+router.post('/:id/portalBids', userExtractor, async (request, response) => {
   const { description, price } = request.body
 
   const user = request.user
@@ -97,7 +110,7 @@ router.post('/:id/feedbids', userExtractor, async (request, response) => {
 
   const portalPost = await PortalPost.findById(request.params.id)
 
-  const offerToAdd = new FeedBid({
+  const offerToAdd = new PortalBid({
     description,
     timeStamp: new Date(),
     isApproved: false,
@@ -110,18 +123,18 @@ router.post('/:id/feedbids', userExtractor, async (request, response) => {
 
   await offerToAdd.save()
 
-  portalPost.feedBids = portalPost.feedBids.concat(offerToAdd._id)
+  portalPost.portalBids = portalPost.portalBids.concat(offerToAdd._id)
   let updatedportalPost = await portalPost.save()
 
-  user.feedBids = user.feedBids.concat(offerToAdd._id)
+  user.portalBids = user.portalBids.concat(offerToAdd._id)
   await user.save()
 
-  updatedportalPost = await PortalPost.findById(portalPost.id).populate('user').populate({ path: 'feedBids' })
+  updatedportalPost = await PortalPost.findById(portalPost.id).populate('user') //.populate({ path: 'portalBids' })
   response.status(201).json(updatedportalPost)
 
 })
 
-router.put('/:id/feedBidAccept/:oid', userExtractor, async (request, response) => {
+router.put('/:id/portalBidsAccept/:oid', userExtractor, async (request, response) => {
 
   const user = request.user
 
@@ -136,18 +149,18 @@ router.put('/:id/feedBidAccept/:oid', userExtractor, async (request, response) =
   }
 
   // Update the isApproved field of the specified offer
-  const updatedOffer = await FeedBid.findByIdAndUpdate(offerId, { isApproved: true }, { new: true })
-  // Find the portalPost and update its feedBids array with the updated offer
+  const updatedOffer = await PortalBid.findByIdAndUpdate(offerId, { isApproved: true }, { new: true })
+  // Find the portalPost and update its portalBids array with the updated offer
 
-  const updatedfeedBidsArray = portalPost.feedBids.map(offer =>
+  const updatedportalBidsArray = portalPost.portalBids.map(offer =>
     offer._id.equals(updatedOffer._id) ? updatedOffer : offer
   )
 
   const updatedportalPost = await PortalPost.findByIdAndUpdate(
     portalPostId,
-    { feedBids: updatedfeedBidsArray },
+    { portalBids: updatedportalBidsArray },
     { new: true }
-  ).populate('user').populate({ path: 'feedBids' })
+  ).populate('user').populate({ path: 'portalBids' })
 
   response.json(updatedportalPost)
 })
@@ -165,19 +178,19 @@ router.delete('/:id', userExtractor, async (request, response) => {
 
   await user.save()
 
-  await FeedBid.deleteMany({ targetPost: request.params.id })
+  await PortalBid.deleteMany({ targetPost: request.params.id })
 
   await post.remove()
 
   response.status(204).end()
 })
 
-router.delete('/:id/feedbids/:oid', userExtractor, async (request, response) => {
+router.delete('/:id/portalBids/:oid', userExtractor, async (request, response) => {
   const portalPost = await PortalPost.findById(request.params.id)
   const user = request.user
   const offerId = request.params.oid
 
-  const offerToDelete = await FeedBid.findById(offerId)
+  const offerToDelete = await PortalBid.findById(offerId)
 
   if (!user || !(offerToDelete.user.toString() === user._id.toString() || user._id.toString() === portalPost.user.toString())) {
     return response.status(401).json({ error: 'operation not permitted' })
@@ -185,12 +198,12 @@ router.delete('/:id/feedbids/:oid', userExtractor, async (request, response) => 
 
   await offerToDelete.remove()
 
-  user.feedBids = user.feedBids.filter(c => c._id.toString() !== offerId)
+  user.portalBids = user.portalBids.filter(c => c._id.toString() !== offerId)
   await user.save()
-  portalPost.feedBids = portalPost.feedBids.filter(c => c._id.toString() !== offerId)
+  portalPost.portalBids = portalPost.portalBids.filter(c => c._id.toString() !== offerId)
   let updatedportalPost = await portalPost.save()
 
-  updatedportalPost = await PortalPost.findById(portalPost.id).populate('user').populate({ path: 'feedBids' })
+  updatedportalPost = await PortalPost.findById(portalPost.id).populate('user').populate({ path: 'portalBids' })
   response.status(201).json(updatedportalPost)
 
 })

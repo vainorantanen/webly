@@ -21,24 +21,34 @@ import BasicInfoForm from './BasicInfoForm'
 import FormSummary from './FormSummary'
 import TermsForm from './TermsForm'
 import AddDevPost from './AddDevPost'
+import LoginSuggestion from '../../LoginSuggestion'
+import UserDisabledText from '../../UserDisabledText'
 
 const AddFeedPostForm = () => {
 
   const formData = useSelector(state => state.formData)
   const steps = ['Perustiedot', 'Ilmoituksen ehdot', 'Yhteenveto']
 
-  const user = useSelector(state => state.user)
+  const user = useSelector(({user}) => user)
 
   const notify = useNotification()
   const dispatch = useDispatch()
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
+    
+    if (user.disabled) {
+      notify('Käyttäjäsi on disabloitu!', 'error')
+      return
+    }
+    
     try {
-      if (formData.isOpen === true) {
-        dispatch(addFeedPost(formData))
-        console.log(formData)
-        console.log('addFeedPost')
-      } else if (formData.isOpen === false) {
+      if (formData.isOpenFeedPost === true) {
+        const result = await dispatch(addFeedPost(formData));
+        if (result && result.error) {
+          notify('Tapahtui virhe backendissa', 'error')
+          return
+        }
+      } else if (formData.isOpenFeedPost === false) {
         dispatch(addPortalpost(formData))
         console.log('addPortalpost')
       }
@@ -97,20 +107,13 @@ const AddFeedPostForm = () => {
   
   if (!user) {
     return (
-      <Container sx={{ marginTop: '8rem', minHeight: '100vh' }}>
-        <Typography
-          sx={{
-            fontSize: '1.3rem',
-            textAlign: 'center',
-            marginTop: '2rem',
-            '@media (max-width: 442px)': {
-              fontSize: '1rem',
-            },
-          }}
-        >
-          Kirjaudu sisään lisätäksesi ilmoitus.
-        </Typography>
-      </Container>
+      <LoginSuggestion />
+    )
+  }
+
+  if (user && user.disabled) {
+    return (
+      <UserDisabledText />
     )
   }
 

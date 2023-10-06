@@ -18,7 +18,7 @@ const schema = mongoose.Schema({
   },
   isOpen: {
     type: Boolean,
-    required: true
+    default: true
   },
   feedBids: [
     {
@@ -39,7 +39,8 @@ const schema = mongoose.Schema({
     type: String
   },
   dueDate: {
-    type: String
+    type: Date,
+    required: true
   },
   minPrice: {
     type: Number

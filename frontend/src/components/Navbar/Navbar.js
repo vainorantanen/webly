@@ -35,8 +35,9 @@ const StyledButton = styled(Button)({
   boxShadow: 'none',
   transition: 'transform 0.3s',
   '&:hover': {
-    transform: 'scale(1.02)',
-    backgroundImage: 'linear-gradient(to bottom, #C4C4C4, #BCBCBC)' }
+    transform: 'scale(1.01)',
+    backgroundColor: '#f0f0f0'
+   }
 })
 
 const Navbar = ({ logout }) => {
@@ -56,8 +57,8 @@ const Navbar = ({ logout }) => {
             <MenuIcon />
           </IconButton>
           <div className='nav-buttons'>
-            <StyledButton color="inherit" component={Link} to="/">
-              Etusivu
+            <StyledButton color="inherit" component={Link} to="/" sx={{fontStyle: 'italic'}}>
+              Webly.fi
             </StyledButton>
             <StyledButton color="inherit" component={Link} to="/kehittajien-ilmoitukset">
               Kehittäjien ilmoitukset
@@ -109,6 +110,11 @@ const Navbar = ({ logout }) => {
           {user && (
             <ListItemButton component={Link} to="/profiili" onClick={toggleDrawer}>
               <ListItemText primary="Profiili" />
+            </ListItemButton>
+          )}
+          {user && user.username === 'admin' && (
+            <ListItemButton component={Link} to="/adminpanel" onClick={toggleDrawer}>
+              <ListItemText primary="Adminpanel" />
             </ListItemButton>
           )}
           {user && (

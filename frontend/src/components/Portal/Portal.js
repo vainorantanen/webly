@@ -1,23 +1,38 @@
 import { Box, Container, Typography } from '@mui/material'
-import React from 'react'
-import { useSelector } from 'react-redux'
-import DevPortal from './DevPortal'
-import BuyerPortal from './BuyerPortal'
+import React, { useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { initializePortalposts } from '../../reducers/portalPosts'
+import { initializePortalBids } from '../../reducers/portalBids'
+import PortalPostCard from './PortalPostCard'
+import LoginSuggestion from '../LoginSuggestion'
 
 const Portal = () => {
 
   const user = useSelector(({user}) => user)
 
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    // Fetch portal posts when the component mounts
+    try {
+        dispatch(initializePortalposts())
+        dispatch(initializePortalBids())
+    } catch (error) {
+        console.error('Error fetching portal posts:', error);
+    }
+  }, [dispatch]);
+
+  const portalProjects = useSelector(({portalPosts}) => portalPosts).filter(p => p.isOpen)
+  const numberOfPortalProjects = portalProjects.length
+
   if (!user) {
     return (
-      <Container sx={{ marginTop: '5rem', minHeight: '90vh' }}>
-        <Typography>Kirjaudu sisään nähdäksesi portaali</Typography>
-      </Container>
+      <LoginSuggestion />
     )
   }
 
   return (
-    <Box sx={{ marginTop: '5rem', minHeight: '90vh' }}>
+    <Container sx={{ marginTop: '5rem', minHeight: '90vh' }}>
         <Typography sx={{
           fontSize: '1.8rem',
           textAlign: 'center',
@@ -29,12 +44,24 @@ const Portal = () => {
             Portaali
         </Typography>
 
-        {user && user.userType !== 'regular' ? (
-          <DevPortal />
-        ) : (
-          <BuyerPortal />
+        <Container>
+        {user.userType === 'regular' ? (
+          <Typography sx={{ fontSize: '1.2rem', marginBottom: '1rem',
+          borderBottom: '1px solid black' }}>Omat avoimet portaali-ilmoitukseni ({numberOfPortalProjects})</Typography>
+        ): (
+          <Typography sx={{ fontSize: '1.2rem', marginBottom: '1rem',
+    borderBottom: '1px solid black' }}>Avoimet portaali-ilmoitukset ({numberOfPortalProjects})</Typography>
         )}
-    </Box>
+        {portalProjects && portalProjects.length > 0 ? (
+          portalProjects.map(proj => (
+            <Box key={proj.id}>
+                <PortalPostCard post={proj}/>
+            </Box>
+        ))): (
+          <Typography sx={{ textAlign: 'center' }}>Ei portaali-ilmoituksia</Typography>
+        )}
+    </Container>
+    </Container>
   )
 }
 

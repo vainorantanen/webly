@@ -8,6 +8,7 @@ import { Typography, Box,
   Paper, } from '@mui/material'
 import EuroIcon from '@mui/icons-material/Euro';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
+import { formatDate } from '../../Functions/formatDate';
 
 const SingleFeedPostInfo = ({post}) => {
 
@@ -45,14 +46,14 @@ const SingleFeedPostInfo = ({post}) => {
           )}
           <Typography>{post.user.name}</Typography>
           {post.timeStamp ? (
-            <Typography>Julkaistu {post.timeStamp.split('T')[0]}</Typography>
+            <Typography>Julkaistu {formatDate(post.timeStamp)}</Typography>
           ) : (
             <Typography>Ei tietoa</Typography>
           )}
           </Box>
           <Box>
           <Typography><EuroIcon />{post.minPrice} - {post.maxPrice}</Typography>
-          <Typography><AccessTimeIcon />{post.dueDate}</Typography>
+          <Typography><AccessTimeIcon />{formatDate(post.dueDate)}</Typography>
           </Box>
       </Box>
 

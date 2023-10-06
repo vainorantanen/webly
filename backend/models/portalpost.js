@@ -20,10 +20,10 @@ const schema = mongoose.Schema({
     type: Boolean,
     required: true
   },
-  feedBids: [
+  portalBids: [
     {
       type: mongoose.Schema.Types.ObjectId,
-      ref: 'FeedBid'
+      ref: 'PortalBid'
     }
   ],
   question1: {

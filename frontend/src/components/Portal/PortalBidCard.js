@@ -3,58 +3,61 @@ import { Link } from 'react-router-dom'
 import CheckCircleIcon from '@mui/icons-material/CheckCircle'
 import { useNotification } from '../../hooks'
 import { useDispatch, useSelector } from 'react-redux'
-import { modifyBidApprovedState, removBidFromFeedPost } from '../../reducers/feedPosts'
 import { Typography, Box, Button } from '@mui/material'
 import EuroIcon from '@mui/icons-material/Euro';
 import BusinessIcon from '@mui/icons-material/Business';
 import StartIcon from '@mui/icons-material/Start';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import DeleteIcon from '@mui/icons-material/Delete';
+import { removePortalBid, updatePortalBid } from '../../reducers/portalBids'
 import { formatDate } from '../../Functions/formatDate'
 
-const OpenPostBidCard = ({post}) => {
+const PortalBidCard = ({offer, post}) => {
 
     const user = useSelector(({ user }) => user)
 
     const dispatch = useDispatch()
   const notifyWith = useNotification()
 
-    const handleAcceptbid = async (bidId) => {
-        const confirmed = window.confirm('Haluatko varmasti hyväksyä tämän tarjouksen?')
-        if (!confirmed) {
-          return // If the user clicks "Cancel," do nothing
-        }
-        try {
-          dispatch(modifyBidApprovedState(bidId, post.id))
-          notifyWith('Tarjous hyväksytty', 'success')
-        } catch (error) {
-          notifyWith('Tarjouksen hyväksyntä epäonnistui', 'error')
-        }
     
-      }
-    
-      const handleDeletebid = async (bidId) => {
-        const confirmed = window.confirm('Haluatko varmasti poistaa tämän tarjouksen?')
-        if (!confirmed) {
-          return // If the user clicks "Cancel," do nothing
-        }
-        try {
-          dispatch(removBidFromFeedPost(bidId, post.id))
-          notifyWith('Poistettu onnistuneesti', 'success')
-        } catch (error) {
-          notifyWith('Tarjouksen poisto epäonnistui', 'error')
-        }
-    
-      }
-    
-      if (!post) {
+  const handleAcceptbid = async (bidId) => {
+    const confirmed = window.confirm('Haluatko varmasti hyväksyä tämän tarjouksen?')
+    if (!confirmed) {
+      return // If the user clicks "Cancel," do nothing
+    }
+    try {
+      // tää pitää muuttaa myös käyttään eri statee
+      //dispatch(modifyBidApprovedState(bidId, post.id))
+      dispatch(updatePortalBid(bidId))
+      notifyWith('Tarjous hyväksytty', 'success')
+    } catch (error) {
+      notifyWith('Tarjouksen hyväksyntä epäonnistui', 'error')
+    }
+
+  }
+
+  const handleDeletebid = async (bidId) => {
+    const confirmed = window.confirm('Haluatko varmasti poistaa tämän tarjouksen?')
+    if (!confirmed) {
+      return // If the user clicks "Cancel," do nothing
+    }
+    try {
+      dispatch(removePortalBid(bidId))
+      // tämä on vanha dispatch(removBidFromPortalpost(bidId, post.id))
+      notifyWith('Poistettu onnistuneesti', 'success')
+      //dispatch(initializePortalBids())
+    } catch (error) {
+      notifyWith('Tarjouksen poisto epäonnistui', 'error')
+    }
+
+  }
+
+      if (!offer || !post) {
         return null
       }
 
   return (
-    <Box>
-        {post.feedBids.length > 0 ? post.feedBids.map(offer => (
-          <Box key={offer.id}
+          <Box
           sx={{
             padding: '1rem',
             backgroundColor: '#f0f0f0',
@@ -88,13 +91,16 @@ const OpenPostBidCard = ({post}) => {
               <Typography sx={{ fontSize: '1.2rem' }}>Tarjous hyväksytty <CheckCircleIcon/></Typography>
             )}
             <Typography><EuroIcon />Hinta-arvio: {offer.minPrice} - {offer.maxPrice} euroa</Typography>
-            <Typography><BusinessIcon />Tarjoaja: <Button component={Link} to={`/kehittajat/${offer.user}`}>{offer.offeror}</Button></Typography>
-            <Typography><StartIcon />Tarjous jätetty: {formatDate(offer.timeStamp) || 'Ei tietoa'}</Typography>
+            <Typography><BusinessIcon />Tarjoaja: <Button component={Link} to={`/kehittajat/${offer.user.id}`}>{offer.offeror}</Button></Typography>
+            <Typography><StartIcon />Tarjous jätetty: {formatDate(offer.timeStamp)}</Typography>
             <Typography><AccessTimeIcon />Tarjous voimassa: {formatDate(offer.dueDate) || 'Ei tietoa'}</Typography>
             {user && user.id === post.user.id && !offer.isApproved ? (
               <Button onClick={() => handleAcceptbid(offer.id)}>Hyväksy tarjous<CheckCircleIcon /></Button>
             ): null}
-            {user && (user.id === post.user.id || user.id === offer.user) && (
+            {user && user.id === post.user.id && offer.isApproved ? (
+              <Button onClick={() => handleAcceptbid(offer.id)}>Epähyväksy tarjous</Button>
+            ): null}
+            {user && (user.id === post.user.id || user.id === offer.user.id) && (
               <Button sx={{ color: 'red' }} onClick={() => handleDeletebid(offer.id)}>Poista tarjous<DeleteIcon /></Button>
             )}
             </Box>
@@ -108,11 +114,7 @@ const OpenPostBidCard = ({post}) => {
                 <Typography sx={{ whiteSpace: 'break-spaces' }}>{offer.description}</Typography>
             </Box>
           </Box>
-        )) : (
-          <Typography sx={{ textAlign: 'center' }}>Ei vielä tarjouksia</Typography>
-        )}
-      </Box>
   )
 }
 
-export default OpenPostBidCard
+export default PortalBidCard

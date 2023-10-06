@@ -1,8 +1,9 @@
 import React from 'react'
 import CompanyProfile from './CompanyProfile'
 import PrivateProfile from './PrivateProfile'
-import { Container, Typography } from '@mui/material'
+import { Container } from '@mui/material'
 import { useSelector } from 'react-redux'
+import LoginSuggestion from '../LoginSuggestion'
 
 const Profile = () => {
 
@@ -10,9 +11,7 @@ const Profile = () => {
 
   if (!user) {
     return (
-      <Container sx={{ minHeight: '90vh', marginTop: '5rem', borderRadius: '0.5rem' }}>
-          <Typography>Kirjaudu sisään nähdäksesi profiilisi</Typography>
-      </Container>
+      <LoginSuggestion />
   )
   }
 

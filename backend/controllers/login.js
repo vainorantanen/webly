@@ -29,7 +29,7 @@ loginRouter.post('/', async (request, response) => {
     .send({ token, username: user.username, name: user.name,
       userType: user.userType, description : user.description,
       feedBids: user.feedBids, feedPosts: user.feedPosts, id: user.id,
-      email: user.email
+      email: user.email, disabled: user.disabled
     })
 })
 

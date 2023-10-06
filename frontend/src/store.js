@@ -9,6 +9,7 @@ import userReducer from './reducers/user'
 import usersReducer from './reducers/users'
 import blogsReducer from './reducers/blogs'
 import ratingsReducer from './reducers/ratings'
+import portalBidsReducer from './reducers/portalBids'
 
 const store = configureStore({
   reducer: {
@@ -21,7 +22,8 @@ const store = configureStore({
     portalPosts: portalPostsReducer,
     formData: formDataReducer,
     blogs: blogsReducer,
-    ratings: ratingsReducer
+    ratings: ratingsReducer,
+    portalBids: portalBidsReducer,
   }
 })
 

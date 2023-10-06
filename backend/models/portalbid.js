@@ -27,7 +27,7 @@ const schema = mongoose.Schema({
   },
   targetPost: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'FeedPost'
+    ref: 'PortalPost'
   },
   offeror: {
     type: String,
@@ -47,4 +47,4 @@ schema.set('toJSON', {
   }
 })
 
-module.exports = mongoose.model('FeedBid', schema)
+module.exports = mongoose.model('PortalBid', schema)

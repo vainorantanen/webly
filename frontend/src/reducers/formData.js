@@ -9,9 +9,9 @@ const initialState = {
   question2Other: '',
   question3: 'Ei tarvetta',
   question4: '',
-  isOpen: true,
+  isOpenFeedPost: true,
   minPrice: '',
-  maxPrice: ''
+  maxPrice: '',
 }
 
 const slice = createSlice({

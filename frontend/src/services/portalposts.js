@@ -3,7 +3,9 @@ import storageService from './storage'
 const baseUrl = '/api/portalposts'
 
 const getAll = async () => {
-  const request = await axios.get(baseUrl)
+  const token = await storageService.loadUser() ? `Bearer ${storageService.loadUser().token}` : null
+  const headers = token ? { 'Authorization': token } : {}
+  const request = await axios.get(baseUrl, { headers })
   return request.data
 }
 
@@ -31,21 +33,22 @@ const remove = async (id) => {
 const makeoffer = async (id, content) => {
   const token = await storageService.loadUser() ? `Bearer ${storageService.loadUser().token}` : null
   const headers = token ? { 'Authorization': token } : {}
-  const request = await axios.post(`${baseUrl}/${id}/feedbids`, content, { headers })
+  const request = await axios.post(`${baseUrl}/${id}/portalBids`, content, { headers })
+  console.log('req res', request.data)
   return request.data
 }
 
 const removeOffer = async (postId, offerId) => {
   const token = await storageService.loadUser() ? `Bearer ${storageService.loadUser().token}` : null
   const headers = token ? { 'Authorization': token } : {}
-  const request = await axios.delete(`${baseUrl}/${postId}/feedbids/${offerId}`, { headers })
+  const request = await axios.delete(`${baseUrl}/${postId}/portalBids/${offerId}`, { headers })
   return request.data
 }
 
 const modifyAccept = async (targetId, offerId) => {
   const token = await storageService.loadUser() ? `Bearer ${storageService.loadUser().token}` : null
   const headers = token ? { 'Authorization': token } : {}
-  const request = await axios.put(`${baseUrl}/${targetId}/feedBidAccept/${offerId}`, {}, { headers })
+  const request = await axios.put(`${baseUrl}/${targetId}/portalBidsAccept/${offerId}`, {}, { headers })
   return request.data
 }
 

@@ -54,4 +54,28 @@ router.put('/:id', userExtractor, async (request, response) => {
   response.json(updatedUser)
 })
 
+router.put('/:id/disable', userExtractor, async (request, response) => {
+  const { disabled } = request.body
+
+  const user = request.user
+
+  const userFromDb = await User.findById(request.params.id)
+
+  // haetaan käyttäjä tietokannasta ja tarkistetaan pari juttua
+  if (!userFromDb || disabled !== userFromDb.disabled || userFromDb.username === 'admin') {
+    return response.status(400).json({error : 'user not found or disabled state not matching'})
+  }
+
+  // vain admin voi muuttaa disabled/enabled tilaa
+  if (!user || user.username !== 'admin') {
+    return response.status(401).json({ error: 'operation not permitted' })
+  }
+
+  let updatedUser = await User.findByIdAndUpdate(request.params.id,  { disabled: !disabled }, { new: true })
+
+  updatedUser = await User.findById(updatedUser._id)
+
+  response.json(updatedUser)
+})
+
 module.exports = router

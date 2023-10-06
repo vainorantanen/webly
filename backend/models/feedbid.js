@@ -15,9 +15,13 @@ const schema = mongoose.Schema({
   },
   isApproved: {
     type: Boolean,
+    default: false
+  },
+  minPrice: {
+    type: Number,
     required: true
   },
-  price: {
+  maxPrice: {
     type: Number,
     required: true
   },
@@ -30,7 +34,7 @@ const schema = mongoose.Schema({
     required: true
   },
   dueDate: {
-    type: String,
+    type: Date,
     required: true
   }
 })

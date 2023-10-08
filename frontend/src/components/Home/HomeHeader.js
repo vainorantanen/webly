@@ -1,7 +1,7 @@
 import { Box, Typography, Button } from '@mui/material'
 import React from 'react'
 import { Link } from 'react-router-dom'
-import computertabPic from '../../Assets/computertab.png'
+import mobileAppPic from '../../Assets/mobileapp.png'
 import Timeline from '@mui/lab/Timeline'
 import TimelineItem, { timelineItemClasses } from '@mui/lab/TimelineItem'
 import TimelineSeparator from '@mui/lab/TimelineSeparator'
@@ -12,17 +12,17 @@ import './homeheader.css'
 
 const HomeHeader = () => {
   return (
-    <Box sx={{ marginTop: '3rem', position: 'relative'}}>
-      <Box className='spacer layer1' sx={{ marginBottom: '-15rem',
-      '@media (max-width: 800px)': {
-        marginBottom: '-2rem',
-      },
-     }}></Box>
+    <Box  className='spacer layer1' sx={{ marginTop: '3rem'}}>
       <Typography
         sx={{
           fontSize: '2.5rem',
           textAlign: 'center',
           fontWeight: 'bold',
+          paddingTop: '3rem',
+          fontStyle: 'italic',
+          background: 'linear-gradient(to right, #0004FF, #63E6FF)',
+          WebkitBackgroundClip: 'text', // Corrected property name
+          WebkitTextFillColor: 'transparent', // Corrected property name
           '@media (max-width: 442px)': {
             fontSize: '1.5rem',
             marginBottom: '2rem'
@@ -43,20 +43,36 @@ const HomeHeader = () => {
           flexDirection: 'column',
           flexWrap: 'wrap',
           width: '40vw',
+          paddingBottom: '10rem',
           '@media (max-width: 600px)': {
             width: '80vw',
+            justifyContent: 'center'
           },
         }}>
           <Typography
             sx={{
               fontWeight: 'bold',
-              fontSize: '1.7rem',
+              fontSize: '2rem',
               textAlign: 'center',
               '@media (max-width: 442px)': {
-                fontSize: '1rem',
+                fontSize: '1.2rem',
               },
             }}
-          ><span style={{ color: 'blue' }}>Paras</span> tapa toteuttaa omat nettisivut ja Web-projektit.</Typography>
+          >
+            <Typography 
+            component="span"
+            sx={{
+              fontWeight: 'bold',
+              background: 'linear-gradient(to right, #002BB9, #783EFF)',
+              WebkitBackgroundClip: 'text', // Corrected property name
+              WebkitTextFillColor: 'transparent', // Corrected property name
+              fontSize: '2.5rem',
+              '@media (max-width: 442px)': {
+                fontSize: '1.4rem',
+              },
+            }}>Paras</Typography> tapa ostaa ja myydä nettisivuja ja verkkopohjaisia ohjelmistoja.
+          </Typography>
+
           <Box
             sx={{
               display: 'flex',
@@ -98,7 +114,6 @@ const HomeHeader = () => {
               sx={{ backgroundColor: 'blue', color: 'white',
                 transition: 'transform 0.3s',
                 maxWidth: '9rem',
-                marginTop: '1rem',
                 marginLeft: '1rem',
                 marginBottom: '1rem',
                 borderRadius: '1rem',
@@ -115,7 +130,6 @@ const HomeHeader = () => {
                 backgroundColor: 'blue',
                 color: 'white',
                 transition: 'transform 0.3s',
-                marginTop: '1rem',
                 marginBottom: '1rem',
                 maxWidth: '9rem',
                 marginLeft: '1rem',
@@ -130,13 +144,12 @@ const HomeHeader = () => {
             </Button>
           </Box>
         </Box>
-        <Box sx={{ maxWidth: '30rem', borderRadius: '0.5rem', height: 'auto',
-        boxShadow: '0.2rem 0.3rem 1.5rem black',
+        <Box sx={{ maxWidth: '25rem', height: 'auto',
         '@media (max-width: 510px)': {
           maxWidth: '60vw',
         }, }}
           component="img"
-        src={computertabPic} alt='pic of computer tab'>
+        src={mobileAppPic} alt='pic of mobile app'>
         </Box>
       </Box>
     </Box>

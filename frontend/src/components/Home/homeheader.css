@@ -1,11 +1,25 @@
 .spacer {
-    aspect-ratio: 960/300;
+    aspect-ratio: 960/540;
     width: 100%;
+    height: 100%;
     background-repeat: no-repeat;
     background-position: center;
     background-size: cover;
 }
 
 .layer1 {
-    background-image: url('./header-waves.svg');
+    background-image: url('./blob-scene-2.svg');
+}
+
+.spacerblurry {
+    width: 100%;
+    height: auto;
+    border-radius: 0.3rem;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+}
+
+.layerblurry {
+    background-image: url('./blurry-gradient.svg');
 }

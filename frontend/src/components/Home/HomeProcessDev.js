@@ -3,13 +3,11 @@ import { Box, Typography, Button } from '@mui/material'
 import devicesPic from '../../Assets/devices.png'
 import laptopPic from '../../Assets/laptop.png'
 import locationsPic from '../../Assets/locations.png'
-import remotePic from '../../Assets/remote-choose.png'
-import phonePic from '../../Assets/phone.png'
-import analyzePic from '../../Assets/analyze.png'
+import mobileAppPic from '../../Assets/mobileapp.png'
 import { Link } from 'react-router-dom'
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward'
 
-const HomeProcess = () => {
+const HomeProcessDev = () => {
   return (
     <Box sx={{
       display: 'flex',
@@ -40,8 +38,9 @@ const HomeProcess = () => {
         }}>
           <Typography sx={{ marginBottom: '1.5rem', fontSize: '1.5rem' }}>1. <span style={{ color: 'blue' }}>Määrittele</span>  tarpeesi</Typography>
           <Typography>Kerro millaista verkkosivustoa tai projektia olet etsimässä ja mitä ominiasuuksia siihen kuuluu.
-             Määrittely antaa raamit projektisi toteuttajalle niiden lajudesta
-              sekä mahdollistaa arvion työmäärästä ja hinnasta.</Typography>          <Button
+             Määrittely antaa raamit nettisivuejesi toeuttajalle niiden lajudesta
+              sekä mahdollistaa arvion työmäärästä ja hinnasta.</Typography>
+          <Button
             component={Link}
             to="/lisaailmoitus"
             sx={{ backgroundColor: 'blue', color: 'white',
@@ -55,14 +54,13 @@ const HomeProcess = () => {
             }}>
             Jätä ilmoitus <ArrowForwardIcon />
           </Button>
-          <Button>Ohjeet hyvään määrittelyyn</Button>
         </Box>
         <Box sx={{ maxWidth: '23rem', height: 'auto',
         '@media (max-width: 510px)': {
           maxWidth: '60vw',
         }, }}
           component="img"
-        src={analyzePic} alt='pic of analyzing'>
+        src={mobileAppPic} alt='pic of mobile app'>
         </Box>
       </Box>
 
@@ -75,12 +73,8 @@ const HomeProcess = () => {
         textAlign: 'flex-start',
         gap: '1rem'
       }}>
-        <Box sx={{ maxWidth: '20rem',
-        '@media (max-width: 442px)': {
-          maxWidth: '40vw',
-        }, }}
-          component="img"
-        src={phonePic} alt='pic of mobile phone'>
+        <Box>
+          <img src={laptopPic} alt='pic of mobile app' style={{ maxWidth: '40vw', height: 'auto' }}/>
         </Box>
         <Box sx={{
           display: 'flex',
@@ -95,17 +89,6 @@ const HomeProcess = () => {
         }}>
           <Typography sx={{ marginBottom: '1.5rem', fontSize: '1.5rem' }}>2. <span style={{ color: 'blue' }}>Lisää</span> ilmoitus</Typography>
           <Typography>Lisäämällä ilmoituksen tarpeidesi mukaan, tavoitat markkinoiden parhaat tekijät ja parhaat ideat.</Typography>
-          <ul>
-            <li>
-              <Typography>Tavoita yhdellä ilmoituksella useita tekijöitä</Typography>
-            </li>
-            <li>
-              <Typography>Vertaile saamiasi tarjouksia</Typography>
-            </li>
-            <li>
-              <Typography>Ilmoituksen jättäminen on ilmaista eikä sido hankintaan!</Typography>
-            </li>
-          </ul>
           <Button
             component={Link}
             to="/lisaailmoitus"
@@ -147,8 +130,7 @@ const HomeProcess = () => {
           }
         }}>
           <Typography sx={{ marginBottom: '1.5rem', fontSize: '1.5rem' }}>3. <span style={{ color: 'blue' }}>Valitse</span> paras tekijä</Typography>
-          <Typography>Kun tarjouskilpailu on päättynyt, voit valita tarjouksista itsellesi parhaiten sopivan tekijän.
-            Siten varmistat, että saat juuri itsellesi parhaat mahdolliset sivut.</Typography>
+          <Typography>Kun tarjouskilpailu on päättynyt voi valita tarjouksista itsellesi parhaiten sopivan tekijän, ja siten varmistat etttä saat juuri itsellesi parhaat mahdolliset sivut.</Typography>
           <Button
             component={Link}
             to="/lisaailmoitus"
@@ -164,12 +146,8 @@ const HomeProcess = () => {
             Jätä ilmoitus <ArrowForwardIcon />
           </Button>
         </Box>
-        <Box sx={{ maxWidth: '20rem',
-        '@media (max-width: 442px)': {
-          maxWidth: '40vw',
-        }, }}
-          component="img"
-        src={remotePic} alt='remote workers'>
+        <Box>
+          <img src={devicesPic} alt='pic of mobile app' style={{ maxWidth: '40vw', height: 'auto' }}/>
         </Box>
 
       </Box>
@@ -183,12 +161,8 @@ const HomeProcess = () => {
         textAlign: 'flex-start',
         gap: '1rem',
       }}>
-        <Box sx={{ maxWidth: '20rem',
-        '@media (max-width: 442px)': {
-          maxWidth: '40vw',
-        }, }}
-          component="img"
-        src={locationsPic} alt='pic of mobile phone'>
+        <Box>
+          <img src={locationsPic} alt='pic of mobile app' style={{ maxWidth: '40vw', height: 'auto' }}/>
         </Box>
         <Box sx={{
           display: 'flex',
@@ -202,10 +176,9 @@ const HomeProcess = () => {
             width: '80vw',
           }
         }}>
-          <Typography sx={{ marginBottom: '1.5rem', fontSize: '1.5rem' }}>Tavoita yhdellä tarjouspyynnöllä useita tekijöitä</Typography>
-          <Typography>Sinun tarpeisiisi paras projektin toteuttaja voi sijaita missä päin Suomea tahansa, joten ilmoituksen jättäminen kannattaa. Webly.fi:n avulla
-            tavoitat yhdellä kerralla suurimmat nettisivujen ja verkkopohjaisten ohjelmistojen
-             toteuttajat sekä pienemmät toimijat, kuten freelancerit, ympäri maan.</Typography>
+          <Typography sx={{ marginBottom: '1.5rem', fontSize: '1.5rem' }}>Tavoita yhdellä tarjouspyynnöllä satoja tekijöitä</Typography>
+          <Typography>Sinun tarpeisiisi paras projektin toteuttaja voi sijaita missä päin Suomea tahansa, joten ilmoituksen jättäminen kannattaa. Nettisivutorin avulla
+            tavoitat yhdellä kerralla kaikki suurimmat nettisivujen ja Web-projektien toteuttajat, sekä sadat keskisuuret ja pienet toimijat ympäri maan.</Typography>
           <Button
             component={Link}
             to="/lisaailmoitus"
@@ -227,4 +200,4 @@ const HomeProcess = () => {
   )
 }
 
-export default HomeProcess
+export default HomeProcessDev

@@ -1,7 +1,7 @@
 import { Box, Typography, Button } from '@mui/material'
 import React from 'react'
 import { Link } from 'react-router-dom'
-import computertabPic from '../../Assets/computertab.png'
+import mobileAppPic from '../../Assets/mobileapp.png'
 import Timeline from '@mui/lab/Timeline'
 import TimelineItem, { timelineItemClasses } from '@mui/lab/TimelineItem'
 import TimelineSeparator from '@mui/lab/TimelineSeparator'
@@ -9,20 +9,21 @@ import TimelineConnector from '@mui/lab/TimelineConnector'
 import TimelineContent from '@mui/lab/TimelineContent'
 import TimelineDot from '@mui/lab/TimelineDot'
 import './homeheader.css'
+import './homebuttons.css'
 
 const HomeHeader = () => {
   return (
-    <Box sx={{ marginTop: '3rem', position: 'relative'}}>
-      <Box className='spacer layer1' sx={{ marginBottom: '-15rem',
-      '@media (max-width: 800px)': {
-        marginBottom: '-2rem',
-      },
-     }}></Box>
+    <Box  className='spacer layer1' sx={{ marginTop: '3rem' }}>
       <Typography
         sx={{
           fontSize: '2.5rem',
           textAlign: 'center',
           fontWeight: 'bold',
+          paddingTop: '3rem',
+          fontStyle: 'italic',
+          background: 'linear-gradient(to right, #0004FF, #63E6FF)',
+          WebkitBackgroundClip: 'text', // Corrected property name
+          WebkitTextFillColor: 'transparent', // Corrected property name
           '@media (max-width: 442px)': {
             fontSize: '1.5rem',
             marginBottom: '2rem'
@@ -36,27 +37,43 @@ const HomeHeader = () => {
         flexWrap: 'wrap',
         justifyContent: 'center',
         alignItems: 'center',
-        textAlign: 'center'
+        textAlign: 'center',
       }}>
         <Box sx={{
           display: 'flex',
           flexDirection: 'column',
           flexWrap: 'wrap',
           width: '40vw',
+         paddingBottom: '2rem',
           '@media (max-width: 600px)': {
             width: '80vw',
+            justifyContent: 'center'
           },
         }}>
           <Typography
             sx={{
               fontWeight: 'bold',
-              fontSize: '1.7rem',
+              fontSize: '2rem',
               textAlign: 'center',
               '@media (max-width: 442px)': {
-                fontSize: '1rem',
+                fontSize: '1.2rem',
               },
             }}
-          ><span style={{ color: 'blue' }}>Paras</span> tapa toteuttaa omat nettisivut ja Web-projektit.</Typography>
+          >
+            <Typography 
+            component="span"
+            sx={{
+              fontWeight: 'bold',
+              background: 'linear-gradient(to right, #002BB9, #783EFF)',
+              WebkitBackgroundClip: 'text', // Corrected property name
+              WebkitTextFillColor: 'transparent', // Corrected property name
+              fontSize: '2.5rem',
+              '@media (max-width: 442px)': {
+                fontSize: '1.4rem',
+              },
+            }}>Paras</Typography> tapa ostaa ja myydä nettisivuja ja verkkopohjaisia ohjelmistoja.
+          </Typography>
+
           <Box
             sx={{
               display: 'flex',
@@ -92,53 +109,38 @@ const HomeHeader = () => {
                 </TimelineItem>
               </Timeline>
             </Box>
-            <Button
-              component={Link}
-              to="/lisaailmoitus"
-              sx={{ backgroundColor: 'blue', color: 'white',
-                transition: 'transform 0.3s',
-                maxWidth: '9rem',
-                marginTop: '1rem',
-                marginLeft: '1rem',
-                marginBottom: '1rem',
-                borderRadius: '1rem',
-                '&:hover': {
-                  transform: 'scale(1.05)',
-                  backgroundImage: 'linear-gradient(to bottom, #003eff, #006eff)' }
-              }}>
+            <Button className="bn632-hover bn26"
+            component={Link}
+            to="/lisaailmoitus"
+            sx={{color: 'white',
+              marginTop: '1rem',
+              maxWidth: '10rem',
+            }}>
             Aloita tästä
-            </Button>
-            <Button
-              component={Link}
-              to="/tarjouskilpailut"
-              sx={{
-                backgroundColor: 'blue',
-                color: 'white',
-                transition: 'transform 0.3s',
-                marginTop: '1rem',
-                marginBottom: '1rem',
-                maxWidth: '9rem',
-                marginLeft: '1rem',
-                borderRadius: '1rem',
-                '&:hover': {
-                  transform: 'scale(1.05)',
-                  backgroundImage: 'linear-gradient(to bottom, #003eff, #006eff)',
-                },
-              }}
-            >
-  Avoimet ilmoitukset
-            </Button>
+          </Button>
+          <Button className="bn632-hover bn26"
+            component={Link}
+            to="/tarjouskilpailut"
+            sx={{color: 'white',
+              marginTop: '1rem',
+              maxWidth: '10rem',
+            }}>
+            Avoimet ilmoitukset
+          </Button>
           </Box>
         </Box>
-        <Box sx={{ maxWidth: '30rem', borderRadius: '0.5rem', height: 'auto',
-        boxShadow: '0.2rem 0.3rem 1.5rem black',
+        <Box sx={{ maxWidth: '25rem', height: 'auto',
         '@media (max-width: 510px)': {
           maxWidth: '60vw',
         }, }}
           component="img"
-        src={computertabPic} alt='pic of computer tab'>
+        src={mobileAppPic} alt='pic of mobile app'>
         </Box>
       </Box>
+        <Box
+        className='spacerlow layer2'
+        >
+        </Box>
     </Box>
   )
 }

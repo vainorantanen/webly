@@ -47,14 +47,20 @@ const AddFeedPostForm = () => {
         if (result && result.error) {
           notify('Tapahtui virhe backendissa', 'error')
           return
+        } else {
+          notify('Ilmoitus lisätty onnistuneesti', 'success')
+          dispatch(resetFormData())
         }
       } else if (formData.isOpenFeedPost === false) {
-        dispatch(addPortalpost(formData))
-        console.log('addPortalpost')
+        const result = await dispatch(addPortalpost(formData))
+        if (result && result.error) {
+          notify('Tapahtui virhe backendissa', 'error')
+          return
+        } else {
+          notify('Ilmoitus lisätty onnistuneesti', 'success')
+          dispatch(resetFormData())
+        }
       }
-
-      notify('Ilmoitus lisätty onnistuneesti', 'success')
-      dispatch(resetFormData())
     } catch (error) {
       notify('Ilmeni jokin ongelma ilmoituksen lisäyksessä, yritä myöhemmin uudelleen', 'error')
     } 
@@ -113,7 +119,9 @@ const AddFeedPostForm = () => {
 
   if (user && user.disabled) {
     return (
-      <UserDisabledText />
+      <Container sx={{ marginTop: '6rem' }}>
+        <UserDisabledText />
+      </Container>
     )
   }
 

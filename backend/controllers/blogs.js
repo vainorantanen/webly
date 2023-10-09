@@ -1,7 +1,8 @@
 const router = require('express').Router()
 const Blog = require('../models/blog')
+const User = require('../models/user')
 
-const { userExtractor } = require('../utils/middleware')
+const { userExtractor, isUserDisabled } = require('../utils/middleware')
 
 router.get('/', async (request, response) => {
   const blogs = await Blog
@@ -20,8 +21,10 @@ router.post('/', userExtractor, async (request, response) => {
 
   const user = request.user
 
+  const checkIfUserDisabled = await isUserDisabled(user)
+
   // vain kehittäjät voi lisätä blogeja, eli regular tyypit ei voi lisätä
-  if (!user || user.userType === 'regular') {
+  if (!user || user.userType === 'regular' || checkIfUserDisabled === true) {
     return response.status(401).json({ error: 'operation not permitted' })
   }
 
@@ -44,7 +47,9 @@ router.put('/:id', userExtractor, async (request, response) => {
 
   const blog = await Blog.findById(request.params.id)
 
-  if (!user || blog.user.toString() !== user.id.toString()) {
+  const checkIfUserDisabled = await isUserDisabled(user)
+
+  if (!user || blog.user.toString() !== user.id.toString() || checkIfUserDisabled === true) {
     return response.status(401).json({ error: 'operation not permitted' })
   }
 

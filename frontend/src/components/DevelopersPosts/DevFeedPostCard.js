@@ -3,6 +3,7 @@ import { Typography, Box, Button,} from '@mui/material'
 import { Link } from 'react-router-dom'
 import EuroIcon from '@mui/icons-material/Euro';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
+import LocationOnIcon from '@mui/icons-material/LocationOn';
 
 const FeedPostCard = ({ post }) => {
 
@@ -50,7 +51,7 @@ const FeedPostCard = ({ post }) => {
           (
             <Box>
               <Typography><AccessTimeIcon />{post.time}</Typography>
-          <Typography><AccessTimeIcon />{post.location}</Typography>
+          <Typography><LocationOnIcon />{post.location}</Typography>
               </Box>
           )}
           </Box>

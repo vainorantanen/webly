@@ -3,7 +3,9 @@ import { Box, Typography } from '@mui/material'
 
 const HomeInfoBox = () => {
   return (
-    <Box sx={{
+    <Box
+    className='spacerblurry layerblurry'
+    sx={{
       display: 'flex',
       marginTop: '3rem',
       flexDirection: 'row',
@@ -11,11 +13,11 @@ const HomeInfoBox = () => {
       justifyContent: 'center',
       alignItems: 'center',
       textAlign: 'center',
-      backgroundColor: '#0F0098',
       gap: '4.5rem',
       color: 'white',
       paddingTop: '4rem',
-      paddingBottom: '4rem'
+      paddingBottom: '4rem',
+      marginBottom: '2rem'
     }}>
       <Box>
         <Typography sx={{

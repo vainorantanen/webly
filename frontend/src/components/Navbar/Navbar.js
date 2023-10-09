@@ -11,11 +11,13 @@ import {
   ListItemText,
   ListItemButton,
   styled,
+  Box,
 } from '@mui/material'
 import { Menu as MenuIcon } from '@mui/icons-material'
 import './navbar.css'
 import { Link } from 'react-router-dom'
 import { useSelector } from 'react-redux'
+import weblyLogoPic from '../../Assets/weblylogo.png'
 
 const theme = createTheme({
   palette: {
@@ -40,6 +42,18 @@ const StyledButton = styled(Button)({
    }
 })
 
+const LogoContainer = styled(Link)({
+  display: 'flex',
+  alignItems: 'center',
+  textDecoration: 'none', // Remove underline for the link
+});
+
+const LogoImage = styled('img')({
+  maxWidth: '65px', // Adjust the size as needed
+  maxHeight: '65px', // Adjust the size as needed
+});
+
+
 const Navbar = ({ logout }) => {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false)
 
@@ -56,10 +70,10 @@ const Navbar = ({ logout }) => {
           <IconButton color="inherit" onClick={toggleDrawer} className='menuiconbutton'>
             <MenuIcon />
           </IconButton>
+          <LogoContainer to="/">
+              <LogoImage src={weblyLogoPic} alt="pic of webly logo" />
+            </LogoContainer>
           <div className='nav-buttons'>
-            <StyledButton color="inherit" component={Link} to="/" sx={{fontStyle: 'italic'}}>
-              Webly.fi
-            </StyledButton>
             <StyledButton color="inherit" component={Link} to="/kehittajien-ilmoitukset">
               Kehittäjien ilmoitukset
             </StyledButton>

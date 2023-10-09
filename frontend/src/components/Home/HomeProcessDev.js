@@ -1,12 +1,13 @@
 import React from 'react'
 import { Box, Typography, Button } from '@mui/material'
 import locationsPic from '../../Assets/locations.png'
-import remotePic from '../../Assets/remote-choose.png'
-import phonePic from '../../Assets/phone.png'
-import analyzePic from '../../Assets/analyze.png'
+import seoPic from '../../Assets/seo.png'
+import statisticsPic from '../../Assets/statistics.png'
 import { Link } from 'react-router-dom'
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward'
+import devPic from '../../Assets/developer.png'
 import './homebuttons.css'
+import EuroIcon from '@mui/icons-material/Euro';
 import LibraryBooksIcon from '@mui/icons-material/LibraryBooks';
 import LoginIcon from '@mui/icons-material/Login';
 
@@ -37,27 +38,33 @@ const HomeProcess = () => {
             width: '80vw',
           }
         }}>
-          <Typography sx={{ marginBottom: '1.5rem', fontSize: '1.5rem' }}>1. <span style={{ color: 'blue' }}>Määrittele</span>  tarpeesi</Typography>
-          <Typography>Kerro, millaista verkkosivustoa tai projektia olet etsimässä ja mitä ominiasuuksia siihen kuuluu.
-             Määrittely antaa raamit projektisi toteuttajalle niiden lajudesta
-              sekä mahdollistaa arvion työmäärästä ja hinnasta.</Typography>
+          <Typography sx={{ marginBottom: '1.5rem', fontSize: '1.5rem' }}>1. <span style={{ color: 'blue' }}>Luo</span> kehittäjäprofiili</Typography>
+          <Typography>Olit sitten yritys, toiminimi, freelancer tai muu web-kehittäjä,
+             luomalla profiilin pystyt tarjoamaan asiakkaiden ilmoituksiin ja luomaan brändiäsi
+             erottumalla kilpailijoista.
+          </Typography>
+          <ul>
+            <li>
+              <Typography>Hanki uusia asiakkaita vaivattomasti päivittäin!</Typography>
+            </li>
+          </ul>
               <Button className="bn632-hover bn26"
             component={Link}
-            to="/lisaailmoitus"
+            to="/login"
             sx={{color: 'white',
               margin: '0.7rem',
               maxWidth: '10rem',
             }}>
-            Jätä ilmoitus <ArrowForwardIcon />
+            Kirjaudu <LoginIcon />
           </Button>
           <Button className="bn632-hover bn26"
             component={Link}
-            to="/ohjeet-maarittelyyn"
+            to="/kehittajille"
             sx={{color: 'white',
               margin: '0.7rem',
               maxWidth: '10rem',
             }}>
-            Ohjeet hyvään määrittelyyn <LibraryBooksIcon />
+            Lue lisää <LibraryBooksIcon />
           </Button>
         </Box>
         <Box sx={{ maxWidth: '23rem', height: 'auto',
@@ -66,7 +73,7 @@ const HomeProcess = () => {
           marginLeft: '2rem'
         }, }}
           component="img"
-        src={analyzePic} alt='pic of analyzing'>
+        src={devPic} alt='developer'>
         </Box>
       </Box>
 
@@ -84,7 +91,7 @@ const HomeProcess = () => {
           maxWidth: '40vw',
         }, }}
           component="img"
-        src={phonePic} alt='pic of mobile phone'>
+        src={seoPic} alt='seo'>
         </Box>
         <Box sx={{
          width: '40vw',
@@ -96,31 +103,19 @@ const HomeProcess = () => {
             width: '80vw',
           }
         }}>
-          <Typography sx={{ marginBottom: '1.5rem', fontSize: '1.5rem' }}>2. <span style={{ color: 'blue' }}>Lisää</span> ilmoitus (se on ilmaista)</Typography>
-          <Typography>Lisäämällä ilmoituksen tarpeidesi mukaan, tavoitat markkinoiden parhaat tekijät ja parhaat ideat.</Typography>
+          <Typography sx={{ marginBottom: '1.5rem', fontSize: '1.5rem' }}>2. <span style={{ color: 'blue' }}>Tarjoa</span> ilmoituksiin tai
+          <span style={{ color: 'blue' }}> Lisää</span> oma ilmoitus</Typography>
+          <Typography>Kehittäjänä voi tarjota asiakkaiden tarjouspyyntöihin ja luoda omia ilmoituksiasi asiakkiden nähtäville.</Typography>
           <ul>
             <li>
-            <Typography>Kirjaudu sisään lisätäksesi ilmoitus ja seurataksesi tarjousten tilannetta.</Typography>
+              <Typography>Voit jättää ilmoituksen ja tarjouksen missä vain ja milloin vain!</Typography>
             </li>
             <li>
-              <Typography>Voit jättää ilmoituksen missä vain ja milloin vain!</Typography>
-            </li>
-            <li>
-              <Typography>Ilmoituksen jättäminen on ilmaista eikä sido hankintaan!</Typography>
-            </li>
-            <li>
-              <Typography>Ilmoituksen voit jättää joko avoimeksi ilmoitukseksi kaikkien nähtäville tai toimittajaportaaliin.</Typography>
+              <Typography>Avoimet ilmoitukset ja tarjoukset ovat kaikkien nähtävillä. Tarjoamme 
+                tämän lisäksi portaalin, jossa vain sinä ja asiakas näette tarjouksenne.
+              </Typography>
             </li>
           </ul>
-          <Button className="bn632-hover bn26"
-            component={Link}
-            to="/login"
-            sx={{color: 'white',
-              margin: '0.5rem',
-              maxWidth: '10rem',
-            }}>
-            Kirjaudu <LoginIcon />
-          </Button>
           <Button className="bn632-hover bn26"
             component={Link}
             to="/lisaailmoitus"
@@ -129,6 +124,24 @@ const HomeProcess = () => {
               maxWidth: '10rem',
             }}>
             Jätä ilmoitus <ArrowForwardIcon />
+            </Button>
+            <Button className="bn632-hover bn26"
+            component={Link}
+            to="/kehittajille"
+            sx={{color: 'white',
+              margin: '0.5rem',
+              maxWidth: '10rem',
+            }}>
+            Lue lisää <LibraryBooksIcon />
+            </Button>
+          <Button className="bn632-hover bn26"
+            component={Link}
+            to="/hinnasto"
+            sx={{color: 'white',
+              margin: '0.5rem',
+              maxWidth: '10rem',
+            }}>
+            Hinnasto <EuroIcon />
           </Button>
         </Box>
 
@@ -154,25 +167,34 @@ const HomeProcess = () => {
             width: '80vw',
           }
         }}>
-          <Typography sx={{ marginBottom: '1.5rem', fontSize: '1.5rem' }}>3. <span style={{ color: 'blue' }}>Valitse</span> paras tekijä</Typography>
-          <Typography>Kun tarjouskilpailu on päättynyt, voit valita tarjouksista itsellesi parhaiten sopivan tekijän.
-            Siten varmistat, että saat juuri itsellesi parhaat mahdolliset sivut.</Typography>
+          <Typography sx={{ marginBottom: '1.5rem', fontSize: '1.5rem' }}>3. <span style={{ color: 'blue' }}>Toteuta</span> projekteja</Typography>
+          <Typography>Skaalaa liiketoimintasi uudelle tasolle asiakasprojektien avulla.
+            Voit toteuttaa projektisi täysin riippumatta Webly.fi:stä</Typography>
             <ul>
             <li>
-              <Typography>Tavoita yhdellä ilmoituksella useita tekijöitä</Typography>
+              <Typography>Seuraa kuinka asiakasportfoliosi kasvaa</Typography>
             </li>
             <li>
-              <Typography>Vertaile saamiasi tarjouksia</Typography>
+              <Typography>Valitse juuri sopivat asiakkaat</Typography>
             </li>
           </ul>
           <Button className="bn632-hover bn26"
             component={Link}
             to="/lisaailmoitus"
             sx={{color: 'white',
-              marginTop: '1rem',
+              margin: '0.5rem',
               maxWidth: '10rem',
             }}>
             Jätä ilmoitus <ArrowForwardIcon />
+          </Button>
+          <Button className="bn632-hover bn26"
+            component={Link}
+            to="/tarjouskilpailut"
+            sx={{color: 'white',
+              margin: '0.5rem',
+              maxWidth: '10rem',
+            }}>
+            Avoimet ilmoitukset <ArrowForwardIcon />
           </Button>
         </Box>
         <Box sx={{ maxWidth: '20rem',
@@ -180,7 +202,7 @@ const HomeProcess = () => {
           maxWidth: '40vw',
         }, }}
           component="img"
-        src={remotePic} alt='remote workers'>
+        src={statisticsPic} alt='statistics'>
         </Box>
 
       </Box>
@@ -211,18 +233,27 @@ const HomeProcess = () => {
             width: '80vw',
           }
         }}>
-          <Typography sx={{ marginBottom: '1.5rem', fontSize: '1.5rem' }}>Tavoita yhdellä tarjouspyynnöllä useita tekijöitä</Typography>
-          <Typography>Sinun tarpeisiisi paras projektin toteuttaja voi sijaita missä päin Suomea tahansa, joten ilmoituksen jättäminen kannattaa. Webly.fi:n avulla
-            tavoitat yhdellä kerralla suurimmat nettisivujen ja verkkopohjaisten ohjelmistojen
-             toteuttajat sekä pienemmät toimijat, kuten freelancerit, ympäri maan.</Typography>
+          <Typography sx={{ marginBottom: '1.5rem', fontSize: '1.5rem' }}>Kirjoita blogeja ja kerro asiakastarinoitasi</Typography>
+          <Typography>Webly.fi tarjoaa alustan kehittäjille, jossa voit ylläpitää omaa blogiasi ja esitellä asiakastarinoita.
+             Aktiivisuus rakentaa brändiäsi ja luo luottamusta asiakasnäkökulmasta!
+          </Typography>
              <Button className="bn632-hover bn26"
             component={Link}
             to="/lisaailmoitus"
             sx={{color: 'white',
-              marginTop: '1rem',
+            margin: '0.5rem',
               maxWidth: '10rem',
             }}>
             Jätä ilmoitus <ArrowForwardIcon />
+          </Button>
+          <Button className="bn632-hover bn26"
+            component={Link}
+            to="/lisaa-blogi"
+            sx={{color: 'white',
+              margin: '0.5rem',
+              maxWidth: '10rem',
+            }}>
+            Lisää blogi <ArrowForwardIcon />
           </Button>
         </Box>
 

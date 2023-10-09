@@ -1,7 +1,7 @@
 const router = require('express').Router()
 const DevFeedPost = require('../models/devfeedpost')
 
-const { userExtractor } = require('../utils/middleware')
+const { userExtractor, isUserDisabled } = require('../utils/middleware')
 
 router.get('/', async (request, response) => {
   const devfeedPosts = await DevFeedPost
@@ -23,9 +23,10 @@ router.post('/', userExtractor, async (request, response) => {
   })
 
   const user = request.user
+  const checkIfUserDisabled = await isUserDisabled(user)
 
   // vain kehittäjät voi lisätä devposteja eli regularit ei voi
-  if (!user || user.userType === 'regular') {
+  if (!user || user.userType === 'regular' || checkIfUserDisabled === true) {
     return response.status(401).json({ error: 'operation not permitted' })
   }
 

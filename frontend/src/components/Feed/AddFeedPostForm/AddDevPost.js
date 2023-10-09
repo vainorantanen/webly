@@ -34,8 +34,14 @@ const AddDevPost = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault()
+
+    if (user.disabled) {
+      notify('Käyttäjäsi on disabloitu!', 'error')
+      return
+    }
+
     try {
-      dispatch(addDevPost({
+      const result = await dispatch(addDevPost({
         title,
         description,
         postType,
@@ -43,14 +49,19 @@ const AddDevPost = () => {
         time,
         location
       }))
-      notify('Postaus lisätty onnistuneesti', 'success')
-      setDescription('')
-      setTitle('')
-      setPrice('')
-      setTime('')
-      setLocation('')
+        if (result && result.error) {
+          notify('Tapahtui virhe backendissa', 'error')
+          return
+        } else {
+          notify('Postaus lisätty onnistuneesti', 'success')
+          setDescription('')
+          setTitle('')
+          setPrice('')
+          setTime('')
+          setLocation('')
+          }
     } catch (error) {
-      notify('Ilmeni jokin ongelma postauksen teossa, yritä myöhemmin uudelleen', 'error')
+      notify('Ilmeni jokin ongelma, yritä myöhemmin uudelleen', 'error')
     }
 
   }
@@ -63,7 +74,9 @@ const AddDevPost = () => {
 
   if (user && user.disabled) {
     return (
-      <UserDisabledText />
+      <Container sx={{ marginTop: '6rem' }}>
+        <UserDisabledText />
+      </Container>
     )
   }
 

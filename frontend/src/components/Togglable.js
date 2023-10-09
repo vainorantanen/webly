@@ -21,18 +21,13 @@ const Togglable = forwardRef((props, ref) => {
   return (
     <Container sx={{ textAlign:'center', marginTop: '1rem' }}>
       <div style={hideWhenVisible}>
-        <Button onClick={toggleVisibility}
-          sx={{ backgroundColor: 'blue', color: 'white',
-            transition: 'transform 0.3s',
-            marginTop: '1rem',
-            marginLeft: '1rem',
-            marginBottom: '1rem',
-            borderRadius: '1rem',
-            '&:hover': {
-              transform: 'scale(1.05)',
-              backgroundImage: 'linear-gradient(to bottom, #003eff, #006eff)' }
-          }}
-        >{props.buttonLabel}</Button>
+        <Button
+        className="bn632-hover bn26"
+        onClick={toggleVisibility}
+        sx={{color: 'white',
+        marginTop: '1rem',
+        maxWidth: '10rem',
+      }}>{props.buttonLabel}</Button>
       </div>
       <div style={showWhenVisible}>
         {props.children}

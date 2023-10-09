@@ -5,6 +5,7 @@ import { loginUser } from '../reducers/user'
 import { useState } from "react";
 import { useNotification } from '../hooks'
 import { Link } from 'react-router-dom'
+import './Home/homebuttons.css'
 
 const LoginForm = () => {
   const [username, setUsername] = useState("");
@@ -71,24 +72,13 @@ const LoginForm = () => {
           onChange={({ target }) => setPassword(target.value)}
           sx={{ marginBottom: '1rem' }}
         />
-
-        <Button
-          type="submit"
-          variant="contained"
-          color="primary"
-          className='login-button-input'
-          fullWidth
-          sx={{ backgroundColor: 'blue', color: 'white',
-            transition: 'transform 0.3s',
-            marginTop: '1rem',
-            marginBottom: '1rem',
-            '&:hover': {
-              transform: 'scale(1.05)',
-              backgroundImage: 'linear-gradient(to bottom, #003eff, #006eff)' }
-          }}
-        >
-          Kirjaudu
-        </Button>
+        <Button className="login-button-input bn632-hover bn26"
+            type='submit'
+            fullWidth
+            sx={{color: 'white',
+            }}>
+            Kirjaudu
+            </Button>
       </Box>
       <Box>
         <Typography sx={{

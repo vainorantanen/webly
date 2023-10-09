@@ -125,19 +125,13 @@ const MakeBidForm = ({ post }) => {
           />
         </LocalizationProvider>
         <Button
+        className="bn632-hover bn26"
           type="submit"
-          variant="contained"
-          color="primary"
           fullWidth
           disabled={(minPrice < 0 || maxPrice < 0 || maxPrice < minPrice
             || isNaN(minPrice) || isNaN(maxPrice)) || dateError || !description}
-          sx={{ backgroundColor: 'blue', color: 'white',
-            transition: 'transform 0.3s',
+            sx={{color: 'white',
             marginTop: '1rem',
-            marginBottom: '1rem',
-            '&:hover': {
-              transform: 'scale(1.05)',
-              backgroundImage: 'linear-gradient(to bottom, #003eff, #006eff)' }
           }}
         >
           Lähetä tarjous

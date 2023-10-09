@@ -60,7 +60,7 @@ const CompaniesList = () => {
           maxWidth: '60vw',
         }, }}
           component="img"
-        src={developerPic} alt='pic of mobile app'>
+        src={developerPic} alt='developer'>
         </Box>
       </Box>
       <FeedItems />

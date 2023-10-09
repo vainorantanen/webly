@@ -1,6 +1,7 @@
 import { Box, Typography } from '@mui/material'
 import React from 'react'
 import { Link } from 'react-router-dom'
+import { formatDate } from '../../Functions/formatDate'
 
 const BlogCard = ({blog}) => {
   return (
@@ -30,7 +31,7 @@ const BlogCard = ({blog}) => {
         </Typography>
         <Typography sx={{
             borderBottom: '1px solid black'
-        }}>{blog.user.name}, {blog.timeStamp.split('T')[0]}</Typography>
+        }}>{blog.user.name}, {formatDate(blog.timeStamp)}</Typography>
         <Typography sx={{
             marginTop: '1rem',
             overflow: 'hidden',

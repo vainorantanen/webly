@@ -217,21 +217,13 @@ const RegisterPage = () => {
           sx={{ marginBottom: '1rem' }}
         />
         <Box sx={{ display: 'flex', justifyContent: 'center', marginTop: '1rem' }}>
-          <Button
-            variant="contained"
-            type="submit"
-            sx={{
-              backgroundColor: 'blue',
-              color: 'white',
-              transition: 'transform 0.3s',
-              '&:hover': {
-                transform: 'scale(1.05)',
-                backgroundImage: 'linear-gradient(to bottom, #003eff, #006eff)',
-              },
-            }}
-          >
+        <Button className="login-button-input bn632-hover bn26"
+            type='submit'
+            fullWidth
+            sx={{color: 'white',
+            }}>
             Reksiteröidy
-          </Button>
+            </Button>
         </Box>
       </Box>
       <Dialog open={openTermsDialog} onClose={handleTermsDialogClose}>

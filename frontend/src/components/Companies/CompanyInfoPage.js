@@ -74,9 +74,10 @@ const CompanyInfoPage = () => {
           Kotisivut: {dev.url || 'Ei saatavilla'}
         </Typography>
       </Box>
-      <Box sx={{ marginTop: '2rem' }}>
-        <Typography sx={{ fontSize: '1.3rem', borderBottom: '1px solid black',
-      marginBottom: '1rem' }}>Kehittäjän blogit</Typography>
+      <Typography sx={{ fontSize: '1.3rem', borderBottom: '1px solid black',
+      marginTop: '1rem' }}>Kehittäjän blogit</Typography>
+      <Box sx={{ marginTop: '1rem',
+    display: 'flex', flexDirection: 'row', flexWrap: 'wrap', background: 'white'}}>
         {devBlogs && devBlogs.length > 0 ? (
           devBlogs.map(b => (
             <Box key={b.id} sx={{ padding: '0.5rem', backgroundColor: 'white', borderRadius: '0.3rem',

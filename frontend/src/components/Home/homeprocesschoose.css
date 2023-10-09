@@ -1,0 +1,29 @@
+.spacerblob {
+    width: 100%;
+    height: auto;
+    border-radius: 0.3rem;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+}
+
+.layerblob {
+    background-image: url('./blob-haikei-blue.svg');
+}
+
+.spacerlow {
+    aspect-ratio: 960/200;
+    width: 100%;
+    height: 20%;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+}
+
+.layerlow {
+    background-image: url('./wave-low-top.svg');
+}
+
+.layerlowbottom {
+    background-image:  url('./wave-low-bottom.svg');
+}

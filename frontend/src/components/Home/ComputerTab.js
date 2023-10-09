@@ -1,6 +1,7 @@
 import { Box } from '@mui/material';
 import React from 'react';
 import computertabPic from '../../Assets/computertab1.png';
+import './homeheader.css'
 
 const ComputerTab = () => {
   return (

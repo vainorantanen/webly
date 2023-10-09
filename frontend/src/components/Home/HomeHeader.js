@@ -9,10 +9,11 @@ import TimelineConnector from '@mui/lab/TimelineConnector'
 import TimelineContent from '@mui/lab/TimelineContent'
 import TimelineDot from '@mui/lab/TimelineDot'
 import './homeheader.css'
+import './homebuttons.css'
 
 const HomeHeader = () => {
   return (
-    <Box  className='spacer layer1' sx={{ marginTop: '3rem'}}>
+    <Box  className='spacer layer1' sx={{ marginTop: '3rem' }}>
       <Typography
         sx={{
           fontSize: '2.5rem',
@@ -36,14 +37,14 @@ const HomeHeader = () => {
         flexWrap: 'wrap',
         justifyContent: 'center',
         alignItems: 'center',
-        textAlign: 'center'
+        textAlign: 'center',
       }}>
         <Box sx={{
           display: 'flex',
           flexDirection: 'column',
           flexWrap: 'wrap',
           width: '40vw',
-          paddingBottom: '10rem',
+         paddingBottom: '2rem',
           '@media (max-width: 600px)': {
             width: '80vw',
             justifyContent: 'center'
@@ -108,40 +109,24 @@ const HomeHeader = () => {
                 </TimelineItem>
               </Timeline>
             </Box>
-            <Button
-              component={Link}
-              to="/lisaailmoitus"
-              sx={{ backgroundColor: 'blue', color: 'white',
-                transition: 'transform 0.3s',
-                maxWidth: '9rem',
-                marginLeft: '1rem',
-                marginBottom: '1rem',
-                borderRadius: '1rem',
-                '&:hover': {
-                  transform: 'scale(1.05)',
-                  backgroundImage: 'linear-gradient(to bottom, #003eff, #006eff)' }
-              }}>
+            <Button className="bn632-hover bn26"
+            component={Link}
+            to="/lisaailmoitus"
+            sx={{color: 'white',
+              marginTop: '1rem',
+              maxWidth: '10rem',
+            }}>
             Aloita tästä
-            </Button>
-            <Button
-              component={Link}
-              to="/tarjouskilpailut"
-              sx={{
-                backgroundColor: 'blue',
-                color: 'white',
-                transition: 'transform 0.3s',
-                marginBottom: '1rem',
-                maxWidth: '9rem',
-                marginLeft: '1rem',
-                borderRadius: '1rem',
-                '&:hover': {
-                  transform: 'scale(1.05)',
-                  backgroundImage: 'linear-gradient(to bottom, #003eff, #006eff)',
-                },
-              }}
-            >
-  Avoimet ilmoitukset
-            </Button>
+          </Button>
+          <Button className="bn632-hover bn26"
+            component={Link}
+            to="/tarjouskilpailut"
+            sx={{color: 'white',
+              marginTop: '1rem',
+              maxWidth: '10rem',
+            }}>
+            Avoimet ilmoitukset
+          </Button>
           </Box>
         </Box>
         <Box sx={{ maxWidth: '25rem', height: 'auto',
@@ -152,6 +137,10 @@ const HomeHeader = () => {
         src={mobileAppPic} alt='pic of mobile app'>
         </Box>
       </Box>
+        <Box
+        className='spacerlow layer2'
+        >
+        </Box>
     </Box>
   )
 }

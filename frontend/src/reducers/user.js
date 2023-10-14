@@ -5,6 +5,7 @@ import { notify } from './notification'
 import usersService from '../services/users'
 import { initializePortalposts } from './portalPosts'
 import { initializePortalBids } from './portalBids'
+import { initializeCustomerInfos } from './customerinfo'
 
 const initialState = null
 
@@ -40,6 +41,7 @@ export const loginUser = (credentials) => {
       dispatch(set(user))
       dispatch(initializePortalposts())
       dispatch(initializePortalBids())
+      dispatch(initializeCustomerInfos())
     } catch (e) {
       dispatch(notify('Väärä käyttäjätunnus tai salasana', 'error'))
       console.log("Error", e)

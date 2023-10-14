@@ -25,6 +25,7 @@ const CompanyProfile = () => {
       >Lisää blogi</Button>
       <Typography sx={{ fontSize: '1.2rem', borderBottom: '1px solid black' }}>Seuraa tekemiesi tarjousten tilannetta</Typography>
       <Button component={Link} to='/profiili/kehittaja/hyvaksytyt-tarjoukset'>Katso kaikki hyväksytyt tarjoukset</Button>
+      <Button component={Link} to='/profiili/yhteydenotot'>Yhteydenotot</Button>
       <DevBids />
     </Container>
   )

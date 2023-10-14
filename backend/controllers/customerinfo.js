@@ -40,10 +40,10 @@ router.post('/', userExtractor, async (request, response) => {
   }
 
   const customerinfo = new CustomerInfo({
-    targetDeveloper: offer.user.id,
     senderEmail,
     senderPhone,
-    message
+    message,
+    timeStamp: new Date()
   })
 
   if (offer.isPortalBid === true) {
@@ -52,6 +52,7 @@ router.post('/', userExtractor, async (request, response) => {
       return response.status(400).json({ error: 'could not find offer' })
     } else {
       customerinfo.relatedPortalBid = portalOfferFromdb._id
+      customerinfo.targetDeveloper = portalOfferFromdb.user
     }
   } else if (offer.isPortalBid === false) {
     const feedOfferFromdb = await FeedBid.findById(offer.id)
@@ -59,6 +60,7 @@ router.post('/', userExtractor, async (request, response) => {
       return response.status(400).json({ error: 'could not find offer' })
     } else {
       customerinfo.relatedFeedBid = feedOfferFromdb._id
+      customerinfo.targetDeveloper = feedOfferFromdb.user
     }
   } else {
     return response.status(400).json({ error: 'could not find offer' })

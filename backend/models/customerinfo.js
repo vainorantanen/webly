@@ -3,11 +3,13 @@ const mongoose = require('mongoose')
 const schema = mongoose.Schema({
   sender: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'User'
+    ref: 'User',
+    required: true
   },
   targetDeveloper: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'User'
+    ref: 'User',
+    required: true
   },
   senderEmail: {
     type: String,
@@ -22,7 +24,11 @@ const schema = mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'PortalBid'
   },
-  message: String
+  message: String,
+  timeStamp: {
+    type: Date,
+    required: true
+  }
 })
 
 schema.set('toJSON', {

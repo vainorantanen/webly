@@ -5,10 +5,12 @@ import { initializePortalposts } from '../../reducers/portalPosts'
 import { initializePortalBids } from '../../reducers/portalBids'
 import PortalPostCard from './PortalPostCard'
 import LoginSuggestion from '../LoginSuggestion'
+import { useNotification } from '../../hooks'
 
 const Portal = () => {
 
   const user = useSelector(({user}) => user)
+  const notify = useNotification()
 
   const dispatch = useDispatch();
 
@@ -18,8 +20,10 @@ const Portal = () => {
         dispatch(initializePortalposts())
         dispatch(initializePortalBids())
     } catch (error) {
+        notify('Tapahtui virhe haettaessa portaalin tietoja')
         console.error('Error fetching portal posts:', error);
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dispatch]);
 
   const portalProjects = useSelector(({portalPosts}) => portalPosts).filter(p => p.isOpen)

@@ -40,6 +40,9 @@ import AllBlogsList from './components/Blogs/AllBlogsList'
 import SingleBlogView from './components/Blogs/SingleBlogView'
 import SingleDevPostView from './components/DevelopersPosts/SingleDevPostView'
 import AdminPanel from './components/AdminPanel/AdminPanel'
+import TermsOfService from './components/TermsOfService'
+import CompanyApprovedBids from './components/Profile/CompanyApprovedBids'
+import AllContactMessages from './components/Profile/ContactAttempts/AllContactMessages'
 
 const theme = createTheme({
   typography: {
@@ -81,6 +84,8 @@ const App = () => {
           <Route path='/profiili/kayttaja/muokkaa/ilmoitus/:id' element={<ModifyBuyerPost />} />
           <Route path='/profiili/kayttaja/muokkaa/portaaliilmoitus/:id' element={<ModifyPortalPost />} />
           <Route path='/profiili/kehittaja/muokkaa/ilmoitus/:id' element={<ModifyDevPost />} />
+          <Route path='/profiili/kehittaja/hyvaksytyt-tarjoukset' element={<CompanyApprovedBids />} />
+          <Route path='/profiili/yhteydenotot' element={<AllContactMessages />} />
           <Route path='/portaali' element={<Portal />} />
           <Route path='/portaali/ilmoitukset/:id' element={<SinglePostPortalView />} />
           <Route path='/tarjouskilpailut/:id' element={<SingleFeedPost />} />
@@ -92,6 +97,7 @@ const App = () => {
           <Route path='/blogit' element={<AllBlogsList />} />
           <Route path='/blogit/:id' element={<SingleBlogView /> } />
           <Route path='/adminpanel' element={<AdminPanel />} />
+          <Route path='/kayttoehdot' element={<TermsOfService />} />
         </Routes>
         <Footer />
       </Box>

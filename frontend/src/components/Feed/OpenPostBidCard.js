@@ -11,6 +11,7 @@ import StartIcon from '@mui/icons-material/Start';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { formatDate } from '../../Functions/formatDate'
+import SendCustomerInfoForm from '../SendCustomerInfoForm'
 
 const OpenPostBidCard = ({post}) => {
 
@@ -20,15 +21,15 @@ const OpenPostBidCard = ({post}) => {
   const notifyWith = useNotification()
 
     const handleAcceptbid = async (bidId) => {
-        const confirmed = window.confirm('Haluatko varmasti hyväksyä tämän tarjouksen?')
+        const confirmed = window.confirm('Vahvistetaanko muutos?')
         if (!confirmed) {
           return // If the user clicks "Cancel," do nothing
         }
         try {
           dispatch(modifyBidApprovedState(bidId, post.id))
-          notifyWith('Tarjous hyväksytty', 'success')
+          notifyWith('Tila muutettu onnistuneesti', 'success')
         } catch (error) {
-          notifyWith('Tarjouksen hyväksyntä epäonnistui', 'error')
+          notifyWith('Tilan muutos epäonnistui', 'error')
         }
     
       }
@@ -93,6 +94,14 @@ const OpenPostBidCard = ({post}) => {
             <Typography><AccessTimeIcon />Tarjous voimassa: {formatDate(offer.dueDate) || 'Ei tietoa'}</Typography>
             {user && user.id === post.user.id && !offer.isApproved ? (
               <Button onClick={() => handleAcceptbid(offer.id)}>Hyväksy tarjous<CheckCircleIcon /></Button>
+            ): null}
+            {user && user.id === post.user.id && offer.isApproved ? (
+              <Button onClick={() => handleAcceptbid(offer.id)}>Epähyväksy tarjous</Button>
+            ): null}
+            {user && user.id === post.user.id && offer.isApproved ? (
+              <Box>
+                <SendCustomerInfoForm offer={offer}/>
+                </Box>
             ): null}
             {user && (user.id === post.user.id || user.id === offer.user) && (
               <Button sx={{ color: 'red' }} onClick={() => handleDeletebid(offer.id)}>Poista tarjous<DeleteIcon /></Button>

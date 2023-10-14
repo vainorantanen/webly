@@ -6,10 +6,11 @@ import { initUser, clearUser } from '../reducers/user'
 import { initializeFeedPosts } from '../reducers/feedPosts'
 import { initializeDevsPosts } from '../reducers/devsPosts'
 import { initializeFeedBids } from '../reducers/feedBids'
-import { initializePortalposts } from '../reducers/portalPosts'
 import { initializeBlogs } from '../reducers/blogs'
 import { initializeRatings } from '../reducers/ratings'
+import { initializeCustomerInfos } from '../reducers/customerinfo'
 import { initializePortalBids } from '../reducers/portalBids'
+import { initializePortalposts } from '../reducers/portalPosts'
 
 export const useNotification = () => {
   const dispatch = useDispatch()
@@ -32,6 +33,7 @@ export const useInitialization = () => {
     dispatch(initializeBlogs())
     dispatch(initializeRatings())
     dispatch(initializePortalBids())
+    dispatch(initializeCustomerInfos())
   }
 }
 

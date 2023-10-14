@@ -3,6 +3,8 @@ import loginService from '../services/login'
 import storageService from '../services/storage'
 import { notify } from './notification'
 import usersService from '../services/users'
+import { initializePortalposts } from './portalPosts'
+import { initializePortalBids } from './portalBids'
 
 const initialState = null
 
@@ -36,7 +38,8 @@ export const loginUser = (credentials) => {
       const user = await loginService.login(credentials)
       storageService.saveUser(user)
       dispatch(set(user))
-      dispatch(notify('Kirjauduttu sisään', 'success'))
+      dispatch(initializePortalposts())
+      dispatch(initializePortalBids())
     } catch (e) {
       dispatch(notify('Väärä käyttäjätunnus tai salasana', 'error'))
       console.log("Error", e)

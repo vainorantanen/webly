@@ -149,8 +149,9 @@ router.put('/:id/feedBidAccept/:oid', userExtractor, async (request, response) =
   const offerId = request.params.oid
 
   const feedPost = await FeedPost.findById(feedPostId)
+  const feedBid = await FeedBid.findById(offerId)
 
-  if (!feedPost || !feedPost.isOpen) {
+  if (!feedPost || !feedPost.isOpen || !feedBid) {
     return response.status(400).json({error: 'feedpost doesnt exist or it is closed'})
   }
 
@@ -160,7 +161,7 @@ router.put('/:id/feedBidAccept/:oid', userExtractor, async (request, response) =
   }
 
   // Update the isApproved field of the specified offer
-  const updatedOffer = await FeedBid.findByIdAndUpdate(offerId, { isApproved: true }, { new: true })
+  const updatedOffer = await FeedBid.findByIdAndUpdate(offerId, { isApproved: !feedBid.isApproved }, { new: true })
   // Find the feedPost and update its feedBids array with the updated offer
 
   const updatedfeedBidsArray = feedPost.feedBids.map(offer =>

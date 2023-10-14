@@ -29,12 +29,35 @@ router.post('/', async (request, response) => {
   response.status(201).json(savedUser)
 })
 
-router.get('/', async (request, response) => {
-  const users = await User.find({})
-    .populate({ path: 'feedPosts' })
-    .populate( { path: 'feedBids' })
-  response.json(users)
-})
+router.get('/', userExtractor, async (request, response) => {
+  const user = request.user;
+  let users;
+
+  if (!user) {
+    // Show only users with userType !== 'regular'
+    users = await User.find({ userType: { $ne: 'regular' } })
+      .populate({ path: 'feedBids' });
+  } else if (user.username === 'admin') {
+    // Find all users
+    users = await User.find({})
+      .populate({ path: 'feedPosts' })
+      .populate({ path: 'feedBids' })
+  } else if (user.userType === 'regular') {
+    // Find the user himself and all users with userType !== 'regular'
+    users = await User.find({ $or: [{ _id: user._id }, { userType: { $ne: 'regular' } }] })
+      .populate({ path: 'feedPosts' })
+      .populate({ path: 'feedBids' });
+  } else if (user.userType !== 'regular') {
+    // Show only users with userType !== 'regular'
+    users = await User.find({ userType: { $ne: 'regular' } })
+      .populate({ path: 'feedBids' });
+  } else {
+    users = [];
+  }
+
+  response.json(users);
+});
+
 
 router.put('/:id', userExtractor, async (request, response) => {
   const { description, email } = request.body

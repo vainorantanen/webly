@@ -37,7 +37,7 @@ router.post('/', userExtractor, async (request, response) => {
   user.devfeedPosts = user.devfeedPosts.concat(createdFeedPost._id)
   await user.save()
 
-  createdFeedPost = await DevFeedPost.findById(createdFeedPost._id).populate('user')
+  createdFeedPost = await DevFeedPost.findById(createdFeedPost._id)
 
   response.status(201).json(createdFeedPost)
 })

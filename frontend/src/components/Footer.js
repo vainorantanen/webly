@@ -3,6 +3,7 @@ import { Typography, Box } from '@mui/material'
 import InstagramIcon from '@mui/icons-material/Instagram'
 import FacebookIcon from '@mui/icons-material/Facebook'
 import LinkedInIcon from '@mui/icons-material/LinkedIn'
+import { Link } from 'react-router-dom'
 
 const Footer = () => {
   return (
@@ -36,6 +37,12 @@ const Footer = () => {
           fontSize: '1rem',
         }}>
           webline@webline.fi
+        </Typography>
+
+        <Typography variant='body1' component={Link} to='/kayttoehdot'
+        sx={{ color: 'black' }}
+        >
+          Käyttöehdot
         </Typography>
 
         <Box sx={{

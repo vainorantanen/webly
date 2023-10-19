@@ -35,11 +35,6 @@ const AddDevPost = () => {
   const handleSubmit = async (event) => {
     event.preventDefault()
 
-    if (user.disabled) {
-      notify('Käyttäjäsi on disabloitu!', 'error')
-      return
-    }
-
     try {
       const result = await dispatch(addDevPost({
         title,

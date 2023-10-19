@@ -30,7 +30,7 @@ import { useNotification, useInitialization, useClearUser } from './hooks/index'
 import { useSelector } from 'react-redux'
 import RegisterPage from './components/RegisterPage'
 import ModifyBuyerPost from './components/Profile/ModifyBuyerPost'
-import ModifyDevPost from './components/Profile/ModifyDevPost'
+import ModifyDevPost from './components/Profile/ProfileDevPosts/ModifyDevPost'
 import ModifyPortalPost from './components/Profile/ModifyPortalPost'
 import Portal from './components/Portal/Portal'
 import SinglePostPortalView from './components/Portal/SinglePostPortalView'
@@ -43,6 +43,7 @@ import AdminPanel from './components/AdminPanel/AdminPanel'
 import TermsOfService from './components/TermsOfService'
 import CompanyApprovedBids from './components/Profile/CompanyApprovedBids'
 import AllContactMessages from './components/Profile/ContactAttempts/AllContactMessages'
+import ProfileDevPosts from './components/Profile/ProfileDevPosts/ProfileDevPosts'
 
 const theme = createTheme({
   typography: {
@@ -86,6 +87,7 @@ const App = () => {
           <Route path='/profiili/kehittaja/muokkaa/ilmoitus/:id' element={<ModifyDevPost />} />
           <Route path='/profiili/kehittaja/hyvaksytyt-tarjoukset' element={<CompanyApprovedBids />} />
           <Route path='/profiili/yhteydenotot' element={<AllContactMessages />} />
+          <Route path='/profiili/kehittaja/omat-ilmoitukset' element={<ProfileDevPosts />} />
           <Route path='/portaali' element={<Portal />} />
           <Route path='/portaali/ilmoitukset/:id' element={<SinglePostPortalView />} />
           <Route path='/tarjouskilpailut/:id' element={<SingleFeedPost />} />

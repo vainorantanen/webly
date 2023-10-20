@@ -35,18 +35,13 @@ const AddFeedPostForm = () => {
   const dispatch = useDispatch()
 
   const handleSubmit = async () => {
-    
-    if (user.disabled) {
-      notify('Käyttäjäsi on disabloitu!', 'error')
-      return
-    }
-    
+
     try {
       if (formData.isOpenFeedPost === true) {
         const result = await dispatch(addFeedPost(formData));
         if (result && result.error) {
-          notify('Tapahtui virhe backendissa', 'error')
-          return
+          notify('Tapahtui virhe palvelimella', 'error')
+          return {error: 'Tapahtui virhe palvelimella'}
         } else {
           notify('Ilmoitus lisätty onnistuneesti', 'success')
           dispatch(resetFormData())
@@ -54,8 +49,8 @@ const AddFeedPostForm = () => {
       } else if (formData.isOpenFeedPost === false) {
         const result = await dispatch(addPortalpost(formData))
         if (result && result.error) {
-          notify('Tapahtui virhe backendissa', 'error')
-          return
+          notify('Tapahtui virhe palvelimella', 'error')
+          return {error: 'Tapahtui virhe palvelimella'}
         } else {
           notify('Ilmoitus lisätty onnistuneesti', 'success')
           dispatch(resetFormData())
@@ -63,6 +58,7 @@ const AddFeedPostForm = () => {
       }
     } catch (error) {
       notify('Ilmeni jokin ongelma ilmoituksen lisäyksessä, yritä myöhemmin uudelleen', 'error')
+      return {error: 'Tapahtui virhe ilmoituksen lisäyksessä'}
     } 
   }
 
@@ -81,7 +77,7 @@ const AddFeedPostForm = () => {
 
   const [activeStep, setActiveStep] = useState(0)
 
-  const handleNext = () => {
+  const handleNext = async () => {
     if (activeStep === 0)  {
       if (!basicsRef.current.validateFields()) {
         return;
@@ -95,8 +91,10 @@ const AddFeedPostForm = () => {
       handleTermsSubmit()
 
     } else  if (activeStep === 2) {
-      handleSubmit()
-      console.log('submit')
+        const res = await handleSubmit()
+        if (res && res.error) {
+          return;
+        }
     }
     setActiveStep((prevActiveStep) => prevActiveStep + 1)
   }

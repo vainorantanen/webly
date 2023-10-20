@@ -20,10 +20,7 @@ const HomeHeader = () => {
           textAlign: 'center',
           fontWeight: 'bold',
           paddingTop: '3rem',
-          fontStyle: 'italic',
-          background: 'linear-gradient(to right, #0004FF, #63E6FF)',
-          WebkitBackgroundClip: 'text', // Corrected property name
-          WebkitTextFillColor: 'transparent', // Corrected property name
+          color: 'white',
           '@media (max-width: 442px)': {
             fontSize: '1.5rem',
             marginBottom: '2rem'
@@ -53,7 +50,7 @@ const HomeHeader = () => {
           <Typography
             sx={{
               fontWeight: 'bold',
-              fontSize: '2rem',
+              fontSize: '2.8rem',
               textAlign: 'center',
               '@media (max-width: 442px)': {
                 fontSize: '1.2rem',
@@ -64,10 +61,10 @@ const HomeHeader = () => {
             component="span"
             sx={{
               fontWeight: 'bold',
-              background: 'linear-gradient(to right, #002BB9, #783EFF)',
+              background: 'linear-gradient(to right, #ffffff, #783EFF)',
               WebkitBackgroundClip: 'text', // Corrected property name
               WebkitTextFillColor: 'transparent', // Corrected property name
-              fontSize: '2.5rem',
+              fontSize: '2.8rem',
               '@media (max-width: 442px)': {
                 fontSize: '1.4rem',
               },
@@ -137,10 +134,6 @@ const HomeHeader = () => {
         src={mobileAppPic} alt='pic of mobile app'>
         </Box>
       </Box>
-        <Box
-        className='spacerlow layer2'
-        >
-        </Box>
     </Box>
   )
 }

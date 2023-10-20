@@ -17,12 +17,12 @@ router.get('/', userExtractor, async (request, response) => {
   } else if (user.userType === 'regular') {
     // normi käyttäjä voi hakea ne yhteydenotot, jotka hän itse on lähettänyt
     const customerinfo = await CustomerInfo
-      .find({sender: user._id.toString()})
+      .find({ sender: user._id.toString() })
     response.json(customerinfo)
   } else if (user.userType !== 'regular') {
     // yrityskäyttäjät voi hakea ne, jotka on kohdistettu heille
     const customerinfo = await CustomerInfo
-      .find({targetDeveloper: user._id.toString()})
+      .find({ targetDeveloper: user._id.toString() })
     response.json(customerinfo)
   } else {
     response.json([])

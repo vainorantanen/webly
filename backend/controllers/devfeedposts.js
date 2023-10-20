@@ -43,7 +43,7 @@ router.post('/', userExtractor, async (request, response) => {
     response.status(201).json(createdFeedPost)
   } catch (error) {
     // Handle the error gracefully and send an appropriate response
-    response.status(500).json({ error: 'An error occurred' });
+    response.status(500).json({ error: 'An error occurred' })
   }
 })
 
@@ -70,7 +70,7 @@ router.put('/:id', userExtractor, async (request, response) => {
     response.json(updatedFeedPost)
   } catch (error) {
     // Handle the error gracefully and send an appropriate response
-    response.status(500).json({ error: 'An error occurred' });
+    response.status(500).json({ error: 'An error occurred' })
   }
 })
 
@@ -94,7 +94,7 @@ router.delete('/:id', userExtractor, async (request, response) => {
     response.status(204).end()
   } catch (error) {
     // Handle the error gracefully and send an appropriate response
-    response.status(500).json({ error: 'An error occurred' });
+    response.status(500).json({ error: 'An error occurred' })
   }
 })
 

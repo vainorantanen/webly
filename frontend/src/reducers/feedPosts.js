@@ -44,15 +44,12 @@ export const addFeedPost = (object) => {
 
 export const updateFeedPost= (object) => {
   return async dispatch => {
-    const data = await feedPostService.update(object)
-    dispatch(alter(data))
-  }
-}
-
-export const commentFeedPost = (id, comment) => {
-  return async dispatch => {
-    const data = await feedPostService.comment(id, comment)
-    dispatch(alter(data))
+    try {
+      const data = await feedPostService.update(object)
+      dispatch(alter(data))
+    } catch (error) {
+      return { error: 'error adding data' };
+    }
   }
 }
 

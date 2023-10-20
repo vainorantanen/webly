@@ -31,7 +31,7 @@ const ModifyDevPost = () => {
       try {
           const result = await dispatch(updateDevPost({...userPost, description, title, price, location, time }))
           if (result && result.error) {
-            notify('Tapahtui virhe backendissa', 'error')
+            notify('Tapahtui virhe palvelimella', 'error')
             return
           } else {
             notify('Päivitys tehty onnistuneesti', 'success')

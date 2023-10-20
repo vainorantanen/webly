@@ -30,13 +30,13 @@ router.post('/', async (request, response) => {
 })
 
 router.get('/', userExtractor, async (request, response) => {
-  const user = request.user;
-  let users;
+  const user = request.user
+  let users
 
   if (!user) {
     // Show only users with userType !== 'regular'
     users = await User.find({ userType: { $ne: 'regular' } })
-      .populate({ path: 'feedBids' });
+      .populate({ path: 'feedBids' })
   } else if (user.username === 'admin') {
     // Find all users
     users = await User.find({})
@@ -46,17 +46,17 @@ router.get('/', userExtractor, async (request, response) => {
     // Find the user himself and all users with userType !== 'regular'
     users = await User.find({ $or: [{ _id: user._id }, { userType: { $ne: 'regular' } }] })
       .populate({ path: 'feedPosts' })
-      .populate({ path: 'feedBids' });
+      .populate({ path: 'feedBids' })
   } else if (user.userType !== 'regular') {
     // Show only users with userType !== 'regular'
     users = await User.find({ userType: { $ne: 'regular' } })
-      .populate({ path: 'feedBids' });
+      .populate({ path: 'feedBids' })
   } else {
-    users = [];
+    users = []
   }
 
-  response.json(users);
-});
+  response.json(users)
+})
 
 
 router.put('/:id', userExtractor, async (request, response) => {
@@ -86,7 +86,7 @@ router.put('/:id/disable', userExtractor, async (request, response) => {
 
   // haetaan käyttäjä tietokannasta ja tarkistetaan pari juttua
   if (!userFromDb || disabled !== userFromDb.disabled || userFromDb.username === 'admin') {
-    return response.status(400).json({error : 'user not found or disabled state not matching'})
+    return response.status(400).json({ error : 'user not found or disabled state not matching' })
   }
 
   // vain admin voi muuttaa disabled/enabled tilaa

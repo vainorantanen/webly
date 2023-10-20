@@ -7,7 +7,6 @@ const ComputerTab = () => {
   return (
     <Box
       sx={{
-        marginTop: '-7rem',
         display: 'flex',
         justifyContent: 'center', // Center horizontally
       }}

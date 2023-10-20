@@ -5,7 +5,7 @@ const PortalPost = require('../models/portalpost')
 const { userExtractor } = require('../utils/middleware')
 
 router.get('/', userExtractor, async (request, response) => {
-  const user = request.user;
+  const user = request.user
 
   if (!user) {
     response.json([])
@@ -13,7 +13,7 @@ router.get('/', userExtractor, async (request, response) => {
     // jos kyseessä on yritys, niin haetaan kaikki yrityksen tekemät tarjoukset
     if (user.userType !== 'regular') {
       const portalbids = await PortalBid
-        .find({ user: user._id.toString()})
+        .find({ user: user._id.toString() })
         .populate('user', { name: 1 })
       response.json(portalbids)
     } else {
@@ -30,20 +30,20 @@ router.get('/', userExtractor, async (request, response) => {
         // Haetaan ne tarjoukset, joiden id on tässä listassa
         const portalbids = await PortalBid
           .find({ targetPost: { $in: portalPostIds } })
-          .populate('user', { name: 1 });
-        response.json(portalbids);
+          .populate('user', { name: 1 })
+        response.json(portalbids)
       }
     }
-}
+  }
 })
 
 router.post('/', userExtractor, async (request, response) => {
   const { description, minPrice, maxPrice, target, dueDate } = request.body
   const user = request.user
-  
+
   const today = new Date()
   if (dueDate < today) {
-    return response.status(400).json({error: 'duedate wrong'})
+    return response.status(400).json({ error: 'duedate wrong' })
   }
 
   const portalbid = new PortalBid({
@@ -110,7 +110,7 @@ router.put('/:id/acceptBid', userExtractor, async (request, response) => {
   if (!user || !portalBid || !portalPost || portalPost.user.toString() !== user.id.toString()) {
     return response.status(401).json({ error: 'operation not permitted' })
   }
-  
+
   let updatedportalBid = await PortalBid.findByIdAndUpdate(request.params.id,  { isApproved: !portalBid.isApproved }, { new: true })
 
   updatedportalBid = await PortalBid.findById(updatedportalBid._id).populate('user')

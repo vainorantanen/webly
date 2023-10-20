@@ -25,20 +25,19 @@ const MakeBidForm = ({ post }) => {
   const handleSubmit = async (event) => {
     event.preventDefault()
 
-    if (user.disabled) {
-      notify('Käyttäjäsi on disabloitu!', 'error')
-      return
-    }
-
-
     try {
-      dispatch(makeOffer(post.id, { description, minPrice, maxPrice,
+      const result = await dispatch(makeOffer(post.id, { description, minPrice, maxPrice,
         dueDate: dayjs(date), }))
-      setDescription('')
-      setMinPrice(0)
-      setMaxPrice(0)
-      setDate(dayjs().add(1, 'day'))
-      notify('Tarjous lisätty onnistuneesti', 'success')
+        if (result && result.error) {
+          notify('Tapahtui virhe palvelimella', 'error')
+          return
+        } else {
+          setDescription('')
+          setMinPrice(0)
+          setMaxPrice(0)
+          setDate(dayjs().add(1, 'day'))
+          notify('Tarjous lisätty onnistuneesti', 'success')
+        }
     } catch (error) {
       notify('Ilmeni jokin ongelma tarjouksen teossa, yritä myöhemmin uudelleen', 'error')
     }

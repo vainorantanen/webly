@@ -26,8 +26,13 @@ const OpenPostBidCard = ({post}) => {
           return // If the user clicks "Cancel," do nothing
         }
         try {
-          dispatch(modifyBidApprovedState(bidId, post.id))
-          notifyWith('Tila muutettu onnistuneesti', 'success')
+          const result = await dispatch(modifyBidApprovedState(bidId, post.id))
+          if (result && result.error) {
+            notifyWith('Tapahtui virhe palvelimella', 'error')
+            return
+          } else {
+            notifyWith('Tila muutettu onnistuneesti', 'success')
+          }
         } catch (error) {
           notifyWith('Tilan muutos epäonnistui', 'error')
         }
@@ -40,8 +45,13 @@ const OpenPostBidCard = ({post}) => {
           return // If the user clicks "Cancel," do nothing
         }
         try {
-          dispatch(removBidFromFeedPost(bidId, post.id))
-          notifyWith('Poistettu onnistuneesti', 'success')
+          const result = await dispatch(removBidFromFeedPost(bidId, post.id))
+          if (result && result.error) {
+            notifyWith('Tapahtui virhe palvelimella', 'error')
+            return
+          } else {
+            notifyWith('Poistettu onnistuneesti', 'success')
+          }
         } catch (error) {
           notifyWith('Tarjouksen poisto epäonnistui', 'error')
         }

@@ -18,11 +18,16 @@ const LoginForm = () => {
   const handleSubmit = async (event) => {
     event.preventDefault()
     try {
-      dispatch(loginUser({ username, password }))
+      const result = await dispatch(loginUser({ username, password }))
+      if (result && result.error) {
+        notify(result.error.response.data.error, 'error')
+        return
+      } else {
         setUsername('')
         setPassword('')
         navigate('/')
         notify('Kirjauduttu sisään')
+        }
     } catch (e) {
       notify('Väärä käyttäjätunnus tai salasana', 'error')
     }

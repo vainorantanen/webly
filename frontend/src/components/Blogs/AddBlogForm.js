@@ -25,15 +25,10 @@ const AddBlogForm = () => {
   const handleSubmit = async (event) => {
     event.preventDefault()
 
-    if (user.disabled) {
-      notify('Käyttäjäsi on disabloitu!', 'error')
-      return
-    }
-
     try {
       const result = await dispatch(addBlog({title, description}))
         if (result && result.error) {
-          notify('Tapahtui virhe backendissa', 'error')
+          notify('Tapahtui virhe palvelimella', 'error')
           return
         } else {
           notify('Blogi lisätty onnistuneesti', 'success')

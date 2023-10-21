@@ -44,6 +44,8 @@ import TermsOfService from './components/TermsOfService'
 import CompanyApprovedBids from './components/Profile/CompanyApprovedBids'
 import AllContactMessages from './components/Profile/ContactAttempts/AllContactMessages'
 import ProfileDevPosts from './components/Profile/ProfileDevPosts/ProfileDevPosts'
+import ProfileBlogs from './components/Profile/ProfileBlogs/ProfileBlogs'
+import ModifyBlogForm from './components/Profile/ProfileBlogs/ModifyBlogForm'
 
 const theme = createTheme({
   typography: {
@@ -85,9 +87,11 @@ const App = () => {
           <Route path='/profiili/kayttaja/muokkaa/ilmoitus/:id' element={<ModifyBuyerPost />} />
           <Route path='/profiili/kayttaja/muokkaa/portaaliilmoitus/:id' element={<ModifyPortalPost />} />
           <Route path='/profiili/kehittaja/muokkaa/ilmoitus/:id' element={<ModifyDevPost />} />
+          <Route path='/profiili/kehittaja/muokkaa/blogi/:id' element={<ModifyBlogForm />} />
           <Route path='/profiili/kehittaja/hyvaksytyt-tarjoukset' element={<CompanyApprovedBids />} />
           <Route path='/profiili/yhteydenotot' element={<AllContactMessages />} />
           <Route path='/profiili/kehittaja/omat-ilmoitukset' element={<ProfileDevPosts />} />
+          <Route path='/profiili/kehittaja/omat-blogit' element={<ProfileBlogs />} />
           <Route path='/portaali' element={<Portal />} />
           <Route path='/portaali/ilmoitukset/:id' element={<SinglePostPortalView />} />
           <Route path='/tarjouskilpailut/:id' element={<SingleFeedPost />} />

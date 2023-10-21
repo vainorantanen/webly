@@ -83,8 +83,9 @@ const Footer = () => {
           </a>
         </Box>
         <Typography variant="body1" className="copyright" style={{ fontStyle: 'italic' }}>
-          Powered by Webline Software Oy
+          Powered by <span><a href="https://webline.fi" target="_blank" rel="noopener noreferrer" style={{ color: 'black' }}>Webline Software Oy</a></span>
         </Typography>
+
       </Box>
     </footer>
   )

@@ -1,5 +1,5 @@
 import { Box, Button, Container, TextField, Typography } from '@mui/material'
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { useParams } from 'react-router-dom'
 import { useState } from 'react'
@@ -18,11 +18,22 @@ const ModifyDevPost = () => {
 
     const userPost = useSelector(({ devsPosts }) => devsPosts).find(p => p.id === postId)
     
-    const [description, setDescription] = useState(userPost.description)
-    const [ title, setTitle ] = useState(userPost.title)
-    const [price, setPrice] = useState(userPost.price);
-    const [location, setLocation] = useState(userPost.location);
-    const [time, setTime] = useState(userPost.time);
+    const [description, setDescription] = useState('')
+    const [ title, setTitle ] = useState('')
+    const [price, setPrice] = useState('');
+    const [location, setLocation] = useState('');
+    const [time, setTime] = useState('');
+
+
+    useEffect(() => {
+      if (userPost) {
+        setDescription(userPost.description);
+        setTitle(userPost.title)
+        setPrice(userPost.price)
+        setTime(userPost.price)
+        setLocation(userPost.location)
+      }
+    }, [userPost]);
 
     const handleSubmit = async (event) => {
 
@@ -104,7 +115,7 @@ const ModifyDevPost = () => {
           onChange={({ target }) => setPrice(target.value)}
           sx={{ marginBottom: '1rem' }}
         />
-        {userPost.postType !== 'normal' && (
+        {userPost && userPost.postType !== 'normal' && (
           <Box sx={{ 
             display: 'flex',
           flexDirection: 'column',

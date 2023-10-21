@@ -30,7 +30,7 @@ export const addCustomerInfo = (object) => {
       dispatch(add(data))
     } catch (error) {
       // Handle the error and return it for displaying on the frontend.
-      return { error: 'error adding data' };
+      return { error: error };
     }
   }
 }

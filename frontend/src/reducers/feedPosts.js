@@ -70,7 +70,7 @@ export const modifyBidApprovedState = (offerId, targetId) => {
       const data = await feedPostService.modifyAccept(targetId, offerId)
       dispatch(alter(data))
     } catch (error) {
-      return { error: 'error adding data' };
+      return { error: error };
     }
   }
 }

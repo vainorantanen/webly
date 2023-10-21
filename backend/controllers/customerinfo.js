@@ -3,7 +3,7 @@ const CustomerInfo = require('../models/customerinfo')
 const FeedBid = require('../models/feedbid')
 const PortalBid = require('../models/portalbid')
 
-const { userExtractor } = require('../utils/middleware')
+const { userExtractor, isUserDisabled } = require('../utils/middleware')
 
 router.get('/', userExtractor, async (request, response) => {
   const user = request.user
@@ -30,49 +30,58 @@ router.get('/', userExtractor, async (request, response) => {
 })
 
 router.post('/', userExtractor, async (request, response) => {
+  try {
+    const { senderEmail, senderPhone, offer, message } = request.body
 
-  const { senderEmail, senderPhone, offer, message } = request.body
+    const user = request.user
 
-  const user = request.user
-
-  if (!user || !offer) {
-    return response.status(401).json({ error: 'operation not permitted' })
-  }
-
-  const customerinfo = new CustomerInfo({
-    senderEmail,
-    senderPhone,
-    message,
-    timeStamp: new Date()
-  })
-
-  if (offer.isPortalBid === true) {
-    const portalOfferFromdb = await PortalBid.findById(offer.id)
-    if (!portalOfferFromdb) {
-      return response.status(400).json({ error: 'could not find offer' })
-    } else {
-      customerinfo.relatedPortalBid = portalOfferFromdb._id
-      customerinfo.targetDeveloper = portalOfferFromdb.user
+    if (!user || !offer) {
+      return response.status(401).json({ error: 'Palvelinvirhe (operaatiota ei sallittu)' })
     }
-  } else if (offer.isPortalBid === false) {
-    const feedOfferFromdb = await FeedBid.findById(offer.id)
-    if (!feedOfferFromdb) {
-      return response.status(400).json({ error: 'could not find offer' })
-    } else {
-      customerinfo.relatedFeedBid = feedOfferFromdb._id
-      customerinfo.targetDeveloper = feedOfferFromdb.user
+
+    const checkIfUserDisabled = await isUserDisabled(user)
+
+    if (checkIfUserDisabled === true) {
+      return response.status(401).json({ error: 'Tapahtui virhe! Käyttäjäsi on disabloitu!' })
     }
-  } else {
-    return response.status(400).json({ error: 'could not find offer' })
+
+    const customerinfo = new CustomerInfo({
+      senderEmail,
+      senderPhone,
+      message,
+      timeStamp: new Date()
+    })
+
+    if (offer.isPortalBid === true) {
+      const portalOfferFromdb = await PortalBid.findById(offer.id)
+      if (!portalOfferFromdb) {
+        return response.status(400).json({ error: 'Tarjousta ei ole enää olemassa, se on todennäköisesti poistettu' })
+      } else {
+        customerinfo.relatedPortalBid = portalOfferFromdb._id
+        customerinfo.targetDeveloper = portalOfferFromdb.user
+      }
+    } else if (offer.isPortalBid === false) {
+      const feedOfferFromdb = await FeedBid.findById(offer.id)
+      if (!feedOfferFromdb) {
+        return response.status(400).json({ error: 'Tarjousta ei ole enää olemassa, se on todennäköisesti poistettu' })
+      } else {
+        customerinfo.relatedFeedBid = feedOfferFromdb._id
+        customerinfo.targetDeveloper = feedOfferFromdb.user
+      }
+    } else {
+      return response.status(400).json({ error: 'Tarjousta ei ole enää olemassa, se on todennäköisesti poistettu' })
+    }
+
+    customerinfo.sender = user._id
+
+    let createdcustomerinfo = await customerinfo.save()
+
+    createdcustomerinfo = await CustomerInfo.findById(createdcustomerinfo._id)
+
+    response.status(201).json(createdcustomerinfo)
+  } catch (error) {
+    response.status(500).json({ error: 'Palvelimella tapahtui virhe, yritä myöhemmin uudelleen' })
   }
-
-  customerinfo.sender = user._id
-
-  let createdcustomerinfo = await customerinfo.save()
-
-  createdcustomerinfo = await CustomerInfo.findById(createdcustomerinfo._id)
-
-  response.status(201).json(createdcustomerinfo)
 })
 
 module.exports = router

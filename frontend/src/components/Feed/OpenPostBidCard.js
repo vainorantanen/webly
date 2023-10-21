@@ -28,7 +28,7 @@ const OpenPostBidCard = ({post}) => {
         try {
           const result = await dispatch(modifyBidApprovedState(bidId, post.id))
           if (result && result.error) {
-            notifyWith('Tapahtui virhe palvelimella', 'error')
+            notifyWith(result.error.response.data.error, 'error')
             return
           } else {
             notifyWith('Tila muutettu onnistuneesti', 'success')

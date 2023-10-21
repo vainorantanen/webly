@@ -152,9 +152,9 @@ router.post('/:id/feedbids', userExtractor, async (request, response) => {
       .populate('user', { name: 1 })
       .populate({ path: 'feedBids' })
     response.status(201).json(updatedfeedPost)
-} catch (error) {
+  } catch (error) {
     response.status(500).json({ error: 'An error occurred' })
-}
+  }
 
 })
 
@@ -169,7 +169,13 @@ router.put('/:id/feedBidAccept/:oid', userExtractor, async (request, response) =
     const feedBid = await FeedBid.findById(offerId)
 
     if (!feedPost || !feedPost.isOpen || !feedBid) {
-      return response.status(400).json({ error: 'feedpost doesnt exist or it is closed' })
+      return response.status(400).json({ error: 'Tapahtui virhe! Postaus tai tarjous on poistettu tai suljettu' })
+    }
+
+    const today = new Date()
+
+    if (feedBid.dueDate < today) {
+      return response.status(400).json({ error: 'Tapahtui virhe! Tarjous ei ole enää voimassa!' })
     }
 
     const checkIfUserDisabled = await isUserDisabled(user)
@@ -177,7 +183,7 @@ router.put('/:id/feedBidAccept/:oid', userExtractor, async (request, response) =
     // vain feedPostin lisännyt käyttäjä voi hyväksyä tarjouksen
     if (!user || feedPost.user.toString() !== user.id.toString()
     || checkIfUserDisabled === true) {
-      return response.status(401).json({ error: 'operation not permitted' })
+      return response.status(401).json({ error: 'Operaatio ei sallittu' })
     }
 
     // Update the isApproved field of the specified offer
@@ -196,7 +202,7 @@ router.put('/:id/feedBidAccept/:oid', userExtractor, async (request, response) =
 
     response.json(updatedfeedPost)
   } catch (error) {
-    response.status(500).json({ error: 'An error occurred' })
+    response.status(500).json({ error: 'Palvelinvirhe' })
   }
 })
 
@@ -240,7 +246,7 @@ router.delete('/:id/feedbids/:oid', userExtractor, async (request, response) => 
     if (!user || !(offerToDelete.user.toString() === user._id.toString()
     || user._id.toString() === feedPost.user.toString())
     || checkIfUserDisabled === true) {
-      return response.status(401).json({ error: 'operation not permitted' })
+      return response.status(401).json({ error: 'Operaatio ei sallittu' })
     }
 
     await offerToDelete.remove()
@@ -255,7 +261,7 @@ router.delete('/:id/feedbids/:oid', userExtractor, async (request, response) => 
       .populate('user', { name: 1 }).populate({ path: 'feedBids' })
     response.status(201).json(updatedfeedPost)
 } catch (error) {
-    response.status(500).json({ error: 'An error occurred' })
+    response.status(500).json({ error: 'Palvelinvirhe' })
 }
 
 })

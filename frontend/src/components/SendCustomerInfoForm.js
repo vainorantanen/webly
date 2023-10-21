@@ -41,9 +41,14 @@ const SendCustomerInfoForm = ({ offer }) => {
           return // If the user clicks "Cancel," do nothing
         }
         try {
-          dispatch(addCustomerInfo({senderEmail: userEmail, senderPhone: userPhone, offer,
+          const result = await dispatch(addCustomerInfo({senderEmail: userEmail, senderPhone: userPhone, offer,
           message}))
-          notifyWith('Lähetetty onnistuneeti', 'success')
+          if (result && result.error) {
+            notifyWith(result.error.response.data.error, 'error')
+            return
+          } else {
+            notifyWith('Lähetetty onnistuneeti', 'success')
+          }
         } catch (error) {
           notifyWith('Lähetys epäonnistui', 'error')
         }

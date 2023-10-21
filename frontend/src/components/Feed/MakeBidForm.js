@@ -1,7 +1,7 @@
 import { Container, Typography, Button, TextField, Box, InputAdornment } from '@mui/material'
 import React from 'react'
 import { useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import { useNotification } from '../../hooks'
 import { makeOffer } from '../../reducers/feedPosts'
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
@@ -19,8 +19,6 @@ const MakeBidForm = ({ post }) => {
   const notify = useNotification()
   
   const dispatch = useDispatch()
-
-  const user = useSelector(({user}) => user)
 
   const handleSubmit = async (event) => {
     event.preventDefault()

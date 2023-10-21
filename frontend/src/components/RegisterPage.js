@@ -32,7 +32,7 @@ const RegisterPage = () => {
   const notify = useNotification()
   const dispatch = useDispatch()
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault()
 
     if (password !== confirmPassword) {
@@ -42,18 +42,23 @@ const RegisterPage = () => {
     }
 
     try {
-
-    dispatch(addUser({ username, name, password, description,
+    const result = await dispatch(addUser({ username, name, password, description,
       userType, email }))
-    setName('')
-    setPassword('')
-    setUsername('')
-    setDescription('')
-    setUserType('regular')
-    setIsTermsAccepted(false)
-    setEmail('')
-    setConfirmPassword('')
-      notify('Käyttäjä rekisteröity onnistuneesti', 'success')
+
+      if (result && result.error) {
+        notify(result.error.response.data.error, 'error')
+        return
+      } else {
+        setName('')
+        setPassword('')
+        setUsername('')
+        setDescription('')
+        setUserType('regular')
+        setIsTermsAccepted(false)
+        setEmail('')
+        setConfirmPassword('')
+        notify('Käyttäjä rekisteröity onnistuneesti', 'success')
+      }
     } catch (error) {
       notify('Rekiströinti epäonnistui', 'error')
     }

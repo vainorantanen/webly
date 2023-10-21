@@ -27,8 +27,13 @@ const PortalBidCard = ({offer, post}) => {
       return // If the user clicks "Cancel," do nothing
     }
     try {
-      dispatch(updatePortalBid(bidId))
-      notifyWith('Tila muutettu onnistuneest', 'success')
+      const result = await dispatch(updatePortalBid(bidId))
+      if (result && result.error) {
+        notifyWith(result.error.response.data.error, 'error')
+        return
+      } else {
+        notifyWith('Tila muutettu onnistuneesti', 'success')
+      }
     } catch (error) {
       notifyWith('Tilan muutos epäonnistui', 'error')
     }
@@ -41,10 +46,13 @@ const PortalBidCard = ({offer, post}) => {
       return // If the user clicks "Cancel," do nothing
     }
     try {
-      dispatch(removePortalBid(bidId))
-      // tämä on vanha dispatch(removBidFromPortalpost(bidId, post.id))
-      notifyWith('Poistettu onnistuneesti', 'success')
-      //dispatch(initializePortalBids())
+      const result = await dispatch(removePortalBid(bidId))
+      if (result && result.error) {
+        notifyWith(result.error.response.data.error, 'error')
+        return
+      } else {
+        notifyWith('Poistettu onnistuneesti', 'success')
+      }
     } catch (error) {
       notifyWith('Tarjouksen poisto epäonnistui', 'error')
     }

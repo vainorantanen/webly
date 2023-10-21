@@ -26,12 +26,15 @@ const AddRatingForm = () => {
         }
 
         try {
-            //targetuser
-            dispatch(addRating({ targetUserId: id, score, description }))
-            console.log(score, description)
-            setScore(0)
-            setDescription('')
-            notify('Arvostelu lisätty onnistuneesti', 'success')
+            const result = await dispatch(addRating({ targetUserId: id, score, description }))
+            if (result && result.error) {
+              notify(result.error.response.data.error, 'error')
+              return
+            } else {
+              setScore(0)
+              setDescription('')
+              notify('Arvostelu lisätty onnistuneesti', 'success')
+            }
         } catch (error) {
             notify('Arvostelun lisäys epäonnistui', 'error')
         }
@@ -66,17 +69,12 @@ const AddRatingForm = () => {
       />
       <Button
         onClick={handleSubmit}
+        className="bn632-hover bn26"
         variant="contained"
-        sx={{
-          backgroundColor: 'blue',
-          color: 'white',
-          transition: 'transform 0.3s',
-          '&:hover': {
-            transform: 'scale(1.05)',
-            backgroundImage: 'linear-gradient(to bottom, #003eff, #006eff)',
-          },
-        }}
-      >
+        sx={{color: 'white',
+              marginTop: '1rem',
+              maxWidth: '10rem',
+            }}>
         Lähetä
       </Button>
     </Box>

@@ -92,7 +92,7 @@ export const removeFeedPost = (object) => {
       await feedPostService.remove(object.id)
       dispatch(remove(object.id))
     } catch (error) {
-      return { error: 'error adding data' };
+      return { error: error };
     }
   }
 }

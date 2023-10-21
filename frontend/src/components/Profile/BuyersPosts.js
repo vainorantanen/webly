@@ -26,8 +26,13 @@ const BuyersPosts = () => {
     }
 
     try {
-      dispatch(removeFeedPost({ id: postId }))
-      notify('Poistettu onnistuneesti', 'success')
+      const result = await dispatch(removeFeedPost({ id: postId }))
+      if (result && result.error) {
+        notify(result.error.response.data.error, 'error')
+        return
+      } else {
+        notify('Poistettu onnistuneesti', 'success')
+      }
     } catch (error) {
       notify('Ilmeni jokin ongelma poistossa', 'erro')
     }
@@ -40,8 +45,13 @@ const BuyersPosts = () => {
     }
 
     try {
-      dispatch(removePortalpost({ id: postId }))
-      notify('Poistettu onnistuneesti', 'success')
+      const result = await dispatch(removePortalpost({ id: postId }))
+      if (result && result.error) {
+        notify(result.error.response.data.error, 'error')
+        return
+      } else {
+        notify('Poistettu onnistuneesti', 'success')
+      } 
     } catch (error) {
       notify('Ilmeni jokin ongelma poistossa', 'erro')
     }

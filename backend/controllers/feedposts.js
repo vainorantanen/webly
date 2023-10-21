@@ -212,11 +212,8 @@ router.delete('/:id', userExtractor, async (request, response) => {
 
     const user = request.user
 
-    const checkIfUserDisabled = await isUserDisabled(user)
-
-    if (!user || post.user.toString() !== user.id.toString()
-    || checkIfUserDisabled === true) {
-      return response.status(401).json({ error: 'operation not permitted' })
+    if (!user || post.user.toString() !== user.id.toString()) {
+      return response.status(401).json({ error: 'Operaatio ei sallittu' })
     }
 
     user.feedPosts = user.feedPosts.filter(b => b.toString() !== post.id.toString() )
@@ -229,7 +226,7 @@ router.delete('/:id', userExtractor, async (request, response) => {
 
     response.status(204).end()
   } catch (error) {
-    response.status(500).json({ error: 'An error occurred' })
+    response.status(500).json({ error: 'Palvelinvirhe' })
   }
 })
 

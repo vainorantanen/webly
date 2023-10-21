@@ -4,29 +4,33 @@ const User = require('../models/user')
 const { userExtractor } = require('../utils/middleware')
 
 router.post('/', async (request, response) => {
-  const { username, name, password, description, userType, email } = request.body
+  try {
+    const { username, name, password, description, userType, email } = request.body
 
-  if ( !password || password.length < 3) {
-    return response.status(400).json({
-      error: '`password` is shorter than the minimum allowed length (3)'
+    if ( !password || password.length < 3) {
+      return response.status(400).json({
+        error: '`Salasana` on liian lyhyt (pitää olla yli 3 merkkiä pitkä)'
+      })
+    }
+
+    const saltRounds = 10
+    const passwordHash = await bcrypt.hash(password, saltRounds)
+
+    const user = new User({
+      username,
+      name,
+      email,
+      passwordHash,
+      description,
+      userType
     })
+
+    const savedUser = await user.save()
+
+    response.status(201).json(savedUser)
+  } catch (error) {
+    response.status(500).json({ error: 'Palvelinvirhe' })
   }
-
-  const saltRounds = 10
-  const passwordHash = await bcrypt.hash(password, saltRounds)
-
-  const user = new User({
-    username,
-    name,
-    email,
-    passwordHash,
-    description,
-    userType
-  })
-
-  const savedUser = await user.save()
-
-  response.status(201).json(savedUser)
 })
 
 router.get('/', userExtractor, async (request, response) => {
@@ -60,45 +64,53 @@ router.get('/', userExtractor, async (request, response) => {
 
 
 router.put('/:id', userExtractor, async (request, response) => {
-  const { description, email } = request.body
+  try {
+    const { description, email } = request.body
 
-  const user = request.user
+    const user = request.user
 
-  const wantedUser = await User.findById(request.params.id)
+    const wantedUser = await User.findById(request.params.id)
 
-  if (!user || wantedUser.id.toString() !== user.id.toString()) {
-    return response.status(401).json({ error: 'operation not permitted' })
+    if (!user || wantedUser.id.toString() !== user.id.toString()) {
+      return response.status(401).json({ error: 'operation not permitted' })
+    }
+
+    let updatedUser = await User.findByIdAndUpdate(request.params.id,  { description, email }, { new: true })
+
+    updatedUser = await User.findById(updatedUser._id)
+
+    response.json(updatedUser)
+  } catch (error) {
+    response.status(500).json({ error: 'Palvelinvirhe' })
   }
-
-  let updatedUser = await User.findByIdAndUpdate(request.params.id,  { description, email }, { new: true })
-
-  updatedUser = await User.findById(updatedUser._id)
-
-  response.json(updatedUser)
 })
 
 router.put('/:id/disable', userExtractor, async (request, response) => {
-  const { disabled } = request.body
+  try {
+    const { disabled } = request.body
 
-  const user = request.user
+    const user = request.user
 
-  const userFromDb = await User.findById(request.params.id)
+    const userFromDb = await User.findById(request.params.id)
 
-  // haetaan käyttäjä tietokannasta ja tarkistetaan pari juttua
-  if (!userFromDb || disabled !== userFromDb.disabled || userFromDb.username === 'admin') {
-    return response.status(400).json({ error : 'user not found or disabled state not matching' })
+    // haetaan käyttäjä tietokannasta ja tarkistetaan pari juttua
+    if (!userFromDb || disabled !== userFromDb.disabled || userFromDb.username === 'admin') {
+      return response.status(400).json({ error : 'user not found or disabled state not matching' })
+    }
+
+    // vain admin voi muuttaa disabled/enabled tilaa
+    if (!user || user.username !== 'admin') {
+      return response.status(401).json({ error: 'operation not permitted' })
+    }
+
+    let updatedUser = await User.findByIdAndUpdate(request.params.id,  { disabled: !disabled }, { new: true })
+
+    updatedUser = await User.findById(updatedUser._id)
+
+    response.json(updatedUser)
+  } catch (error) {
+    response.status(500).json({ error: 'Palvelinvirhe' })
   }
-
-  // vain admin voi muuttaa disabled/enabled tilaa
-  if (!user || user.username !== 'admin') {
-    return response.status(401).json({ error: 'operation not permitted' })
-  }
-
-  let updatedUser = await User.findByIdAndUpdate(request.params.id,  { disabled: !disabled }, { new: true })
-
-  updatedUser = await User.findById(updatedUser._id)
-
-  response.json(updatedUser)
 })
 
 module.exports = router

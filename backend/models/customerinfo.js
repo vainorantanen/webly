@@ -28,6 +28,14 @@ const schema = mongoose.Schema({
   timeStamp: {
     type: Date,
     required: true
+  },
+  relatedFeedPost: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'FeedPost'
+  },
+  relatedPortalPost: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'PortalPost'
   }
 })
 

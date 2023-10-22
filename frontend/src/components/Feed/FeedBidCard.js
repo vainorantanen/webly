@@ -1,10 +1,6 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
-import CheckCircleIcon from '@mui/icons-material/CheckCircle'
 import { useNotification } from '../../hooks'
 import { useDispatch, useSelector } from 'react-redux'
-import { modifyBidApprovedState, removBidFromFeedPost } from '../../reducers/feedPosts'
-import { Typography, Box, Button } from '@mui/material'
 import EuroIcon from '@mui/icons-material/Euro';
 import BusinessIcon from '@mui/icons-material/Business';
 import StartIcon from '@mui/icons-material/Start';
@@ -12,9 +8,12 @@ import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { formatDate } from '../../Functions/formatDate'
 import SendCustomerInfoForm from '../SendCustomerInfoForm'
+import { Typography, Box, Button } from '@mui/material'
+import { modifyBidApprovedState, removBidFromFeedPost } from '../../reducers/feedPosts';
+import { Link } from 'react-router-dom';
+import CheckCircleIcon from '@mui/icons-material/CheckCircle'
 
-const OpenPostBidCard = ({post}) => {
-
+const FeedBidCard = ({post, offer}) => {
     const user = useSelector(({ user }) => user)
 
     const dispatch = useDispatch()
@@ -57,15 +56,13 @@ const OpenPostBidCard = ({post}) => {
         }
     
       }
-    
-      if (!post) {
+
+      if (!post || !offer) {
         return null
       }
 
   return (
-    <Box>
-        {post.feedBids.length > 0 ? post.feedBids.map(offer => (
-          <Box key={offer.id}
+    <Box key={offer.id}
           sx={{
             padding: '1rem',
             backgroundColor: '#f0f0f0',
@@ -113,7 +110,8 @@ const OpenPostBidCard = ({post}) => {
                 <SendCustomerInfoForm offer={offer}/>
                 </Box>
             ): null}
-            {user && (user.id === post.user.id || user.id === offer.user) && (
+            {user && (user.id === post.user.id || user.id === offer.user
+            || user.id === offer.user.id) && (
               <Button sx={{ color: 'red' }} onClick={() => handleDeletebid(offer.id)}>Poista tarjous<DeleteIcon /></Button>
             )}
             </Box>
@@ -127,11 +125,7 @@ const OpenPostBidCard = ({post}) => {
                 <Typography sx={{ whiteSpace: 'break-spaces' }}>{offer.description}</Typography>
             </Box>
           </Box>
-        )) : (
-          <Typography sx={{ textAlign: 'center' }}>Ei vielä tarjouksia</Typography>
-        )}
-      </Box>
   )
 }
 
-export default OpenPostBidCard
+export default FeedBidCard

@@ -84,7 +84,7 @@ router.post('/', userExtractor, async (request, response) => {
 
 router.put('/:id', userExtractor, async (request, response) => {
   try {
-    const { description, isOpen } = request.body
+    const { description, isOpen, question4, other, minPrice, maxPrice } = request.body
 
     const user = request.user
     // käyttäjän tulee olla sama kuin postauksen lisännyt käyttäjä
@@ -98,7 +98,8 @@ router.put('/:id', userExtractor, async (request, response) => {
       return response.status(401).json({ error: 'Operaatio ei sallittu' })
     }
 
-    let updatedportalPost = await PortalPost.findByIdAndUpdate(request.params.id,  { description, isOpen }, { new: true })
+    let updatedportalPost = await PortalPost.findByIdAndUpdate(request.params.id,  { description, isOpen,
+      question4, other, minPrice, maxPrice }, { new: true })
 
     updatedportalPost = await PortalPost.findById(updatedportalPost._id)
       .populate('user', { name: 1 }).populate({ path: 'portalBids' })

@@ -59,6 +59,7 @@ router.post('/', userExtractor, async (request, response) => {
       } else {
         customerinfo.relatedPortalBid = portalOfferFromdb._id
         customerinfo.targetDeveloper = portalOfferFromdb.user
+        customerinfo.relatedPortalPost = portalOfferFromdb.targetPost
       }
     } else if (offer.isPortalBid === false) {
       const feedOfferFromdb = await FeedBid.findById(offer.id)
@@ -67,6 +68,7 @@ router.post('/', userExtractor, async (request, response) => {
       } else {
         customerinfo.relatedFeedBid = feedOfferFromdb._id
         customerinfo.targetDeveloper = feedOfferFromdb.user
+        customerinfo.relatedFeedPost = feedOfferFromdb.targetPost
       }
     } else {
       return response.status(400).json({ error: 'Tarjousta ei ole enää olemassa, se on todennäköisesti poistettu' })

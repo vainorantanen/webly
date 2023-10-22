@@ -34,7 +34,7 @@ const PrivateProfile = () => {
         <Typography sx={{ marginBottom: '1rem', fontSize: '1.3rem',
       borderBottom: '1px solid black', marginTop: '1rem' }}>Navigoi</Typography>
       <Button onClick={() => scrollToSection('openPosts')}>Omat avoimet ilmoitukset</Button>
-      <Button onClick={() => scrollToSection('portalPosts')}>Omat portaali-ilmoitukset</Button>
+      <Button component={Link} to='/portaali'>Omat portaali-ilmoitukset</Button>
       <Button onClick={() => scrollToSection('closedPosts')}>Omat suljetut ilmoitukset</Button>
       <Button component={Link} to='/profiili/yhteydenotot'>Yhteydenotot</Button>
         <BuyersPosts />

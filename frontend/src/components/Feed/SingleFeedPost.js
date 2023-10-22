@@ -5,12 +5,9 @@ import Togglable from '../Togglable'
 import MakeBidForm from './MakeBidForm'
 import { useSelector } from 'react-redux'
 import SingleFeedPostInfo from './SingleFeedPostInfo'
-import OpenPostBidCard from './OpenPostBidCard'
-
+import OpenPostBids from './OpenPostBids'
 
 const SingleFeedPost = () => {
-
-  
 
   const user = useSelector(({ user }) => user)
   const id = useParams().id
@@ -29,7 +26,7 @@ const SingleFeedPost = () => {
       <Typography sx={{ fontSize: '1.5rem', marginTop: '1rem',
     marginBottom: '1rem', borderBottom: '1px solid black', textAlign: 'center' }}>Tarjoukset</Typography>
       <Box>
-        <OpenPostBidCard post={post}/>
+        <OpenPostBids post={post}/>
       </Box>
     </Container>
   )

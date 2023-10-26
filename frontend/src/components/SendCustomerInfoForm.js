@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { useNotification } from '../hooks';
 import { useDispatch, useSelector } from 'react-redux';
 import { addCustomerInfo } from '../reducers/customerinfo';
+import ChatIcon from '@mui/icons-material/Chat';
 
 const SendCustomerInfoForm = ({ offer }) => {
 
@@ -42,7 +43,7 @@ const SendCustomerInfoForm = ({ offer }) => {
         }
         try {
           const result = await dispatch(addCustomerInfo({senderEmail: userEmail, senderPhone: userPhone, offer,
-          message}))
+          startingMessage: message}))
           if (result && result.error) {
             notifyWith(result.error.response.data.error, 'error')
             return
@@ -57,11 +58,11 @@ const SendCustomerInfoForm = ({ offer }) => {
 
   return (
     <Box>
-    <Button onClick={openDialog}>Lähetä yhteystietosi tälle tarjoajalle</Button>
+    <Button onClick={openDialog}>Aloita neuvottelu <ChatIcon /></Button>
     <Dialog open={isDialogOpen} onClose={closeDialog}
     fullWidth
     >
-            <DialogTitle>Lähetä yhteystiedot kehittäjälle {offer.user.name}</DialogTitle>
+            <DialogTitle>Lähetä yhteystiedot ja viesti kehittäjälle {offer.user.name}</DialogTitle>
             <br></br>
             <DialogContent>
                 <TextField

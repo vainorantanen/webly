@@ -16,6 +16,13 @@ const create = async (object) => {
   return request.data
 }
 
+const sendMessage = async (object) => {
+  const token = await storageService.loadUser() ? `Bearer ${storageService.loadUser().token}` : null
+  const headers = token ? { 'Authorization': token } : {}
+  const request = await axios.post(`${baseUrl}/sendMessage/${object.id}`, object, { headers })
+  return request.data
+}
+
 
 // eslint-disable-next-line import/no-anonymous-default-export
-export default { getAll, create }
+export default { getAll, create, sendMessage }

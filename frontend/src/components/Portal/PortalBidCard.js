@@ -107,7 +107,7 @@ const PortalBidCard = ({offer, post}) => {
             {user && user.id === post.user.id && offer.isApproved ? (
               <Button onClick={() => handleAcceptbid(offer.id)}>Epähyväksy tarjous</Button>
             ): null}
-            {user && user.id === post.user.id && offer.isApproved ? (
+            {user && user.id === post.user.id ? (
               <Box>
                 <SendCustomerInfoForm offer={offer}/>
                 </Box>

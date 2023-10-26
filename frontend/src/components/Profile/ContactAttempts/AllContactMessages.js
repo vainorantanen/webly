@@ -37,6 +37,7 @@ const AllContactMessages = () => {
                     {customerinfo.relatedPortalBid && (
                         <Container>
                             <Button component={Link} to={`/portaali/ilmoitukset/${customerinfo.relatedPortalPost}`}>Siirry ilmoitukseen</Button>
+                            <Button component={Link} to={`/neuvottelu/${customerinfo.id}`}>Chat</Button>
                             <Typography>Liittyvä tarjous</Typography>
                         <PortalBidCard offer={userPortalBids.find(b => b.id === customerinfo.relatedPortalBid)}
                         post={userPortalPosts.find(p => p.id === customerinfo.relatedPortalPost)}
@@ -46,6 +47,7 @@ const AllContactMessages = () => {
                     {customerinfo.relatedFeedBid && (
                         <Container>
                             <Button component={Link} to={`/tarjouskilpailut/${customerinfo.relatedFeedPost}`}>Siirry ilmoitukseen</Button>
+                            <Button component={Link} to={`/neuvottelu/${customerinfo.id}`}>Chat</Button>
                             <Typography>Liittyvä tarjous</Typography>
                             <FeedBidCard offer={userFeedBids.find(b => b.id === customerinfo.relatedFeedBid)}
                         post={userFeedPosts.find(p => p.id === customerinfo.relatedFeedPost)}

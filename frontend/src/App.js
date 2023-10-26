@@ -46,6 +46,7 @@ import AllContactMessages from './components/Profile/ContactAttempts/AllContactM
 import ProfileDevPosts from './components/Profile/ProfileDevPosts/ProfileDevPosts'
 import ProfileBlogs from './components/Profile/ProfileBlogs/ProfileBlogs'
 import ModifyBlogForm from './components/Profile/ProfileBlogs/ModifyBlogForm'
+import Chat from './components/Chat/Chat'
 
 const theme = createTheme({
   typography: {
@@ -104,6 +105,7 @@ const App = () => {
           <Route path='/blogit/:id' element={<SingleBlogView /> } />
           <Route path='/adminpanel' element={<AdminPanel />} />
           <Route path='/kayttoehdot' element={<TermsOfService />} />
+          <Route path='/neuvottelu/:id' element={<Chat />} />
         </Routes>
         <Footer />
       </Box>

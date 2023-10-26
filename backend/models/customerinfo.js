@@ -24,7 +24,7 @@ const schema = mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'PortalBid'
   },
-  message: String,
+  startingMessage: String,
   timeStamp: {
     type: Date,
     required: true
@@ -36,7 +36,13 @@ const schema = mongoose.Schema({
   relatedPortalPost: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'PortalPost'
-  }
+  },
+  messages: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Message'
+    }
+  ]
 })
 
 schema.set('toJSON', {

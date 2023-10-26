@@ -15,11 +15,11 @@ const MessageCard = ({customerinfo}) => {
         style={{textDecoration: 'underline'}}
         >Puhelin:</span> {customerinfo.senderPhone}</Typography>
         <Typography>{formatDate(customerinfo.timeStamp)}</Typography>
-        {customerinfo.message && customerinfo.message.length > 0 && (
+        {customerinfo.startingMessage && customerinfo.startingMessage.length > 0 && (
             <Box>
                 <Typography sx={{ borderBottom: '1px solid black',
     marginTop: '1rem', marginBottom: '1rem' }}>Viesti</Typography>
-        <Typography>{customerinfo.message}</Typography>
+        <Typography>{customerinfo.startingMessage}</Typography>
             </Box>
         )}
     </Container>

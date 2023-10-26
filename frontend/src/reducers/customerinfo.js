@@ -11,10 +11,13 @@ const slice = createSlice({
     add(state, { payload }) {
       return state.concat(payload)
     },
+    alter(state, { payload }) {
+      return state.map(s => s.id !== payload.id ? s : payload)
+    },
   },
 })
 
-const { set, add,} = slice.actions
+const { set, add, alter} = slice.actions
 
 export const initializeCustomerInfos = () => {
   return async dispatch => {
@@ -35,5 +38,16 @@ export const addCustomerInfo = (object) => {
   }
 }
 
+export const addMessage = (object) => {
+  return async dispatch => {
+    try {
+      const data = await customerinfoService.sendMessage(object)
+      dispatch(alter(data))
+    } catch (error) {
+      // Handle the error and return it for displaying on the frontend.
+      return { error: error };
+    }
+  }
+}
 
 export default slice.reducer

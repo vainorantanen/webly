@@ -31,50 +31,34 @@ export const initializePortalposts = () => {
 
 export const addPortalpost = (object) => {
   return async dispatch => {
-    const data = await portalpostsService.create(object)
-    dispatch(add(data))
+    try {
+      const data = await portalpostsService.create(object)
+      dispatch(add(data))
+    } catch (error) {
+      return { error: error };
+    }
   }
 }
 
 export const updatePortalpost= (object) => {
   return async dispatch => {
-    const data = await portalpostsService.update(object)
-    dispatch(alter(data))
-  }
-}
-
-export const commentPortalpost = (id, comment) => {
-  return async dispatch => {
-    const data = await portalpostsService.comment(id, comment)
-    dispatch(alter(data))
-  }
-}
-
-export const makePortalOffer = (id, content) => {
-  return async dispatch => {
-    const data = await portalpostsService.makeoffer(id, content)
-    dispatch(alter(data))
-  }
-}
-
-export const modifyBidApprovedState = (offerId, targetId) => {
-  return async dispatch => {
-    const data = await portalpostsService.modifyAccept(targetId, offerId)
-    dispatch(alter(data))
-  }
-}
-
-export const removBidFromPortalpost = (offerId, targetId) => {
-  return async dispatch => {
-    const data = await portalpostsService.removeOffer(targetId, offerId)
-    dispatch(alter(data))
+    try {
+      const data = await portalpostsService.update(object)
+      dispatch(alter(data))
+    } catch (error) {
+      return { error: error };
+    }
   }
 }
 
 export const removePortalpost = (object) => {
   return async dispatch => {
-    await portalpostsService.remove(object.id)
-    dispatch(remove(object.id))
+    try {
+      await portalpostsService.remove(object.id)
+      dispatch(remove(object.id))
+    } catch (error) {
+      return { error: error };
+    }
   }
 }
 

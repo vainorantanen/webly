@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom'
 import EuroIcon from '@mui/icons-material/Euro';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
+import { formatDate } from '../../Functions/formatDate';
 
 const FeedPostCard = ({ post }) => {
 
@@ -40,9 +41,9 @@ const FeedPostCard = ({ post }) => {
           <Box>
           <Typography>{post.user.name}</Typography>
           {post.timeStamp ? (
-            <Typography>Julkaistu {post.timeStamp.split('T')[0]}</Typography>
+            <Typography>Julkaistu {formatDate(post.timeStamp)}</Typography>
           ) : (
-            <Typography>Julkaistu yli vuosi sitten</Typography>
+            <Typography>Julkaistu: Ei tietoa</Typography>
           )}
           </Box>
           <Box>
@@ -71,22 +72,6 @@ const FeedPostCard = ({ post }) => {
           lineHeight: '1.4',
          }}>{post.description}</Typography>
       </Box>
-      <Button
-        variant="contained"
-        sx={{
-          backgroundColor: 'blue',
-          color: 'white',
-          transition: 'transform 0.3s',
-          marginTop: '1rem',
-          maxWidth: '9rem',
-          '&:hover': {
-            transform: 'scale(1.05)',
-            backgroundImage: 'linear-gradient(to bottom, #003eff, #006eff)',
-          },
-        }}
-      >
-        Tarkastele
-      </Button>
     </Box>
   )
 }

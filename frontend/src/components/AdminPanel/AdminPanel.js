@@ -31,7 +31,7 @@ const AdminPanel = () => {
     const indexOfLastPost = currentPage * postsPerPage
     const indexOfFirstPost = indexOfLastPost - postsPerPage
     const currentUsers = filteredUsers.slice(indexOfFirstPost, indexOfLastPost)
-  
+
     const paginate = (pageNumber) => setCurrentPage(pageNumber)
 
     const handleDisableUser = (user) => {

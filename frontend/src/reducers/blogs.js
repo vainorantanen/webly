@@ -44,16 +44,24 @@ export const addBlog = (object) => {
 
 export const updateBlog= (object) => {
   return async dispatch => {
-    const data = await blogsService.update(object)
-    dispatch(alter(data))
+    try {
+      const data = await blogsService.update(object)
+      dispatch(alter(data))
+    } catch (error) {
+      return { error: 'error adding data' };
+    }
   }
 }
 
 
 export const removeBlog = (object) => {
   return async dispatch => {
-    await blogsService.remove(object.id)
-    dispatch(remove(object.id))
+    try {
+      await blogsService.remove(object.id)
+      dispatch(remove(object.id))
+    } catch (error) {
+      return { error: 'error adding data' };
+    }
   }
 }
 

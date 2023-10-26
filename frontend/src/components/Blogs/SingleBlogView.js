@@ -2,6 +2,7 @@ import { Button, Container, Typography } from '@mui/material'
 import React from 'react'
 import { useSelector } from 'react-redux'
 import { Link, useParams } from 'react-router-dom'
+import { formatDate } from '../../Functions/formatDate'
 
 const SingleBlogView = () => {
 
@@ -25,7 +26,7 @@ const SingleBlogView = () => {
       <Typography>Blogin kirjoittaja: <Button
       LinkComponent={Link} to={`/kehittajat/${blog.user.id}`}
       >{blog.user.name}</Button></Typography>
-      <Typography>Julkaistu {blog.timeStamp.split('T')[0].split('-').reverse().join('.')}</Typography>
+      <Typography>Julkaistu {formatDate(blog.timeStamp)}</Typography>
     </Container>
   )
 }

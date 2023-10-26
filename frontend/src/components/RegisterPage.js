@@ -32,7 +32,7 @@ const RegisterPage = () => {
   const notify = useNotification()
   const dispatch = useDispatch()
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault()
 
     if (password !== confirmPassword) {
@@ -42,18 +42,23 @@ const RegisterPage = () => {
     }
 
     try {
-
-    dispatch(addUser({ username, name, password, description,
+    const result = await dispatch(addUser({ username, name, password, description,
       userType, email }))
-    setName('')
-    setPassword('')
-    setUsername('')
-    setDescription('')
-    setUserType('regular')
-    setIsTermsAccepted(false)
-    setEmail('')
-    setConfirmPassword('')
-      notify('Käyttäjä rekisteröity onnistuneesti', 'success')
+
+      if (result && result.error) {
+        notify(result.error.response.data.error, 'error')
+        return
+      } else {
+        setName('')
+        setPassword('')
+        setUsername('')
+        setDescription('')
+        setUserType('regular')
+        setIsTermsAccepted(false)
+        setEmail('')
+        setConfirmPassword('')
+        notify('Käyttäjä rekisteröity onnistuneesti', 'success')
+      }
     } catch (error) {
       notify('Rekiströinti epäonnistui', 'error')
     }
@@ -217,21 +222,13 @@ const RegisterPage = () => {
           sx={{ marginBottom: '1rem' }}
         />
         <Box sx={{ display: 'flex', justifyContent: 'center', marginTop: '1rem' }}>
-          <Button
-            variant="contained"
-            type="submit"
-            sx={{
-              backgroundColor: 'blue',
-              color: 'white',
-              transition: 'transform 0.3s',
-              '&:hover': {
-                transform: 'scale(1.05)',
-                backgroundImage: 'linear-gradient(to bottom, #003eff, #006eff)',
-              },
-            }}
-          >
+        <Button className="login-button-input bn632-hover bn26"
+            type='submit'
+            fullWidth
+            sx={{color: 'white',
+            }}>
             Reksiteröidy
-          </Button>
+            </Button>
         </Box>
       </Box>
       <Dialog open={openTermsDialog} onClose={handleTermsDialogClose}>

@@ -4,9 +4,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { useNotification } from '../../hooks'
 import { removeFeedPost, updateFeedPost } from '../../reducers/feedPosts'
-import { removePortalpost, updatePortalpost } from '../../reducers/portalPosts'
 import FeedPostCard from '../Feed/FeedPostCard'
-import PortalPostCard from '../Portal/PortalPostCard'
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
@@ -17,7 +15,6 @@ const BuyersPosts = () => {
     const user = useSelector(({user}) => user)
   const dispatch = useDispatch()
     const userPosts = useSelector(({ feedPosts }) => feedPosts).filter(p => p.user.id === user.id)
-  const userPortalPosts = useSelector(({ portalPosts }) => portalPosts).filter(p => p.user.id === user.id)
 
   const handleDeleteFeedPost = async (postId) => {
     const confirmed = window.confirm('Haluatko varmasti poistaa tämän ilmoituksen?')
@@ -26,22 +23,13 @@ const BuyersPosts = () => {
     }
 
     try {
-      dispatch(removeFeedPost({ id: postId }))
-      notify('Poistettu onnistuneesti', 'success')
-    } catch (error) {
-      notify('Ilmeni jokin ongelma poistossa', 'erro')
-    }
-  }
-  
-  const handleDeletePortalPost = async (postId) => {
-    const confirmed = window.confirm('Haluatko varmasti poistaa tämän ilmoituksen?')
-    if (!confirmed) {
-      return // If the user clicks "Cancel," do nothing
-    }
-
-    try {
-      dispatch(removePortalpost({ id: postId }))
-      notify('Poistettu onnistuneesti', 'success')
+      const result = await dispatch(removeFeedPost({ id: postId }))
+      if (result && result.error) {
+        notify(result.error.response.data.error, 'error')
+        return
+      } else {
+        notify('Poistettu onnistuneesti', 'success')
+      }
     } catch (error) {
       notify('Ilmeni jokin ongelma poistossa', 'erro')
     }
@@ -55,23 +43,13 @@ const BuyersPosts = () => {
     }
 
     try {
-      dispatch(updateFeedPost({ ...post, isOpen: !post.isOpen }))
-      notify('Tila muokattu onnistuneesti', 'success')
-    } catch (error) {
-      notify('Ilmeni jokin ongelma', 'erro')
-    }
-  }
-
-  const handleCloseOrOpenPortalPost = async (post) => {
-    const state = post.isOpen ? 'suljettu' : 'avoin'
-    const confirmed = window.confirm(`Haluatko varmasti asettaa ilmoituksen tilaan: ${state}?`)
-    if (!confirmed) {
-      return // If the user clicks "Cancel," do nothing
-    }
-
-    try {
-      dispatch(updatePortalpost({ ...post, isOpen: !post.isOpen }))
-      notify('Tila muokattu onnistuneesti', 'success')
+      const result = await dispatch(updateFeedPost({ ...post, isOpen: !post.isOpen }))
+      if (result && result.error) {
+        notify(result.error.response.data.error, 'error')
+        return
+      } else {
+        notify('Tila muokattu onnistuneesti', 'success')
+      }
     } catch (error) {
       notify('Ilmeni jokin ongelma', 'erro')
     }
@@ -102,27 +80,6 @@ const BuyersPosts = () => {
                 <Button sx={{ color: 'red' }} onClick={() => handleCloseOrOpenFeedPost(p)}>{p.isOpen ? 'Aseta ilmoitus suljetuksi'
                 : 'Aseta ilmoitus avoimeksi'}<ChangeCircleIcon /></Button>
                 <Button sx={{ color: 'red' }} onClick={() => handleDeleteFeedPost(p.id)}>Poista ilmoitus<DeleteIcon /></Button>
-                  </Box>
-            </Box>  
-        )) : (
-            <Typography>Ei vielä ilmoituksia</Typography>
-        )}
-        </Box>
-        <Typography sx={{ marginBottom: '1rem', fontSize: '1.3rem',
-      borderBottom: '1px solid black' }}
-      id="portalPosts"
-      >Omat portaali-ilmoitukset ({userPortalPosts.length})</Typography>
-        <Box>
-        {userPortalPosts.length > 0 ? userPortalPosts.map(p => (
-            <Box key={p.id} sx={{ backgroundColor: 'white', color: 'black', padding: '0.5rem',
-            borderRadius: '0.5rem', marginBottom: '1rem', border: '1px solid black'}}>
-                <PortalPostCard post={p}/>
-                <Box sx={{ textAlign: 'center' }}>
-                <Button component={Link} to={`/profiili/kayttaja/muokkaa/portaaliilmoitus/${p.id}`} >Muokkaa ilmoituksen sisältöä<EditIcon/></Button>
-                <Button component={Link} to={`/portaali/ilmoitukset/${p.id}`}>Siirry ilmoitukseen<ArrowForwardIcon /></Button>
-                <Button sx={{ color: 'red' }} onClick={() => handleCloseOrOpenPortalPost(p)}>{p.isOpen ? 'Aseta ilmoitus suljetuksi'
-                : 'Aseta ilmoitus avoimeksi'}<ChangeCircleIcon /></Button>
-                <Button sx={{ color: 'red' }} onClick={() => handleDeletePortalPost(p.id)}>Poista ilmoitus<DeleteIcon /></Button>
                   </Box>
             </Box>  
         )) : (

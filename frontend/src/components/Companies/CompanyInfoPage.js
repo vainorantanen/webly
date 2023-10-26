@@ -1,12 +1,16 @@
 import { Container, Typography, Box, Button, Rating } from '@mui/material'
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import {  useSelector } from 'react-redux'
 import BlogCard from '../Blogs/BlogCard'
+import ratingsService from '../../services/ratings'
+import blogsService from '../../services/blogs'
 
 const CompanyInfoPage = () => {
   const [ratingDescriptions, setRatingDescriptions] = useState([]);
-  
+  const [ devRatings, setDevRatings ] = useState([])
+  const [ devBlogs, setDevBlogs ] = useState([])
+
   const toggleDescription = (index) => {
     const newDescriptions = [...ratingDescriptions];
     newDescriptions[index] = !newDescriptions[index];
@@ -17,9 +21,27 @@ const CompanyInfoPage = () => {
   const id = useParams().id
 
   const user = useSelector(({user}) => user)
-  const dev = useSelector(({ users }) => users.find(p => p.id === id))
-  const devRatings = useSelector(({ratings}) => ratings).filter(r => r.targetUser.id === dev.id)
-  const devBlogs = useSelector(({blogs}) => blogs).filter(b => b.user.id === dev.id)
+  const dev = useSelector(({ users }) => users).find(p => p.id === id)
+
+  useEffect(() => {
+    const fetchData = async () => {
+      if (dev) {
+        try {
+          const ratings = await ratingsService.getAll();
+          const filteredRatings = ratings.filter((r) => r.targetUser.id === dev.id);
+          setDevRatings(filteredRatings);
+
+          const blogs = await blogsService.getAll();
+          const filteredBlogs = blogs.filter((b) => b.user.id === dev.id);
+          setDevBlogs(filteredBlogs);
+        } catch (error) {
+          // Handle error, e.g., set an error state
+        }
+      }
+    };
+
+    fetchData();
+  }, [dev]);
 
   if (!dev) {
     return (
@@ -74,9 +96,10 @@ const CompanyInfoPage = () => {
           Kotisivut: {dev.url || 'Ei saatavilla'}
         </Typography>
       </Box>
-      <Box sx={{ marginTop: '2rem' }}>
-        <Typography sx={{ fontSize: '1.3rem', borderBottom: '1px solid black',
-      marginBottom: '1rem' }}>Kehittäjän blogit</Typography>
+      <Typography sx={{ fontSize: '1.3rem', borderBottom: '1px solid black',
+      marginTop: '1rem' }}>Kehittäjän blogit</Typography>
+      <Box sx={{ marginTop: '1rem',
+    display: 'flex', flexDirection: 'row', flexWrap: 'wrap', background: 'white'}}>
         {devBlogs && devBlogs.length > 0 ? (
           devBlogs.map(b => (
             <Box key={b.id} sx={{ padding: '0.5rem', backgroundColor: 'white', borderRadius: '0.3rem',

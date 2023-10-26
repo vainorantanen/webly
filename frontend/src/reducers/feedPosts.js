@@ -44,43 +44,56 @@ export const addFeedPost = (object) => {
 
 export const updateFeedPost= (object) => {
   return async dispatch => {
-    const data = await feedPostService.update(object)
-    dispatch(alter(data))
-  }
-}
-
-export const commentFeedPost = (id, comment) => {
-  return async dispatch => {
-    const data = await feedPostService.comment(id, comment)
-    dispatch(alter(data))
+    try {
+      const data = await feedPostService.update(object)
+      dispatch(alter(data))
+    } catch (error) {
+      return { error: 'error adding data' };
+    }
   }
 }
 
 export const makeOffer = (id, content) => {
   return async dispatch => {
-    const data = await feedPostService.makeoffer(id, content)
-    dispatch(alter(data))
+    try {
+      const data = await feedPostService.makeoffer(id, content)
+      dispatch(alter(data))
+    } catch (error) {
+      return { error: 'error adding data' };
+    }
   }
 }
 
 export const modifyBidApprovedState = (offerId, targetId) => {
   return async dispatch => {
-    const data = await feedPostService.modifyAccept(targetId, offerId)
-    dispatch(alter(data))
+    try {
+      const data = await feedPostService.modifyAccept(targetId, offerId)
+      dispatch(alter(data))
+    } catch (error) {
+      return { error: error };
+    }
   }
 }
 
 export const removBidFromFeedPost = (offerId, targetId) => {
   return async dispatch => {
-    const data = await feedPostService.removeOffer(targetId, offerId)
-    dispatch(alter(data))
+    try {
+      const data = await feedPostService.removeOffer(targetId, offerId)
+      dispatch(alter(data))
+    } catch (error) {
+      return { error: 'error adding data' };
+    }
   }
 }
 
 export const removeFeedPost = (object) => {
   return async dispatch => {
-    await feedPostService.remove(object.id)
-    dispatch(remove(object.id))
+    try {
+      await feedPostService.remove(object.id)
+      dispatch(remove(object.id))
+    } catch (error) {
+      return { error: error };
+    }
   }
 }
 

@@ -32,22 +32,34 @@ export const initializePortalBids = () => {
 
 export const addPortalBid = (object) => {
   return async dispatch => {
+    try {
     const data = await portalbidsService.create(object)
     dispatch(add(data))
+    } catch (error) {
+      return { error: error };
+    }
   }
 }
 
 export const removePortalBid = (bidId) => {
   return async dispatch => {
+    try {
     await portalbidsService.remove(bidId)
     dispatch(remove(bidId))
+    } catch (error) {
+      return { error: error };
+    }
   }
 }
 
 export const updatePortalBid = (objectId) => {
   return async dispatch => {
+    try {
     const data = await portalbidsService.update(objectId)
     dispatch(alter(data))
+    } catch (error) {
+      return { error: error };
+    }
   }
 }
 

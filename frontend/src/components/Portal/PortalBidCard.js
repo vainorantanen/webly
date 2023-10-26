@@ -11,6 +11,7 @@ import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { removePortalBid, updatePortalBid } from '../../reducers/portalBids'
 import { formatDate } from '../../Functions/formatDate'
+import SendCustomerInfoForm from '../SendCustomerInfoForm'
 
 const PortalBidCard = ({offer, post}) => {
 
@@ -21,17 +22,20 @@ const PortalBidCard = ({offer, post}) => {
 
     
   const handleAcceptbid = async (bidId) => {
-    const confirmed = window.confirm('Haluatko varmasti hyväksyä tämän tarjouksen?')
+    const confirmed = window.confirm('Vahvistetaanko muutos?')
     if (!confirmed) {
       return // If the user clicks "Cancel," do nothing
     }
     try {
-      // tää pitää muuttaa myös käyttään eri statee
-      //dispatch(modifyBidApprovedState(bidId, post.id))
-      dispatch(updatePortalBid(bidId))
-      notifyWith('Tarjous hyväksytty', 'success')
+      const result = await dispatch(updatePortalBid(bidId))
+      if (result && result.error) {
+        notifyWith(result.error.response.data.error, 'error')
+        return
+      } else {
+        notifyWith('Tila muutettu onnistuneesti', 'success')
+      }
     } catch (error) {
-      notifyWith('Tarjouksen hyväksyntä epäonnistui', 'error')
+      notifyWith('Tilan muutos epäonnistui', 'error')
     }
 
   }
@@ -42,10 +46,13 @@ const PortalBidCard = ({offer, post}) => {
       return // If the user clicks "Cancel," do nothing
     }
     try {
-      dispatch(removePortalBid(bidId))
-      // tämä on vanha dispatch(removBidFromPortalpost(bidId, post.id))
-      notifyWith('Poistettu onnistuneesti', 'success')
-      //dispatch(initializePortalBids())
+      const result = await dispatch(removePortalBid(bidId))
+      if (result && result.error) {
+        notifyWith(result.error.response.data.error, 'error')
+        return
+      } else {
+        notifyWith('Poistettu onnistuneesti', 'success')
+      }
     } catch (error) {
       notifyWith('Tarjouksen poisto epäonnistui', 'error')
     }
@@ -99,6 +106,11 @@ const PortalBidCard = ({offer, post}) => {
             ): null}
             {user && user.id === post.user.id && offer.isApproved ? (
               <Button onClick={() => handleAcceptbid(offer.id)}>Epähyväksy tarjous</Button>
+            ): null}
+            {user && user.id === post.user.id && offer.isApproved ? (
+              <Box>
+                <SendCustomerInfoForm offer={offer}/>
+                </Box>
             ): null}
             {user && (user.id === post.user.id || user.id === offer.user.id) && (
               <Button sx={{ color: 'red' }} onClick={() => handleDeletebid(offer.id)}>Poista tarjous<DeleteIcon /></Button>

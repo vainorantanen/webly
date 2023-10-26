@@ -1,7 +1,7 @@
 import { Container, Typography, Button, TextField, Box, InputAdornment } from '@mui/material'
 import React from 'react'
 import { useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import { useNotification } from '../../hooks'
 import { addPortalBid } from '../../reducers/portalBids'
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
@@ -19,22 +19,22 @@ const MakeBidForm = ({ post }) => {
   const notify = useNotification()
   
   const dispatch = useDispatch()
-  const user = useSelector(({user}) => user)
 
   const handleSubmit = async (event) => {
     event.preventDefault()
-    if (user.disabled) {
-      notify('Käyttäjäsi on disabloitu!', 'error')
-      return
-    }
 
     try {
-      dispatch(addPortalBid({description, minPrice, maxPrice, target: post,
+      const result = await dispatch(addPortalBid({description, minPrice, maxPrice, target: post,
         dueDate: dayjs(date)}))
-      setDescription('')
-      setMinPrice(0)
-      setMaxPrice(0)
-      notify('Tarjous lisätty onnistuneesti', 'success')
+        if (result && result.error) {
+          notify(result.error.response.data.error, 'error')
+          return
+        } else {
+          setDescription('')
+          setMinPrice(0)
+          setMaxPrice(0)
+          notify('Tarjous lisätty onnistuneesti', 'success')
+        }
     } catch (error) {
       notify('Ilmeni jokin ongelma tarjouksen teossa, yritä myöhemmin uudelleen', 'error')
     }
@@ -120,19 +120,13 @@ const MakeBidForm = ({ post }) => {
           />
         </LocalizationProvider>
         <Button
+        className="bn632-hover bn26"
           type="submit"
-          variant="contained"
-          color="primary"
           fullWidth
           disabled={(minPrice < 0 || maxPrice < 0 || maxPrice < minPrice
             || isNaN(minPrice) || isNaN(maxPrice)) || dateError || !description}
-          sx={{ backgroundColor: 'blue', color: 'white',
-            transition: 'transform 0.3s',
+            sx={{color: 'white',
             marginTop: '1rem',
-            marginBottom: '1rem',
-            '&:hover': {
-              transform: 'scale(1.05)',
-              backgroundImage: 'linear-gradient(to bottom, #003eff, #006eff)' }
           }}
         >
           Lähetä tarjous

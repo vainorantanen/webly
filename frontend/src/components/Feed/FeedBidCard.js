@@ -1,34 +1,39 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
-import CheckCircleIcon from '@mui/icons-material/CheckCircle'
 import { useNotification } from '../../hooks'
 import { useDispatch, useSelector } from 'react-redux'
-import { modifyBidApprovedState, removBidFromFeedPost } from '../../reducers/feedPosts'
-import { Typography, Box, Button } from '@mui/material'
 import EuroIcon from '@mui/icons-material/Euro';
 import BusinessIcon from '@mui/icons-material/Business';
 import StartIcon from '@mui/icons-material/Start';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { formatDate } from '../../Functions/formatDate'
+import SendCustomerInfoForm from '../SendCustomerInfoForm'
+import { Typography, Box, Button } from '@mui/material'
+import { modifyBidApprovedState, removBidFromFeedPost } from '../../reducers/feedPosts';
+import { Link } from 'react-router-dom';
+import CheckCircleIcon from '@mui/icons-material/CheckCircle'
 
-const OpenPostBidCard = ({post}) => {
-
+const FeedBidCard = ({post, offer}) => {
     const user = useSelector(({ user }) => user)
 
     const dispatch = useDispatch()
   const notifyWith = useNotification()
 
     const handleAcceptbid = async (bidId) => {
-        const confirmed = window.confirm('Haluatko varmasti hyväksyä tämän tarjouksen?')
+        const confirmed = window.confirm('Vahvistetaanko muutos?')
         if (!confirmed) {
           return // If the user clicks "Cancel," do nothing
         }
         try {
-          dispatch(modifyBidApprovedState(bidId, post.id))
-          notifyWith('Tarjous hyväksytty', 'success')
+          const result = await dispatch(modifyBidApprovedState(bidId, post.id))
+          if (result && result.error) {
+            notifyWith(result.error.response.data.error, 'error')
+            return
+          } else {
+            notifyWith('Tila muutettu onnistuneesti', 'success')
+          }
         } catch (error) {
-          notifyWith('Tarjouksen hyväksyntä epäonnistui', 'error')
+          notifyWith('Tilan muutos epäonnistui', 'error')
         }
     
       }
@@ -39,22 +44,25 @@ const OpenPostBidCard = ({post}) => {
           return // If the user clicks "Cancel," do nothing
         }
         try {
-          dispatch(removBidFromFeedPost(bidId, post.id))
-          notifyWith('Poistettu onnistuneesti', 'success')
+          const result = await dispatch(removBidFromFeedPost(bidId, post.id))
+          if (result && result.error) {
+            notifyWith('Tapahtui virhe palvelimella', 'error')
+            return
+          } else {
+            notifyWith('Poistettu onnistuneesti', 'success')
+          }
         } catch (error) {
           notifyWith('Tarjouksen poisto epäonnistui', 'error')
         }
     
       }
-    
-      if (!post) {
+
+      if (!post || !offer) {
         return null
       }
 
   return (
-    <Box>
-        {post.feedBids.length > 0 ? post.feedBids.map(offer => (
-          <Box key={offer.id}
+    <Box key={offer.id}
           sx={{
             padding: '1rem',
             backgroundColor: '#f0f0f0',
@@ -94,7 +102,16 @@ const OpenPostBidCard = ({post}) => {
             {user && user.id === post.user.id && !offer.isApproved ? (
               <Button onClick={() => handleAcceptbid(offer.id)}>Hyväksy tarjous<CheckCircleIcon /></Button>
             ): null}
-            {user && (user.id === post.user.id || user.id === offer.user) && (
+            {user && user.id === post.user.id && offer.isApproved ? (
+              <Button onClick={() => handleAcceptbid(offer.id)}>Epähyväksy tarjous</Button>
+            ): null}
+            {user && user.id === post.user.id && offer.isApproved ? (
+              <Box>
+                <SendCustomerInfoForm offer={offer}/>
+                </Box>
+            ): null}
+            {user && (user.id === post.user.id || user.id === offer.user
+            || user.id === offer.user.id) && (
               <Button sx={{ color: 'red' }} onClick={() => handleDeletebid(offer.id)}>Poista tarjous<DeleteIcon /></Button>
             )}
             </Box>
@@ -108,11 +125,7 @@ const OpenPostBidCard = ({post}) => {
                 <Typography sx={{ whiteSpace: 'break-spaces' }}>{offer.description}</Typography>
             </Box>
           </Box>
-        )) : (
-          <Typography sx={{ textAlign: 'center' }}>Ei vielä tarjouksia</Typography>
-        )}
-      </Box>
   )
 }
 
-export default OpenPostBidCard
+export default FeedBidCard

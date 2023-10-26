@@ -25,15 +25,10 @@ const AddBlogForm = () => {
   const handleSubmit = async (event) => {
     event.preventDefault()
 
-    if (user.disabled) {
-      notify('Käyttäjäsi on disabloitu!', 'error')
-      return
-    }
-
     try {
       const result = await dispatch(addBlog({title, description}))
         if (result && result.error) {
-          notify('Tapahtui virhe backendissa', 'error')
+          notify('Tapahtui virhe palvelimella', 'error')
           return
         } else {
           notify('Blogi lisätty onnistuneesti', 'success')
@@ -115,25 +110,13 @@ const AddBlogForm = () => {
           onChange={({ target }) => setDescription(target.value)}
           sx={{ marginBottom: '1rem' }}
         />
-        <Button
-          type="submit"
-          variant="contained"
-          color="primary"
-          fullWidth
-          sx={{
-            backgroundColor: 'blue',
-            color: 'white',
-            transition: 'transform 0.3s',
-            marginTop: '1rem',
-            marginBottom: '1rem',
-            '&:hover': {
-              transform: 'scale(1.05)',
-              backgroundImage: 'linear-gradient(to bottom, #003eff, #006eff)',
-            },
-          }}
-        >
-          Julkaise
-        </Button>
+        <Button className="bn632-hover bn26"
+            type='submit'
+            fullWidth
+            sx={{color: 'white',
+            }}>
+            Julkaise
+            </Button>
       </Box>
     </Container>
   )

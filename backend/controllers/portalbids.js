@@ -2,10 +2,10 @@ const router = require('express').Router()
 const PortalBid = require('../models/portalbid')
 const PortalPost = require('../models/portalpost')
 
-const { userExtractor } = require('../utils/middleware')
+const { userExtractor, isUserDisabled } = require('../utils/middleware')
 
 router.get('/', userExtractor, async (request, response) => {
-  const user = request.user;
+  const user = request.user
 
   if (!user) {
     response.json([])
@@ -13,7 +13,7 @@ router.get('/', userExtractor, async (request, response) => {
     // jos kyseessä on yritys, niin haetaan kaikki yrityksen tekemät tarjoukset
     if (user.userType !== 'regular') {
       const portalbids = await PortalBid
-        .find({ user: user._id.toString()})
+        .find({ user: user._id.toString() })
         .populate('user', { name: 1 })
       response.json(portalbids)
     } else {
@@ -30,92 +30,115 @@ router.get('/', userExtractor, async (request, response) => {
         // Haetaan ne tarjoukset, joiden id on tässä listassa
         const portalbids = await PortalBid
           .find({ targetPost: { $in: portalPostIds } })
-          .populate('user', { name: 1 });
-        response.json(portalbids);
+          .populate('user', { name: 1 })
+        response.json(portalbids)
       }
     }
-}
+  }
 })
 
 router.post('/', userExtractor, async (request, response) => {
-  const { description, minPrice, maxPrice, target, dueDate } = request.body
-  const user = request.user
-  
-  const today = new Date()
-  if (dueDate < today) {
-    return response.status(400).json({error: 'duedate wrong'})
+  try {
+    const { description, minPrice, maxPrice, target, dueDate } = request.body
+    const user = request.user
+
+    const today = new Date()
+    if (dueDate < today) {
+      return response.status(400).json({ error: 'Tarkista päiväys' })
+    }
+
+    const portalbid = new PortalBid({
+      description,
+      timeStamp: today,
+      offeror: user.name,
+      minPrice,
+      maxPrice,
+      dueDate
+    })
+
+    const checkIfUserDisabled = await isUserDisabled(user)
+
+    // normikäyttäjät ei voi tarjota
+    if (!user || user.userType === 'regular' || checkIfUserDisabled === true) {
+      return response.status(401).json({ error: 'Operaatio ei sallittu' })
+    }
+
+    const targetPost = await PortalPost.findById(target.id)
+
+    // virheilmoitus jos postaus on suljettu
+    if (!targetPost || !targetPost.isOpen) {
+      return response.status(400).json({ error: 'Tapahtui virhe! Ilmoitus on suljettu!' })
+    }
+
+    portalbid.user = user._id
+    portalbid.targetPost = target.id
+
+    let createdportalbid = await portalbid.save()
+
+    user.portalBids = user.portalBids.concat(createdportalbid._id)
+    await user.save()
+
+    targetPost.portalBids = targetPost.portalBids.concat(createdportalbid._id)
+
+    await targetPost.save()
+
+    createdportalbid = await PortalBid.findById(createdportalbid._id).populate('user', { name: 1 })
+
+    response.status(201).json(createdportalbid)
+  } catch (error) {
+    response.status(500).json({ error: 'Palvelinvirhe' })
   }
-
-  const portalbid = new PortalBid({
-    description,
-    timeStamp: today,
-    offeror: user.name,
-    minPrice,
-    maxPrice,
-    dueDate
-  })
-
-  // normikäyttäjät ei voi tarjota
-  if (!user || user.userType === 'regular') {
-    return response.status(401).json({ error: 'operation not permitted' })
-  }
-
-  const targetPost = await PortalPost.findById(target.id)
-  portalbid.user = user._id
-  portalbid.targetPost = target.id
-
-  let createdportalbid = await portalbid.save()
-
-  user.portalBids = user.portalBids.concat(createdportalbid._id)
-  await user.save()
-
-  targetPost.portalBids = targetPost.portalBids.concat(createdportalbid._id)
-
-  await targetPost.save()
-
-  createdportalbid = await PortalBid.findById(createdportalbid._id).populate('user')
-
-  response.status(201).json(createdportalbid)
 })
 
 router.delete('/:id', userExtractor, async (request, response) => {
-  const portalBid = await PortalBid.findById(request.params.id)
-  const portalPost = await PortalPost.findById(portalBid.targetPost)
+  try {
+    const portalBid = await PortalBid.findById(request.params.id)
+    const portalPost = await PortalPost.findById(portalBid.targetPost)
 
-  const user = request.user
+    const user = request.user
 
+    // sekä lisännyt käyttäjä että postauksen omistaja voi poistaa
+    if (!user || !(portalBid.user.toString() === user.id.toString() || user.id.toString() === portalPost.user.toString())) {
+      return response.status(401).json({ error: 'Operaatio ei sallittu' })
+    }
 
-  // sekä lisännyt käyttäjä että postauksen omistaja voi poistaa
-  if (!user || !(portalBid.user.toString() === user.id.toString() || user.id.toString() === portalPost.user.toString())) {
-    return response.status(401).json({ error: 'operation not permitted' })
+    user.portalBids = user.portalBids.filter(b => b.toString() !== portalBid.id.toString() )
+    portalPost.portalBids = portalPost.portalBids.filter(b => b.toString() !== portalBid.id.toString() )
+
+    await user.save()
+    await portalPost.save()
+    await portalBid.remove()
+
+    response.status(204).end()
+  } catch (error) {
+    response.status(500).json({ error: 'Palvelinvirhe' })
   }
-
-  user.portalBids = user.portalBids.filter(b => b.toString() !== portalBid.id.toString() )
-  portalPost.portalBids = portalPost.portalBids.filter(b => b.toString() !== portalBid.id.toString() )
-
-  await user.save()
-  await portalPost.save()
-  await portalBid.remove()
-
-  response.status(204).end()
 })
 
 router.put('/:id/acceptBid', userExtractor, async (request, response) => {
-  const user = request.user
+  try {
+    const user = request.user
 
-  const portalBid = await PortalBid.findById(request.params.id)
-  const portalPost = await PortalPost.findById(portalBid.targetPost)
+    const portalBid = await PortalBid.findById(request.params.id)
+    const portalPost = await PortalPost.findById(portalBid.targetPost)
 
-  // vain portalPostin lisännyt käyttäjä voi hyväksyä tarjouksen
-  if (!user || !portalBid || !portalPost || portalPost.user.toString() !== user.id.toString()) {
-    return response.status(401).json({ error: 'operation not permitted' })
+    const checkIfUserDisabled = await isUserDisabled(user)
+
+    // vain portalPostin lisännyt käyttäjä voi hyväksyä tarjouksen
+    if (!user || !portalBid || !portalPost ||
+      portalPost.user.toString() !== user.id.toString()
+      || checkIfUserDisabled === true) {
+      return response.status(401).json({ error: 'Operaatio ei sallittu' })
+    }
+
+    let updatedportalBid = await PortalBid.findByIdAndUpdate(request.params.id,  { isApproved: !portalBid.isApproved }, { new: true })
+
+    updatedportalBid = await PortalBid.findById(updatedportalBid._id).populate('user', { name: 1 })
+
+    response.json(updatedportalBid)
+  } catch (error) {
+    response.status(500).json({ error: 'Palvelinvirhe' })
   }
-  
-  let updatedportalBid = await PortalBid.findByIdAndUpdate(request.params.id,  { isApproved: !portalBid.isApproved }, { new: true })
-
-  updatedportalBid = await PortalBid.findById(updatedportalBid._id).populate('user')
-
-  response.json(updatedportalBid)
 })
 
 module.exports = router

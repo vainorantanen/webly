@@ -4,6 +4,7 @@ import { Link, useParams } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import EuroIcon from '@mui/icons-material/Euro';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
+import { formatDate } from '../../Functions/formatDate';
 
 const SingleDevPostView = () => {
 
@@ -42,9 +43,9 @@ const SingleDevPostView = () => {
           <Box>
           <Typography><Button component={Link} to={`/kehittajat/${devPost.user.id}`}>{devPost.user.name}</Button></Typography>
           {devPost.timeStamp ? (
-            <Typography>Julkaistu {devPost.timeStamp.split('T')[0]}</Typography>
+            <Typography>Julkaistu {formatDate(devPost.timeStamp)}</Typography>
           ) : (
-            <Typography>Julkaistu yli vuosi sitten</Typography>
+            <Typography>Julkaistu: Ei tietoa</Typography>
           )}
           </Box>
           <Box>

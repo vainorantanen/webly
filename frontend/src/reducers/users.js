@@ -29,8 +29,12 @@ export const initializeUsers = () => {
 
 export const addUser = (object) => {
   return async dispatch => {
+    try {
     const data = await usersService.create(object)
     dispatch(add(data))
+    } catch (error) {
+      return {error: error}
+    }
   }
 }
 

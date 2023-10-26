@@ -3,6 +3,7 @@ import { Typography, Box } from '@mui/material'
 import InstagramIcon from '@mui/icons-material/Instagram'
 import FacebookIcon from '@mui/icons-material/Facebook'
 import LinkedInIcon from '@mui/icons-material/LinkedIn'
+import { Link } from 'react-router-dom'
 
 const Footer = () => {
   return (
@@ -36,6 +37,12 @@ const Footer = () => {
           fontSize: '1rem',
         }}>
           webline@webline.fi
+        </Typography>
+
+        <Typography variant='body1' component={Link} to='/kayttoehdot'
+        sx={{ color: 'black' }}
+        >
+          Käyttöehdot
         </Typography>
 
         <Box sx={{
@@ -76,8 +83,9 @@ const Footer = () => {
           </a>
         </Box>
         <Typography variant="body1" className="copyright" style={{ fontStyle: 'italic' }}>
-          Powered by Webline Software Oy
+          Powered by <span><a href="https://webline.fi" target="_blank" rel="noopener noreferrer" style={{ color: 'black' }}>Webline Software Oy</a></span>
         </Typography>
+
       </Box>
     </footer>
   )

@@ -10,6 +10,7 @@ import usersReducer from './reducers/users'
 import blogsReducer from './reducers/blogs'
 import ratingsReducer from './reducers/ratings'
 import portalBidsReducer from './reducers/portalBids'
+import customerinfoReducer from './reducers/customerinfo'
 
 const store = configureStore({
   reducer: {
@@ -24,6 +25,7 @@ const store = configureStore({
     blogs: blogsReducer,
     ratings: ratingsReducer,
     portalBids: portalBidsReducer,
+    customerInfos: customerinfoReducer
   }
 })
 

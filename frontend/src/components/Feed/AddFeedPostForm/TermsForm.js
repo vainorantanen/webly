@@ -48,7 +48,6 @@ const TermsForm = forwardRef((props, ref) => {
     }
 
     if (minPrice === '' || maxPrice === '') {
-      console.log('minPrice', minPrice)
       notify('Aseta hintahaarukka', 'error')
       setMinPriceError(true)
       setMaxPriceError(true)

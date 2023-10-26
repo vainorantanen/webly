@@ -32,8 +32,12 @@ export const initializeRatings = () => {
 
 export const addRating = (object) => {
   return async dispatch => {
+    try {
     const data = await ratingService.create(object)
     dispatch(add(data))
+    } catch (error) {
+      return {error: error}
+    }
   }
 }
 
@@ -46,8 +50,12 @@ export const updateRating= (object) => {
 
 export const removeRating = (object) => {
     return async dispatch => {
+      try {
       await ratingService.remove(object.id)
       dispatch(remove(object.id))
+      } catch (error) {
+        return {error: error}
+      }
     }
   }
 

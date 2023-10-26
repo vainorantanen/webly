@@ -36,6 +36,10 @@ const schema = mongoose.Schema({
   dueDate: {
     type: Date,
     required: true
+  },
+  isPortalBid: {
+    type: Boolean,
+    default: true
   }
 })
 

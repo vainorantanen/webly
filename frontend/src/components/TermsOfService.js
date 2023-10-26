@@ -117,7 +117,7 @@ const TermsOfService = () => {
 
 <Typography variant="h6">6. Webly.fin ja Webline Software Oy:n oikeudet ja velvollisuudet</Typography>
 <Typography paragraph>Selvyyden vuoksi todettakoon, että Webly.fi on Webline Software Oy:n kehittämä, ylläpitämä ja omistama alusta. Kun tekstissä puhutaan
-Webline Sowftare Oy:stä, tarkoitetaan tällä sekä Webline Software Oy:tä että Webly.fi-palvelua.</Typography>
+Webline Software Oy:stä, tarkoitetaan tällä sekä Webline Software Oy:tä että Webly.fi-palvelua.</Typography>
 <Typography paragraph>
   Webline Software Oy toimii vain ja ainoastaan Palvelun ylläpitäjänä. Webline Software Oy ei tule osapuoleksi Käyttäjien välisiin,
    Palvelun kautta tai avulla syntyneisiin toimeksiantosopimuksiin. Webline Software Oy ei siten vastaa Palvelun Käyttäjistä tai
@@ -177,44 +177,44 @@ Webline Sowftare Oy:stä, tarkoitetaan tällä sekä Webline Software Oy:tä ett
 </Typography>
 
 <Typography variant="h6">7. Vahingonkorvaus ja vastuunrajoitus</Typography>
-<Typography paragraph>Niin pitkälle kuin voimassa oleva laki sallii, Webline Sowftare Oy ja Webly.fi, sen kumppaniyritykset tai lisenssinantajat
+<Typography paragraph>Niin pitkälle kuin voimassa oleva laki sallii, Webline Software Oy ja Webly.fi, sen kumppaniyritykset tai lisenssinantajat
  taikka muut palveluntuottajat eivät ole vastuussa mistään Käyttäjälle Palvelun käytöstä aiheutuneesta vahingosta,
-  vaikka Webline Sowftare Oy tai Webly.fi olisikin neuvottu tällaisen vahingonvastuun käsittelemisestä. Edellä lausutusta huolimatta,
-  Webline Sowftare Oy ja Webly.fi vahingonkorvausvastuu voi olla kuitenkin enintään se summa, minkä Käyttäjä on jo maksanut 
-  Webline Sowftare Oy ja Webly.fi Palvelun käytöstä. Joidenkin maiden lainsäädäntö ei salli tiettyjen vahinkojen poissulkemista tai rajoittamista,
+  vaikka Webline Software Oy tai Webly.fi olisikin neuvottu tällaisen vahingonvastuun käsittelemisestä. Edellä lausutusta huolimatta,
+  Webline Software Oy ja Webly.fi vahingonkorvausvastuu voi olla kuitenkin enintään se summa, minkä Käyttäjä on jo maksanut 
+  Webline Software Oy ja Webly.fi Palvelun käytöstä. Joidenkin maiden lainsäädäntö ei salli tiettyjen vahinkojen poissulkemista tai rajoittamista,
    joten osa tai kaikki tämän kohdan rajoituksista ei välttämättä koske Käyttäjää.</Typography>
 
 <Typography variant="h6">8. Sitoumuksen voimassaolo ja päättäminen</Typography>
 <Typography paragraph>Tämä Sitoumus tulee voimaan Käyttäjän hyväksyessä tämän Sitoumuksen tai Käyttäjän käyttäessä Palvelua.
  Tämä Sitoumus on voimassa toistaiseksi. Käyttäjä voi irtisanoa Sitoumuksen päättymään ilman irtisanomisaikaa sähköpostitse tai Palvelun
   välityksellä perustelematta irtisanomista. Sähköpostitse tehtävät irtisanomisilmoitukset tulee tehdä osoitteeseen: webline@webline.fi.</Typography>
-  <Typography paragraph>Tämän Sitoumuksen päättyessä Webline Sowftare Oy ja Webly.fi sulkee Käyttäjän Käyttäjätilin sekä poistaa Käyttäjän
-   mahdollisesti tallettaman aineiston Palvelusta. Sekä Webline Sowftare Oy ja Webly.fi että Käyttäjä vapautuvat Sitoumuksen mukaisista
+  <Typography paragraph>Tämän Sitoumuksen päättyessä Webline Software Oy ja Webly.fi sulkee Käyttäjän Käyttäjätilin sekä poistaa Käyttäjän
+   mahdollisesti tallettaman aineiston Palvelusta. Sekä Webline Software Oy ja Webly.fi että Käyttäjä vapautuvat Sitoumuksen mukaisista
     velvoitteistaan siksi ajaksi ja laajuudessa, kun sopimusvelvoitteiden täyttämättä jättäminen johtuu ylivoimaisesta esteestä.
   </Typography>
 
 <Typography variant="h6">9. Sovellettava laki ja riitojen ratkaisu</Typography>
-<Typography paragraph>Sitoumukseen sekä Käyttäjän ja Webline Sowftare Oy ja Webly.fi väliseen suhteeseen sovelletaan Suomen lakia
+<Typography paragraph>Sitoumukseen sekä Käyttäjän ja Webline Software Oy ja Webly.fi väliseen suhteeseen sovelletaan Suomen lakia
  lainvalintaa koskevia säännöksiä lukuun ottamatta. Sitoumuksesta mahdollisesti aiheutuvat riitaisuudet Käyttäjän ja 
- Webline Sowftare Oy ja Webly.fi välillä pyritään ratkaisemaan neuvottelemalla. Sitoumuksesta aiheutuvat riidat Asiakkaan ja Webline Sowftare Oy ja Webly.fi
-  välillä ratkaistaan Tampereen käräjäoikeudessa. Sitoumuksesta aiheutuvat riidat Yrityksen ja Webline Sowftare Oy ja Webly.fi
+ Webline Software Oy ja Webly.fi välillä pyritään ratkaisemaan neuvottelemalla. Sitoumuksesta aiheutuvat riidat Asiakkaan ja Webline Software Oy ja Webly.fi
+  välillä ratkaistaan Tampereen käräjäoikeudessa. Sitoumuksesta aiheutuvat riidat Yrityksen ja Webline Software Oy ja Webly.fi
    välillä ratkaistaan lopullisesti välimiesmenettelyssä Keskuskauppakamarin välimiesmenettelysääntöjen mukaisesti.
     Välimiesoikeus on yksijäseninen. Välimiesmenettelyn kieli on suomi ja se pidetään Tampereella.</Typography>
 
     <Typography variant="h6">10. Sekalaista</Typography>
-    <Typography paragraph>Webline Sowftare Oy:llä ja Webly.fi:llä on yksipuolinen oikeus muuttaa Sitoumusta. Webline Sowftare Oy tai Webly.fi
+    <Typography paragraph>Webline Software Oy:llä ja Webly.fi:llä on yksipuolinen oikeus muuttaa Sitoumusta. Webline Software Oy tai Webly.fi
      ilmoittaa Käyttäjiä muutoksista etukäteen sähköpostitse ja Palvelun välityksellä. Sitoumukseen tehdyt muutokset tulevat voimaan 14
       päivän kuluttua muutosilmoitusta seuraavasta päivästä lukien, ja Käyttäjän katsotaan hyväksyneen muutokset, mikäli Käyttäjä käyttää
        Palvelua tuon ajankohdan jälkeen. Mikäli Käyttäjä ei hyväksy muutoksia, Käyttäjän tulee irtisanoa Sitoumus kohdan 8 mukaisesti ennen
         kuin muutokset astuvat voimaan. Käyttäjällä ei ole lupaa luovuttaa, siirtää tai alilisensoida tätä Sitoumusta, ellei Käyttäjä ole saanut
-         siihen Webline Sowftare Oy:ltä tai Webly.fi:lta etukäteistä kirjallista suostumusta. Webline Sowftare Oy:llä ja Webly.fi:llä on yksipuolinen oikeus luovuttaa
+         siihen Webline Software Oy:ltä tai Webly.fi:lta etukäteistä kirjallista suostumusta. Webline Software Oy:llä ja Webly.fi:llä on yksipuolinen oikeus luovuttaa
           tai siirtää sen Sitoumuksen mukaiset oikeudet ja velvollisuudet joko kokonaan tai osittain. Käyttäjä hyväksyy, että jos
-          Webline Sowftare Oy ja Webly.fi ei käytä tai pane täytäntöön sen Sitoumuksen mukaisia laillisia oikeuksia (esim. oikeutta korvaukseen),
-           ei se kuitenkaan tarkoita sitä, että Webline Sowftare Oy tai Webly.fi virallisesti luopuisi oikeuksistaan, vaan 
-           Webline Sowftare Oy ja Webly.fi on tästä huolimatta edelleen oikeus turvautua oikeuksiinsa. Mikäli tuomioistuimen päätöksellä jokin
+          Webline Software Oy ja Webly.fi ei käytä tai pane täytäntöön sen Sitoumuksen mukaisia laillisia oikeuksia (esim. oikeutta korvaukseen),
+           ei se kuitenkaan tarkoita sitä, että Webline Software Oy tai Webly.fi virallisesti luopuisi oikeuksistaan, vaan 
+           Webline Software Oy ja Webly.fi on tästä huolimatta edelleen oikeus turvautua oikeuksiinsa. Mikäli tuomioistuimen päätöksellä jokin
             tämän Sitoumuksen määräys tuomitaan pätemättömäksi, poistetaan ainoastaan kyseinen pätemätön määräys Sitoumuksesta,
              Sitoumuksen pysyen muutoin päteviltä osiltaan edelleen voimassa. Sitoumuksen päättymisestä huolimatta kohdat 4 – 7 ja 9 – 10
-              säilyvät Käyttäjien ja Webline Sowftare Oy ja Webly.fi välillä voimassa. Tämän lisäksi selvyyden vuoksi todetaan,
+              säilyvät Käyttäjien ja Webline Software Oy ja Webly.fi välillä voimassa. Tämän lisäksi selvyyden vuoksi todetaan,
                että Käyttäjät eivät Sitoumuksen päättymisestä huolimatta vapaudu keskeneräisistä velvoitteistaan, joita he ovat solmineet
                 Sitoumuksen aikana.</Typography>
     </Container>

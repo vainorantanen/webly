@@ -47,6 +47,8 @@ import ProfileDevPosts from './components/Profile/ProfileDevPosts/ProfileDevPost
 import ProfileBlogs from './components/Profile/ProfileBlogs/ProfileBlogs'
 import ModifyBlogForm from './components/Profile/ProfileBlogs/ModifyBlogForm'
 import Chat from './components/Chat/Chat'
+import ResetPassword from './components/ResetPassword'
+import ForgotPassword from './components/ForgotPassword'
 
 const theme = createTheme({
   typography: {
@@ -106,6 +108,8 @@ const App = () => {
           <Route path='/adminpanel' element={<AdminPanel />} />
           <Route path='/kayttoehdot' element={<TermsOfService />} />
           <Route path='/neuvottelu/:id' element={<Chat />} />
+          <Route path='/forgot-password' element={<ForgotPassword />} />
+          <Route path='/reset-password/:id/:token' element={<ResetPassword />} />
         </Routes>
         <Footer />
       </Box>

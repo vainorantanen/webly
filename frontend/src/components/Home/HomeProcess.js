@@ -2,8 +2,8 @@ import React from 'react'
 import { Box, Typography, Button } from '@mui/material'
 import locationsPic from '../../Assets/locations.png'
 import remotePic from '../../Assets/remote-choose.png'
-import phonePic from '../../Assets/phone.png'
 import analyzePic from '../../Assets/analyze.png'
+import mobileAppPic from '../../Assets/mobileapp.png'
 import { Link } from 'react-router-dom'
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward'
 import './homebuttons.css'
@@ -84,7 +84,7 @@ const HomeProcess = () => {
           maxWidth: '40vw',
         }, }}
           component="img"
-        src={phonePic} alt='pic of mobile phone'>
+        src={mobileAppPic} alt='pic of mobile phone'>
         </Box>
         <Box sx={{
          width: '40vw',

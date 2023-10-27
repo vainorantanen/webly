@@ -49,6 +49,8 @@ import ModifyBlogForm from './components/Profile/ProfileBlogs/ModifyBlogForm'
 import Chat from './components/Chat/Chat'
 import ResetPassword from './components/ResetPassword'
 import ForgotPassword from './components/ForgotPassword'
+import ConfirmEmail from './components/ConfirmEmail'
+import SendConfirmationEmailAgain from './components/SendConfirmationEmailAgain'
 
 const theme = createTheme({
   typography: {
@@ -110,6 +112,8 @@ const App = () => {
           <Route path='/neuvottelu/:id' element={<Chat />} />
           <Route path='/forgot-password' element={<ForgotPassword />} />
           <Route path='/reset-password/:id/:token' element={<ResetPassword />} />
+          <Route path='/confirm-email/:id/:token' element={<ConfirmEmail />} />
+          <Route path='/laheta-uusi-vahvistus' element={<SendConfirmationEmailAgain />} />
         </Routes>
         <Footer />
       </Box>

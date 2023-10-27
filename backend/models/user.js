@@ -68,7 +68,7 @@ const userSchema = mongoose.Schema({
   ],
   disabled: {
     type: Boolean,
-    default: false
+    default: true
   },
   givenRatings: [
     {

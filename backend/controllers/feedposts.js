@@ -257,9 +257,9 @@ router.delete('/:id/feedbids/:oid', userExtractor, async (request, response) => 
     updatedfeedPost = await FeedPost.findById(feedPost.id)
       .populate('user', { name: 1 }).populate({ path: 'feedBids' })
     response.status(201).json(updatedfeedPost)
-} catch (error) {
+  } catch (error) {
     response.status(500).json({ error: 'Palvelinvirhe' })
-}
+  }
 
 })
 

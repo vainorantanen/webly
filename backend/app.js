@@ -18,6 +18,7 @@ const portalBidsRouter = require('./controllers/portalbids')
 const customerInfoRouter = require('./controllers/customerinfo')
 const forgotPasswordRouter = require('./controllers/forgotpassword')
 const resetPassWordRouter = require('./controllers/resetpassword')
+const confirmEmailRouter = require('./controllers/confirmemail')
 
 if (process.env.NODE_ENV === 'test') {
   const testingRouter = require('./controllers/testing')
@@ -55,6 +56,7 @@ app.use('/api/portalbids', portalBidsRouter)
 app.use('/api/customerinfo', customerInfoRouter)
 app.use('/api/forgot-password', forgotPasswordRouter)
 app.use('/api/reset-password', resetPassWordRouter)
+app.use('/api/confirm-email', confirmEmailRouter)
 
 app.use(middleware.unknownEndpoint)
 app.use(middleware.errorHandler)

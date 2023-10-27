@@ -57,7 +57,7 @@ const RegisterPage = () => {
         setIsTermsAccepted(false)
         setEmail('')
         setConfirmPassword('')
-        notify('Käyttäjä rekisteröity onnistuneesti', 'success')
+        notify('Käyttäjä rekisteröity onnistuneesti, muista vielä vahvistaa sähköpostisi!', 'success')
       }
     } catch (error) {
       notify('Rekiströinti epäonnistui', 'error')

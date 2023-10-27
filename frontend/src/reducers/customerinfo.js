@@ -50,4 +50,16 @@ export const addMessage = (object) => {
   }
 }
 
+export const updateMessage = (customerInfo, messageObject) => {
+  return async dispatch => {
+    try {
+      const data = await customerinfoService.updateMessage(customerInfo, messageObject)
+      dispatch(alter(data))
+    } catch (error) {
+      // Handle the error and return it for displaying on the frontend.
+      return { error: error };
+    }
+  }
+}
+
 export default slice.reducer

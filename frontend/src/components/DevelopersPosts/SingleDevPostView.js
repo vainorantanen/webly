@@ -5,6 +5,7 @@ import { useSelector } from 'react-redux'
 import EuroIcon from '@mui/icons-material/Euro';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import { formatDate } from '../../Functions/formatDate';
+import SendInfoToDevPost from '../SendInfoToDevPost';
 
 const SingleDevPostView = () => {
 
@@ -73,6 +74,9 @@ const SingleDevPostView = () => {
           WebkitBoxOrient: 'vertical',
           lineHeight: '1.4',
          }}>{devPost.description}</Typography>
+      </Box>
+      <Box>
+        <SendInfoToDevPost devPost={devPost}/>
       </Box>
       </Box>
     </Container>

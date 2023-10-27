@@ -42,7 +42,16 @@ const schema = mongoose.Schema({
       type: mongoose.Schema.Types.ObjectId,
       ref: 'Message'
     }
-  ]
+  ],
+  relatesToDevPost: {
+    type: Boolean,
+    default: false
+  },
+  relatedDevPost: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'DevFeedPost'
+  },
+
 })
 
 schema.set('toJSON', {

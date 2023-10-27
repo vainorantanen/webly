@@ -23,6 +23,13 @@ const sendMessage = async (object) => {
   return request.data
 }
 
+const updateMessage = async (customerInfo, messageObject) => {
+  const token = await storageService.loadUser() ? `Bearer ${storageService.loadUser().token}` : null
+  const headers = token ? { 'Authorization': token } : {}
+  const request = await axios.put(`${baseUrl}/${customerInfo.id}/updateMessage/${messageObject.id}`, messageObject, { headers })
+  return request.data
+}
+
 
 // eslint-disable-next-line import/no-anonymous-default-export
-export default { getAll, create, sendMessage }
+export default { getAll, create, sendMessage, updateMessage }

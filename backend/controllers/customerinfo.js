@@ -3,6 +3,7 @@ const CustomerInfo = require('../models/customerinfo')
 const FeedBid = require('../models/feedbid')
 const Message = require('../models/message')
 const PortalBid = require('../models/portalbid')
+const DevFeedPost = require('../models/devfeedpost')
 
 const { userExtractor, isUserDisabled } = require('../utils/middleware')
 
@@ -35,11 +36,11 @@ router.get('/', userExtractor, async (request, response) => {
 
 router.post('/', userExtractor, async (request, response) => {
   try {
-    const { senderEmail, senderPhone, offer, startingMessage } = request.body
+    const { senderEmail, senderPhone, offer, devPost, startingMessage } = request.body
 
     const user = request.user
 
-    if (!user || !offer) {
+    if (!user || (!offer && !devPost)) {
       return response.status(401).json({ error: 'Palvelinvirhe (operaatiota ei sallittu)' })
     }
 
@@ -56,26 +57,39 @@ router.post('/', userExtractor, async (request, response) => {
       timeStamp: new Date()
     })
 
-    if (offer.isPortalBid === true) {
-      const portalOfferFromdb = await PortalBid.findById(offer.id)
-      if (!portalOfferFromdb) {
-        return response.status(400).json({ error: 'Tarjousta ei ole enää olemassa, se on todennäköisesti poistettu' })
+    // jos kyseessä on tarjoukseen (offer) liittyvä yhteydenotto
+    if (offer && !devPost) {
+      if (offer.isPortalBid === true) {
+        const portalOfferFromdb = await PortalBid.findById(offer.id)
+        if (!portalOfferFromdb) {
+          return response.status(400).json({ error: 'Tarjousta ei ole enää olemassa, se on todennäköisesti poistettu' })
+        } else {
+          customerinfo.relatedPortalBid = portalOfferFromdb._id
+          customerinfo.targetDeveloper = portalOfferFromdb.user
+          customerinfo.relatedPortalPost = portalOfferFromdb.targetPost
+        }
+      } else if (offer.isPortalBid === false) {
+        const feedOfferFromdb = await FeedBid.findById(offer.id)
+        if (!feedOfferFromdb) {
+          return response.status(400).json({ error: 'Tarjousta ei ole enää olemassa, se on todennäköisesti poistettu' })
+        } else {
+          customerinfo.relatedFeedBid = feedOfferFromdb._id
+          customerinfo.targetDeveloper = feedOfferFromdb.user
+          customerinfo.relatedFeedPost = feedOfferFromdb.targetPost
+        }
       } else {
-        customerinfo.relatedPortalBid = portalOfferFromdb._id
-        customerinfo.targetDeveloper = portalOfferFromdb.user
-        customerinfo.relatedPortalPost = portalOfferFromdb.targetPost
-      }
-    } else if (offer.isPortalBid === false) {
-      const feedOfferFromdb = await FeedBid.findById(offer.id)
-      if (!feedOfferFromdb) {
         return response.status(400).json({ error: 'Tarjousta ei ole enää olemassa, se on todennäköisesti poistettu' })
-      } else {
-        customerinfo.relatedFeedBid = feedOfferFromdb._id
-        customerinfo.targetDeveloper = feedOfferFromdb.user
-        customerinfo.relatedFeedPost = feedOfferFromdb.targetPost
       }
+    } else if (!offer && devPost) {
+      const devPostFromDb = await DevFeedPost.findById(devPost.id)
+      if (!devPostFromDb) {
+        return response.status(400).json({ error: 'Ilmoitusta ei ole enää olemassa, se on todennäköisesti poistettu' })
+      }
+      customerinfo.relatesToDevPost = true
+      customerinfo.relatedDevPost = devPostFromDb._id
+      customerinfo.targetDeveloper = devPostFromDb.user
     } else {
-      return response.status(400).json({ error: 'Tarjousta ei ole enää olemassa, se on todennäköisesti poistettu' })
+      return response.status(400).json({ error: 'Palvelinvirhe ilmoituksen löytämisessä' })
     }
 
     customerinfo.sender = user._id
@@ -129,6 +143,46 @@ router.post('/sendMessage/:id', userExtractor, async (request, response) => {
     response.status(201).json(updatedCustomerInfo)
   } catch (error) {
     response.status(500).json({ error: 'Palvelimella tapahtui virhe, yritä myöhemmin uudelleen' })
+  }
+})
+
+router.put('/:id/updateMessage/:mid', userExtractor, async (request, response) => {
+  try {
+    const user = request.user
+    const { isApproved } = request.body
+
+    const message = await Message.findById(request.params.mid)
+    const customeriInfo = await CustomerInfo.findById(request.params.id)
+
+    if (!message || !customeriInfo) {
+      return response.status(400).json({ error: 'Tapahtui virhe! Postaus tai tarjous on poistettu tai suljettu' })
+    }
+
+    const checkIfUserDisabled = await isUserDisabled(user)
+
+    // viestin lähettänyt henkilö ei voi muokata sen tilaa
+    if (!user || message.user.toString() === user.id.toString()
+    || checkIfUserDisabled === true) {
+      return response.status(401).json({ error: 'Operaatio ei sallittu' })
+    }
+
+    // Update the isApproved field of the specified message
+    const updatedMessage = await Message.findByIdAndUpdate(request.params.mid, { isApproved }, { new: true })
+
+    const updatedMessageArray = customeriInfo.messages.map(mes =>
+      mes._id.equals(updatedMessage._id) ? updatedMessage : mes
+    )
+
+    const updatedCustomerInfo = await CustomerInfo.findByIdAndUpdate(
+      request.params.id,
+      { messages: updatedMessageArray },
+      { new: true })
+      .populate('messages')
+      .populate('sender', { name: 1 }).populate('targetDeveloper', { name: 1 })
+
+    response.json(updatedCustomerInfo)
+  } catch (error) {
+    response.status(500).json({ error: 'Palvelinvirhe' })
   }
 })
 

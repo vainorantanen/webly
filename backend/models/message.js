@@ -18,8 +18,10 @@ const schema = mongoose.Schema({
     required: true
   },
   isApproved: {
-    type: Boolean,
-    default: false
+    type: String,
+    enum: ['accepted', 'rejected', 'waiting'],
+    default: 'waiting',
+    required: true
   }
 })
 

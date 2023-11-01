@@ -68,7 +68,11 @@ const userSchema = mongoose.Schema({
   ],
   disabled: {
     type: Boolean,
-    default: true
+    default: false
+  },
+  emailConfirmed: {
+    type: Boolean,
+    default: false
   },
   givenRatings: [
     {

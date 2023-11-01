@@ -6,6 +6,7 @@ import StartIcon from '@mui/icons-material/Start';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle'
 import { useSelector } from 'react-redux';
+import { formatDate } from '../../Functions/formatDate';
 
 const SingleBidCard = ({offer}) => {
 
@@ -50,8 +51,8 @@ const SingleBidCard = ({offer}) => {
               <Typography sx={{ fontSize: '1.2rem' }}>Tarjous hyväksytty <CheckCircleIcon/></Typography>
             )}
             <Typography><EuroIcon />Tarjoushinta: {offer.price} euroa</Typography>
-            <Typography><StartIcon />Tarjous jätetty: {offer.timeStamp.split('T')[0].split('-').reverse().join('.')}</Typography>
-            <Typography><AccessTimeIcon />Tarjous voimassa: {offer.dueDate || 'Ei tietoa'}</Typography>
+            <Typography><StartIcon />Tarjous jätetty: {formatDate(offer.timeStamp)}</Typography>
+            <Typography><AccessTimeIcon />Tarjous voimassa: {formatDate(offer.dueDate) || 'Ei tietoa'}</Typography>
             </Box>
             <Box sx={{ width: '65%',
             '@media (max-width: 650px)': {

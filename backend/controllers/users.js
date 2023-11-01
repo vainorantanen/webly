@@ -97,8 +97,9 @@ router.get('/', userExtractor, async (request, response) => {
 
 
 router.put('/:id', userExtractor, async (request, response) => {
+  // vain kuvausta käyttäjästä voi muuttaa. Sähköpostin muuttaminen ei ole mahdollista.
   try {
-    const { description, email } = request.body
+    const { description } = request.body
 
     const user = request.user
 
@@ -108,7 +109,7 @@ router.put('/:id', userExtractor, async (request, response) => {
       return response.status(401).json({ error: 'operation not permitted' })
     }
 
-    let updatedUser = await User.findByIdAndUpdate(request.params.id,  { description, email }, { new: true })
+    let updatedUser = await User.findByIdAndUpdate(request.params.id,  { description }, { new: true })
 
     updatedUser = await User.findById(updatedUser._id)
 

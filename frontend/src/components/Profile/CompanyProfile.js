@@ -1,24 +1,28 @@
 import React from 'react'
 import { Container, Typography, Button } from '@mui/material'
 import { useSelector } from 'react-redux'
-import ModifyBasicInfo from './ModifyBasicInfo'
+//import ModifyBasicInfo from './ModifyBasicInfo'
 import ModifyDescriptionForm from './ModifyDescriptionForm'
 import { Link } from 'react-router-dom'
 import DevBids from './DevBids'
+import LoginSuggestion from '../LoginSuggestion'
 
 
 const CompanyProfile = () => {
-  const localUser = useSelector(({user}) => user)
-  const user = useSelector(({users}) => users).find(u => u.id === localUser.id)
+  const user = useSelector(({user}) => user)
 
-  if (!user) {
-    return null
+  if (!user || user.userType === 'regular') {
+    return (
+      <LoginSuggestion />
+    )
   }
 
   return (
     <Container sx={{ marginTop: '7rem', minHeight: '50vh', backgroundColor: 'white', borderRadius: '1rem', marginBottom: '1rem' }}>
       <Typography>Toimijan {user.name} Profiili</Typography>
-      <ModifyBasicInfo />
+      <Typography>Sähköposti {user.email}. Onko sähköpostisi vahvistamatta? <Button
+        component={Link} to='/laheta-uusi-vahvistus'>
+          Vahvista</Button></Typography>
       <ModifyDescriptionForm />
       <Button component={Link}
       to='/lisaa-blogi'

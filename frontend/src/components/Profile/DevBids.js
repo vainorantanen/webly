@@ -5,8 +5,7 @@ import SingleBidCard from './SingleBidCard'
 import { Link } from 'react-router-dom'
 
 const DevBids = () => {
-    const localUser = useSelector(({user}) => user)
-  const user = useSelector(({users}) => users).find(u => u.id === localUser.id)
+    const user = useSelector(({user}) => user)
 
   const userFeedBids = useSelector(({feedBids}) => feedBids).filter(p => p.user.id === user.id)
   const devPortalBids = useSelector(({portalBids}) => portalBids)

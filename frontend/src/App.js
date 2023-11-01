@@ -51,6 +51,7 @@ import ResetPassword from './components/ResetPassword'
 import ForgotPassword from './components/ForgotPassword'
 import ConfirmEmail from './components/ConfirmEmail'
 import SendConfirmationEmailAgain from './components/SendConfirmationEmailAgain'
+import ThanksForRegister from './components/ThanksForRegister'
 
 const theme = createTheme({
   typography: {
@@ -114,6 +115,7 @@ const App = () => {
           <Route path='/reset-password/:id/:token' element={<ResetPassword />} />
           <Route path='/confirm-email/:id/:token' element={<ConfirmEmail />} />
           <Route path='/laheta-uusi-vahvistus' element={<SendConfirmationEmailAgain />} />
+          <Route path='/kiitos-rekisteroitymisesta' element={<ThanksForRegister />} />
         </Routes>
         <Footer />
       </Box>

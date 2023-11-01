@@ -10,7 +10,7 @@ router.post('/:id/:token', (req, res) => {
     if(err) {
       return res.json({ Status: 'Error with token' })
     } else {
-      User.findByIdAndUpdate({ _id: id }, { disabled: false })
+      User.findByIdAndUpdate({ _id: id }, { emailConfirmed: true })
       // eslint-disable-next-line no-unused-vars
         .then(u => res.send({ Status: 'Success' }))
         .catch(err => res.send({ Status: err }))

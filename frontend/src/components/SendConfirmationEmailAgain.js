@@ -4,7 +4,7 @@ import { useNotification } from '../hooks'
 import confirmemail from '../services/confirmemail'
 
 const SendConfirmationEmailAgain = () => {
-    const [ email, setEmail ] = useState()
+    const [ email, setEmail ] = useState('')
 
     const notify = useNotification()
 

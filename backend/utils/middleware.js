@@ -50,6 +50,7 @@ const userExtractor = async (request, response, next) => {
 }
 
 const isUserDisabled = async (user) => {
+  // palautetaan tosi jos käyttäjä ei voi suorittaa operaatiota, muulloi epätosi
   if (!user) {
     console.log('user not passed as parameter')
     return true
@@ -63,8 +64,30 @@ const isUserDisabled = async (user) => {
   }
 
   const disabledState = userFromDb.disabled
-  console.log('returning disabled state', disabledState)
-  return disabledState
+  const isEmailConfirmed = userFromDb.emailConfirmed
+  // jos käyttäjä on diabloitu tai sähköposti vahvistamatta, niin palautetaan tosi
+  // epätosi palautuu vain jos käyttäjä ei ole disabloitu ja sähköposti on vahvistettu
+  const returnValue = disabledState === true || isEmailConfirmed === false
+  console.log('returning disabled state', returnValue)
+  return returnValue
+}
+
+const isEmailConfirmed = async (user) => {
+  if (!user) {
+    console.log('user not passed as parameter')
+    return false
+  }
+
+  const userFromDb = await User.findById(user.id)
+
+  if (!userFromDb) {
+    console.log('user not in db')
+    return false
+  }
+
+  const isEmailConfirmed = userFromDb.emailConfirmed
+  console.log('returning email confirmation state', isEmailConfirmed)
+  return isEmailConfirmed
 }
 
 module.exports = {
@@ -72,5 +95,6 @@ module.exports = {
   errorHandler,
   tokenExtractor,
   userExtractor,
-  isUserDisabled
+  isUserDisabled,
+  isEmailConfirmed
 }

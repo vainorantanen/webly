@@ -158,6 +158,10 @@ router.put('/:id/updateMessage/:mid', userExtractor, async (request, response) =
       return response.status(400).json({ error: 'Tapahtui virhe! Postaus tai tarjous on poistettu tai suljettu' })
     }
 
+    if (message.isApproved !== 'waiting') {
+      return response.status(400).json({ error: 'Tapahtui virhe! Viesti on jo hyväksytty tai hylätty!' })
+    }
+
     const checkIfUserDisabled = await isUserDisabled(user)
 
     // viestin lähettänyt henkilö ei voi muokata sen tilaa

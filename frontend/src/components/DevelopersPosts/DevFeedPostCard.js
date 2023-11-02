@@ -21,7 +21,7 @@ const FeedPostCard = ({ post }) => {
         marginLeft: '3rem',
         marginRight: '3rem',
         display: 'flex',
-        transition: '0.3s linear all',
+        transition: '0.1s linear all',
         flexDirection: 'column',
         '@media (max-width: 820px)': {
           marginLeft: '0.1rem',

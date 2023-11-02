@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useParams } from 'react-router-dom'
 import LoginSuggestion from '../LoginSuggestion'
@@ -7,10 +7,13 @@ import { Box, Container, Grid, IconButton, TextField,
 import SendIcon from '@mui/icons-material/Send';
 import { useNotification } from '../../hooks'
 import { addMessage, updateMessage } from '../../reducers/customerinfo'
+import { socket } from '../../socket'
+import customerinfoService from '../../services/customerinfo'
 
 const Chat = () => {
     const [message, setMessage] = useState('');
     const [ isOffer, setIsOffer ] = useState(false)
+    const [messages, setMessages] = useState([]);
 
     const { id } = useParams()
     const user = useSelector(({user}) => user)
@@ -19,6 +22,34 @@ const Chat = () => {
     const dispatch = useDispatch()
 
     const isSmallScreen = useMediaQuery((theme) => theme.breakpoints.down('sm'));
+
+    useEffect(() => {
+        const fetchData = async () => {
+            socket.emit('join_room', id);
+            
+            try {
+                const chatData = await customerinfoService.getAll();
+                
+                const chatFromDb = chatData.find(c => c.id === id);
+                if (chatFromDb) {
+                    setMessages(chatFromDb.messages);
+                }
+            } catch (error) {
+                console.error("Error fetching chat data:", error);
+            }
+        };
+        
+        fetchData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+
+    useEffect(() => {
+        socket.on("receive_message", (data) => {
+            console.log('reveice messages', data)
+          setMessages(data.updatedCustomerInfo.messages)
+        });
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+      }, [socket]);
 
     const handleCheckboxChange = (e) => {
         setIsOffer(e.target.checked)
@@ -34,11 +65,14 @@ const Chat = () => {
       }
 
       try {
-      const result = await dispatch(addMessage({id: customerInfo.id, content: message, isOffer }))
-        if (result && result.error) {
+        const updatedCustomerInfo = await customerinfoService.sendMessage({ id: customerInfo.id, content: message, isOffer })
+      //const result = await dispatch(addMessage({id: customerInfo.id, content: message, isOffer }))
+        if (updatedCustomerInfo && updatedCustomerInfo.error) {
           notify('Tapahtui virhe palvelimella', 'error')
           return
         } else {
+            setMessages(updatedCustomerInfo.messages)
+            socket.emit("send_message", { updatedCustomerInfo, id });
             setMessage('')
             setIsOffer(false)
         }
@@ -54,11 +88,14 @@ const Chat = () => {
           }
   
         try {
-        const result = await dispatch(updateMessage(customerInfo, {...mes, isApproved: operation }))
-          if (result && result.error) {
+            const updatedCustomerInfo = await customerinfoService.updateMessage(customerInfo, {...mes, isApproved: operation })
+        //const result = await dispatch(updateMessage(customerInfo, {...mes, isApproved: operation }))
+          if (updatedCustomerInfo && updatedCustomerInfo.error) {
             notify('Tapahtui virhe palvelimella', 'error')
             return
           } else {
+            setMessages(updatedCustomerInfo.messages)
+            socket.emit("send_message", { updatedCustomerInfo, id });
             if (operation === 'accepted') {
                 notify('Hyväksytty', 'success')
             } else {
@@ -82,8 +119,8 @@ const Chat = () => {
         marginTop: '5rem' }}>
             <Typography sx={{ textAlign: 'center', marginBottom: '2rem', fontSize: '1.2rem' }}>Chat</Typography>
             <Box>
-                {customerInfo.messages.length > 0 ? (
-                    customerInfo.messages.map(mes => {
+                {messages.length > 0 ? (
+                    messages.map(mes => {
                         return (
                             <Box key={mes.id} sx={{ display: 'flex', justifyContent: user.id === mes.user ? 'flex-end' : 'flex-start', marginBottom: '1rem' }}>
                                 <Box sx={{ padding: '0.5rem', backgroundColor: user.id === mes.user ? '#B0D0FF' : '#ccb6f2', color: 'black', maxWidth: '70vw',
@@ -103,7 +140,7 @@ const Chat = () => {
                                 borderBottom: '1px solid black' }}>Tarjous</Typography>)}
                                     <Typography sx={{ whiteSpace: 'break-spaces' }}>{mes.content}</Typography>
                                     <Typography sx={{ fontSize: '0.7rem', textAlign: user.id === mes.user ? 'right' : 'left' }}>{mes.user === user.id ? user.name : (user.id === customerInfo.sender.id ? customerInfo.targetDeveloper.name : customerInfo.sender.name)}</Typography>
-                                    {mes.isOffer && user.id !== mes.user && (
+                                    {mes.isOffer && user.id !== mes.user && mes.isApproved === 'waiting' && (
                                         <Button
                                         className="bn632-hover bn26"
                                         sx={{color: 'white',
@@ -113,7 +150,7 @@ const Chat = () => {
                                         onClick={() => handleAcceptMessageOffer(mes, 'accepted')}
                                         >Hyväksy tarjous</Button>
                                     )}
-                                    {mes.isOffer && user.id !== mes.user && (
+                                    {mes.isOffer && user.id !== mes.user && mes.isApproved === 'waiting' && (
                                         <Button
                                         
                                         sx={{color: 'red',

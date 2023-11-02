@@ -43,16 +43,7 @@ const ModifyDescriptionForm = () => {
       />
       <Button
         onClick={handleSubmit}
-        variant="contained"
-        sx={{
-          backgroundColor: 'blue',
-          color: 'white',
-          transition: 'transform 0.3s',
-          '&:hover': {
-            transform: 'scale(1.05)',
-            backgroundImage: 'linear-gradient(to bottom, #003eff, #006eff)',
-          },
-        }}
+        variant="outlined"
       >
         Päivitä
       </Button>

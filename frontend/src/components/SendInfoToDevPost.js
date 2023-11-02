@@ -11,7 +11,7 @@ const SendInfoToDevPost = ({ devPost }) => {
     const user = useSelector(({user}) => user)
 
     const [isDialogOpen, setIsDialogOpen] = useState(false);
-    const [ userEmail, setUserEmail ] = useState(user.email || '')
+    const [ userEmail, setUserEmail ] = useState(user ? user.email : '')
     const [ userPhone, setUserPhone ] = useState('')
     const [ message, setMessage ] = useState('')
 
@@ -54,6 +54,10 @@ const SendInfoToDevPost = ({ devPost }) => {
           notifyWith('Lähetys epäonnistui', 'error')
         }
     
+      }
+
+      if (!user) {
+        return null
       }
 
   return (

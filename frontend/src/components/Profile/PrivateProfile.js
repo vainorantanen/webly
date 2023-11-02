@@ -1,5 +1,5 @@
 import React from 'react'
-import { Container, Typography, Button } from '@mui/material'
+import { Container, Typography, Button, Paper } from '@mui/material'
 import { useSelector } from 'react-redux'
 import BuyersPosts from './BuyersPosts'
 //import ModifyBasicInfo from './ModifyBasicInfo'
@@ -29,10 +29,18 @@ const PrivateProfile = () => {
 
   return (
     <Container sx={{ marginTop: '7rem', minHeight: '100vh', backgroundColor: 'white', borderRadius: '1rem', marginBottom: '1rem' }}>
-      <Typography sx={{ marginBottom: '1rem' }}>Käyttäjän {user.name} profiili</Typography>
-        <Typography>Sähköposti {user.email}. Onko sähköpostisi vahvistamatta? <Button
+      {!user.emailConfirmed && (
+        <Paper elevation={3} style={{ padding: '16px', backgroundColor: '#f44336', color: '#fff' }}>
+          <Typography variant="body1">
+          Sähköpostisi ei ole vahvistettu. Vahvista se alla olevasta napista.
+        </Typography>
+          <Button
         component={Link} to='/laheta-uusi-vahvistus'>
-          Vahvista</Button></Typography>
+          Vahvista sähköposti</Button>
+        </Paper>
+      )}
+      <Typography sx={{ marginBottom: '1rem' }}>Käyttäjän {user.name} profiili</Typography>
+        <Typography>Sähköposti {user.email}</Typography>
         <ModifyDescriptionForm />
         <Typography sx={{ marginBottom: '1rem', fontSize: '1.3rem',
       borderBottom: '1px solid black', marginTop: '1rem' }}>Navigoi</Typography>

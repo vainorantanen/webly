@@ -1,13 +1,15 @@
 import { Button, Container, Typography } from '@mui/material'
 import React from 'react'
 import { useNotification } from '../hooks'
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import confirmemailService from '../services/confirmemail'
 
 const ConfirmEmail = () => {
 
     const {id, token} = useParams()
     const notify = useNotification()
+    const navigate = useNavigate()
+
     const handleSubmit = async (event) => {
         event.preventDefault()
         try {
@@ -15,6 +17,8 @@ const ConfirmEmail = () => {
           if (stat.Status !== 'Success') {
             notify('Ilmeni jokin ongelma', 'error')
             return
+          } else {
+            navigate('/login')
           }
           notify('Sähköposti vahvistettu onnistuneesti, voit nyt kirjautua (uudelleen) sisään ja aloittaa palvelun käytön', 'success')
         } catch (e) {

@@ -30,7 +30,7 @@ loginRouter.post('/', async (request, response) => {
       .send({ token, username: user.username, name: user.name,
         userType: user.userType, description : user.description,
         feedBids: user.feedBids, feedPosts: user.feedPosts, id: user.id,
-        email: user.email, disabled: user.disabled
+        email: user.email, disabled: user.disabled, emailConfirmed: user.emailConfirmed
       })
   } catch (error) {
     response.status(500).json({ error: 'Tapahtui virhe palvelimella' })

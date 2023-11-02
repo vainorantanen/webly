@@ -1,4 +1,4 @@
-import { Box, Typography, Container, Button } from '@mui/material'
+import { Box, Typography, Container, Button, Divider } from '@mui/material'
 import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
@@ -67,12 +67,11 @@ const BuyersPosts = () => {
     <Box>
         <Typography
         id='openPosts'
-        sx={{ marginBottom: '1rem', fontSize: '1.3rem',
-      borderBottom: '1px solid black' }}>Omat avoimet ilmoitukset ({userPosts.filter(p => p.isOpen).length})</Typography>
+        sx={{ marginBottom: '1rem', fontSize: '1.3rem' }}>Omat avoimet ilmoitukset ({userPosts.filter(p => p.isOpen).length})</Typography>
+        <Divider sx={{ my: 4 }} />
         <Box>
         {userPosts.filter(p => p.isOpen).length > 0 ? userPosts.filter(p => p.isOpen).map(p => (
-            <Box key={p.id} sx={{ backgroundColor: 'white',
-            borderRadius: '0.5rem', marginBottom: '1rem', border: '1px solid black'}}>
+            <Box key={p.id}>
                 <FeedPostCard post={p}/>
                 <Box sx={{ textAlign: 'center' }}>
                 <Button component={Link} to={`/profiili/kayttaja/muokkaa/ilmoitus/${p.id}`} >Muokkaa ilmoituksen sisältöä<EditIcon /></Button>
@@ -81,6 +80,7 @@ const BuyersPosts = () => {
                 : 'Aseta ilmoitus avoimeksi'}<ChangeCircleIcon /></Button>
                 <Button sx={{ color: 'red' }} onClick={() => handleDeleteFeedPost(p.id)}>Poista ilmoitus<DeleteIcon /></Button>
                   </Box>
+                  <Divider sx={{ my: 4 }} />
             </Box>  
         )) : (
             <Typography>Ei vielä ilmoituksia</Typography>
@@ -88,12 +88,11 @@ const BuyersPosts = () => {
         </Box>
         <Typography
         id='closedPosts'
-        sx={{ marginBottom: '1rem', fontSize: '1.3rem',
-      borderBottom: '1px solid black' }}>Omat suljetut ilmoitukset ({userPosts.filter(p => !p.isOpen).length})</Typography>
+        sx={{ marginBottom: '1rem', fontSize: '1.3rem' }}>Omat suljetut ilmoitukset ({userPosts.filter(p => !p.isOpen).length})</Typography>
+        <Divider sx={{ my: 4 }} />
         <Box>
         {userPosts.filter(p => !p.isOpen).length > 0 ? userPosts.filter(p => !p.isOpen).map(p => (
-            <Box key={p.id} sx={{ backgroundColor: 'white', color: 'black', padding: '0.5rem',
-            borderRadius: '0.5rem', marginBottom: '1rem', border: '1px solid black'}}>
+            <Box key={p.id}>
                 <FeedPostCard post={p}/>
                 <Box sx={{ textAlign: 'center' }}>
                 <Button component={Link} to={`/profiili/kayttaja/muokkaa/ilmoitus/${p.id}`} >Muokkaa ilmoituksen sisältöä<EditIcon /></Button>
@@ -102,6 +101,7 @@ const BuyersPosts = () => {
                 : 'Aseta ilmoitus avoimeksi'}<ChangeCircleIcon /></Button>
                 <Button sx={{ color: 'red' }} onClick={() => handleDeleteFeedPost(p.id)}>Poista ilmoitus<DeleteIcon /></Button>
                   </Box>
+                  <Divider sx={{ my: 4 }} />
             </Box>  
         )) : (
             <Typography>Ei vielä ilmoituksia</Typography>

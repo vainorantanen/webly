@@ -1,7 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit'
 import loginService from '../services/login'
 import storageService from '../services/storage'
-import { notify } from './notification'
 import usersService from '../services/users'
 import { initializePortalposts } from './portalPosts'
 import { initializePortalBids } from './portalBids'
@@ -59,10 +58,12 @@ export const initUser = () => {
 
 export const updateUser= (object) => {
   return async dispatch => {
-    const user = await usersService.update(object)
-    //storageService.loadUser(user)
-    // sitten ihanku kirjauduttais uudestaan sisään:
-    dispatch(set(user))
+    try {
+      const user = await usersService.update(object)
+      dispatch(set(user))
+    } catch (error) {
+      return { error: error };
+    }
   }
 }
 

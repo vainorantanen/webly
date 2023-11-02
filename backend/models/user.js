@@ -70,6 +70,10 @@ const userSchema = mongoose.Schema({
     type: Boolean,
     default: false
   },
+  emailConfirmed: {
+    type: Boolean,
+    default: false
+  },
   givenRatings: [
     {
       type: mongoose.Schema.Types.ObjectId,

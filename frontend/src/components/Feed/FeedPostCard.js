@@ -5,7 +5,8 @@ import { Typography, Box,
   TableCell,
   TableContainer,
   TableRow,
-  Paper, } from '@mui/material'
+  Paper,
+  Divider, } from '@mui/material'
 import { Link } from 'react-router-dom'
 import EuroIcon from '@mui/icons-material/Euro';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
@@ -14,27 +15,27 @@ import { formatDate } from '../../Functions/formatDate';
 const FeedPostCard = ({ post }) => {
 
   return (
-    <Box
+    <Paper
+    elevation={3}
     component={Link}
         to={`/tarjouskilpailut/${post.id}`}
       sx={{
         padding: '1rem',
-        backgroundColor: '#f0f0f0',
         borderRadius: '0.5rem',
         textDecoration: 'none',
         color: 'black',
-        marginLeft: '3rem',
-        marginRight: '3rem',
+        margin: '1rem',
         display: 'flex',
-        transition: 'all 0.3s linear',
         flexDirection: 'column',
+        transition: 'all 0.1s linear',
+        boxShadow: '0rem 0.1rem 0.2rem 0.1rem gray',
         '@media (max-width: 820px)': {
           marginLeft: '0.1rem',
           marginRight: '0.1rem',
         },
         '&:hover': {
-          backgroundColor: '#DDDDDD',
-          boxShadow: '0rem 0.1rem 0.3rem gray'
+          backgroundColor: '#ebebeb',
+          boxShadow: '0rem 0.1rem 0.2rem 0.2rem gray',
       },
       }}
     >
@@ -43,9 +44,9 @@ const FeedPostCard = ({ post }) => {
       backgroundColor: 'white', boxShadow: '0rem 0.1rem 0.3rem gray' }}>
           <Box>
           {post.isOpen ? (
-            <Typography>Avoinna oleva ilmoitus</Typography>
+            <Typography variant='h6'>Avoinna oleva ilmoitus</Typography>
           ) : (
-            <Typography>Ilmoitus suljettu</Typography>
+            <Typography variant='h6'>Ilmoitus suljettu</Typography>
           )}
           <Typography>{post.user.name}</Typography>
           {post.timeStamp ? (
@@ -62,8 +63,8 @@ const FeedPostCard = ({ post }) => {
 
       {/* Displaying answers */}
       <Box sx={{ marginTop: '1rem', marginBottom: '1rem' }}>
-        <Typography sx={{ borderBottom: '1px solid black', fontSize: '1.2rem'
-       }}>Tarkoitus</Typography>
+        <Typography variant='h6'>Tarkoitus</Typography>
+        <Divider sx={{ my: 1 }}/>
         <Typography style={{ 
           overflow: 'hidden',
           textOverflow: 'ellipsis',
@@ -73,9 +74,8 @@ const FeedPostCard = ({ post }) => {
           WebkitBoxOrient: 'vertical',
           lineHeight: '1.4',
          }}>{post.description}</Typography>
-        <Typography sx={{ borderBottom: '1px solid black', fontSize: '1.2rem',
-        marginBottom: '0.5rem', marginTop: '1rem'}}
-        >Tietoa</Typography>
+        <Typography variant='h6'>Tietoa</Typography>
+        <Divider sx={{ my: 1 }}/>
         <TableContainer component={Paper}>
         <Table>
           <TableBody>
@@ -108,7 +108,7 @@ const FeedPostCard = ({ post }) => {
         </Table>
       </TableContainer>
       </Box>
-    </Box>
+    </Paper>
   )
 }
 

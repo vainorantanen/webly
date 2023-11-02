@@ -1,3 +1,5 @@
+/* Tämä ominaisuus ei toistaiseksi ole toiminnassa
+
 import { Box, Typography, TextField, Button } from '@mui/material'
 import React from 'react'
 import { useSelector } from 'react-redux'
@@ -62,3 +64,4 @@ const ModifyBasicInfo = () => {
 }
 
 export default ModifyBasicInfo
+*/

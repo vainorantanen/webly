@@ -10,16 +10,21 @@ const ModifyDescriptionForm = () => {
 
   const notify = useNotification()
     const dispatch = useDispatch()
-  const localUser = useSelector(({user}) => user)
-  const user = useSelector(({users}) => users).find(u => u.id === localUser.id)
+  const user = useSelector(({user}) => user)
 
   const [description, setDescription] = useState(user.description)
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (event) => {
+    event.preventDefault()
+
     try {
-        dispatch(updateUser({...user, description }))
-        setDescription('')
+         const result = await dispatch(updateUser({ id: user.id, description }))
+         if (result && result.error) {
+          notify('Tapahtui virhe', 'error')
+          return
+         } else {
         notify('Päivitys tehty onnistuneesti', 'success')
+         }
     } catch (error) {
         notify('Ilmeni jokin ongelma päivityksessä, yritä myöhemmin uudelleen', 'error')
     }
@@ -38,16 +43,7 @@ const ModifyDescriptionForm = () => {
       />
       <Button
         onClick={handleSubmit}
-        variant="contained"
-        sx={{
-          backgroundColor: 'blue',
-          color: 'white',
-          transition: 'transform 0.3s',
-          '&:hover': {
-            transform: 'scale(1.05)',
-            backgroundImage: 'linear-gradient(to bottom, #003eff, #006eff)',
-          },
-        }}
+        variant="outlined"
       >
         Päivitä
       </Button>

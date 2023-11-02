@@ -1,12 +1,11 @@
 import React from 'react'
-import { Typography, Box, Button } from '@mui/material'
+import { Typography, Box, Button, Divider } from '@mui/material'
 import { useSelector } from 'react-redux'
 import SingleBidCard from './SingleBidCard'
 import { Link } from 'react-router-dom'
 
 const DevBids = () => {
-    const localUser = useSelector(({user}) => user)
-  const user = useSelector(({users}) => users).find(u => u.id === localUser.id)
+    const user = useSelector(({user}) => user)
 
   const userFeedBids = useSelector(({feedBids}) => feedBids).filter(p => p.user.id === user.id)
   const devPortalBids = useSelector(({portalBids}) => portalBids)
@@ -17,7 +16,8 @@ const DevBids = () => {
 
   return (
     <Box sx={{ marginTop: '1rem' }}>
-      <Typography sx={{ fontSize: '1.1rem', borderBottom: '1px solid black' }}>Avoimiin ilmoituksiin tehdyt tarjoukset</Typography>
+      <Typography sx={{ fontSize: '1.3rem'}}>Avoimiin ilmoituksiin tehdyt tarjoukset</Typography>
+      <Divider sx={{ my: 4 }} />
         {userFeedBids && userFeedBids.length > 0 ? (userFeedBids.map(bid => (
         <Box key={bid.id}>
             <SingleBidCard offer={bid}/>
@@ -26,8 +26,8 @@ const DevBids = () => {
       ))): (
         <Typography>Ei vielä tarjouksia</Typography>
       )}
-    <Typography sx={{ fontSize: '1.1rem', borderBottom: '1px solid black',
-  marginTop: '1rem' }}>Portaali-ilmoituksiin tehdyt tarjoukset</Typography>
+      <Divider sx={{ my: 4 }} />
+    <Typography sx={{ fontSize: '1.3rem' }}>Portaali-ilmoituksiin tehdyt tarjoukset</Typography>
         {devPortalBids && devPortalBids.length > 0 ? (devPortalBids.map(
           bid => (
             <Box key={bid.id}>

@@ -38,9 +38,9 @@ router.post('/', userExtractor, async (request, response) => {
     createdblog = await Blog.findById(createdblog._id).populate('user', { name: 1 })
 
     response.status(201).json(createdblog)
-} catch (error) {
+  } catch (error) {
     response.status(500).json({ error: 'An error occurred' })
-}
+  }
 })
 
 router.put('/:id', userExtractor, async (request, response) => {

@@ -2,6 +2,8 @@ const bcrypt = require('bcrypt')
 const router = require('express').Router()
 const User = require('../models/user')
 const { userExtractor } = require('../utils/middleware')
+const nodemailer = require('nodemailer')
+const jwt = require('jsonwebtoken')
 
 router.post('/', async (request, response) => {
   try {
@@ -26,6 +28,37 @@ router.post('/', async (request, response) => {
     })
 
     const savedUser = await user.save()
+
+    // sähköpostin vahvistaminen
+    const token = jwt.sign({ id: user._id }, process.env.SECRET, { expiresIn: '1d' })
+    const confirmLink = process.env.NODE_ENV === 'production' ? `https://webly.fi/confirm-email/${user._id}/${token}` :
+      `http://localhost:3000/confirm-email/${user._id}/${token}`
+
+    const transporter = nodemailer.createTransport({
+      host: process.env.SMPT_HOST,
+      port: process.env.SMPT_PORT,
+      secure: true,
+      auth: {
+        user: process.env.SENDING_EMAIL,
+        pass: process.env.EMAIL_PASSWORD
+      }
+    })
+
+    var mailOptions = {
+      from: process.env.SENDING_EMAIL,
+      to: email,
+      subject: 'Sähköpostin vahvistus linkki',
+      text: confirmLink
+    }
+
+    // eslint-disable-next-line no-unused-vars
+    transporter.sendMail(mailOptions, function(error, info){
+      if (error) {
+        console.log(error)
+      } else {
+        // kaikki hyvin
+      }
+    })
 
     response.status(201).json(savedUser)
   } catch (error) {
@@ -64,8 +97,9 @@ router.get('/', userExtractor, async (request, response) => {
 
 
 router.put('/:id', userExtractor, async (request, response) => {
+  // vain kuvausta käyttäjästä voi muuttaa. Sähköpostin muuttaminen ei ole mahdollista.
   try {
-    const { description, email } = request.body
+    const { description } = request.body
 
     const user = request.user
 
@@ -75,7 +109,7 @@ router.put('/:id', userExtractor, async (request, response) => {
       return response.status(401).json({ error: 'operation not permitted' })
     }
 
-    let updatedUser = await User.findByIdAndUpdate(request.params.id,  { description, email }, { new: true })
+    let updatedUser = await User.findByIdAndUpdate(request.params.id,  { description }, { new: true })
 
     updatedUser = await User.findById(updatedUser._id)
 

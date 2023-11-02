@@ -17,6 +17,7 @@ import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import CancelIcon from '@mui/icons-material/Cancel';
 import { useDispatch } from 'react-redux';
 import { addUser } from '../reducers/users';
+import { useNavigate } from "react-router-dom";
 
 const RegisterPage = () => {
   const [username, setUsername] = useState('')
@@ -31,6 +32,7 @@ const RegisterPage = () => {
 
   const notify = useNotification()
   const dispatch = useDispatch()
+  const navigate = useNavigate()
 
   const handleSubmit = async (event) => {
     event.preventDefault()
@@ -57,7 +59,8 @@ const RegisterPage = () => {
         setIsTermsAccepted(false)
         setEmail('')
         setConfirmPassword('')
-        notify('Käyttäjä rekisteröity onnistuneesti', 'success')
+        notify('Käyttäjä rekisteröity onnistuneesti, muista vielä vahvistaa sähköpostisi!', 'success')
+        navigate('/kiitos-rekisteroitymisesta')
       }
     } catch (error) {
       notify('Rekiströinti epäonnistui', 'error')

@@ -6,12 +6,12 @@ import { useDispatch, useSelector } from 'react-redux';
 import { addCustomerInfo } from '../reducers/customerinfo';
 import ChatIcon from '@mui/icons-material/Chat';
 
-const SendCustomerInfoForm = ({ offer }) => {
+const SendInfoToDevPost = ({ devPost }) => {
 
     const user = useSelector(({user}) => user)
 
     const [isDialogOpen, setIsDialogOpen] = useState(false);
-    const [ userEmail, setUserEmail ] = useState(user.email || '')
+    const [ userEmail, setUserEmail ] = useState(user ? user.email : '')
     const [ userPhone, setUserPhone ] = useState('')
     const [ message, setMessage ] = useState('')
 
@@ -42,7 +42,7 @@ const SendCustomerInfoForm = ({ offer }) => {
           return // If the user clicks "Cancel," do nothing
         }
         try {
-          const result = await dispatch(addCustomerInfo({senderEmail: userEmail, senderPhone: userPhone, offer,
+          const result = await dispatch(addCustomerInfo({senderEmail: userEmail, senderPhone: userPhone, devPost,
           startingMessage: message}))
           if (result && result.error) {
             notifyWith(result.error.response.data.error, 'error')
@@ -56,13 +56,17 @@ const SendCustomerInfoForm = ({ offer }) => {
     
       }
 
+      if (!user) {
+        return null
+      }
+
   return (
     <Box>
-    <Button onClick={openDialog}>Aloita neuvottelu <ChatIcon /></Button>
+    <Button onClick={openDialog}>Ota yhteyttä <ChatIcon /></Button>
     <Dialog open={isDialogOpen} onClose={closeDialog}
     fullWidth
     >
-            <DialogTitle>Lähetä yhteystiedot ja viesti kehittäjälle {offer.user.name}</DialogTitle>
+            <DialogTitle>Lähetä yhteystiedot ja viesti kehittäjälle {devPost.user.name}</DialogTitle>
             <br></br>
             <DialogContent>
                 <TextField
@@ -103,4 +107,4 @@ const SendCustomerInfoForm = ({ offer }) => {
     )
 }
 
-export default SendCustomerInfoForm
+export default SendInfoToDevPost

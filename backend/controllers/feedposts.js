@@ -113,19 +113,20 @@ router.post('/:id/feedbids', userExtractor, async (request, response) => {
 
     // vain kehittäjät voi tarjota
     if (!user || user.userType === 'regular' || checkIfUserDisabled === true) {
-      return response.status(401).json({ error: 'operation not permitted' })
+      return response.status(401).json({ error: 'Operaatio ei sallittu' })
     }
 
     const feedPost = await FeedPost.findById(request.params.id)
 
-    if (!feedPost || !feedPost.isOpen) {
-      return response.status(400).json({ error: 'feedpost doesnt exist or its closed' })
-    }
-
     const today = new Date()
 
+    if (!feedPost || !feedPost.isOpen || new Date(feedPost.dueDate) < today) {
+      return response.status(400).json({ error: 'Ilmoitusta ei ole tai se on jo sulkeutunut' })
+    }
+
+    // tarkistetaan tarjouksessa annettu duedate
     if (dueDate < today) {
-      return response.status(400).json({ error: 'dueDate cant be in the past' })
+      return response.status(400).json({ error: 'Tarkista tarjouksesi sulkeutumispäivä' })
     }
 
     const offerToAdd = new FeedBid({
@@ -153,7 +154,7 @@ router.post('/:id/feedbids', userExtractor, async (request, response) => {
       .populate({ path: 'feedBids' })
     response.status(201).json(updatedfeedPost)
   } catch (error) {
-    response.status(500).json({ error: 'An error occurred' })
+    response.status(500).json({ error: 'Palvelinvirhe' })
   }
 
 })

@@ -27,7 +27,7 @@ const MakeBidForm = ({ post }) => {
       const result = await dispatch(makeOffer(post.id, { description, minPrice, maxPrice,
         dueDate: dayjs(date), }))
         if (result && result.error) {
-          notify('Tapahtui virhe palvelimella', 'error')
+          notify(result.error.response.data.error, 'error')
           return
         } else {
           setDescription('')

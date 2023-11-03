@@ -5,6 +5,7 @@ const cors = require('cors')
 const logger = require('./utils/logger')
 const mongoose = require('mongoose')
 require('express-async-errors')
+const path = require('path')
 
 const usersRouter = require('./controllers/users')
 const loginRouter = require('./controllers/login')
@@ -19,11 +20,7 @@ const customerInfoRouter = require('./controllers/customerinfo')
 const forgotPasswordRouter = require('./controllers/forgotpassword')
 const resetPassWordRouter = require('./controllers/resetpassword')
 const confirmEmailRouter = require('./controllers/confirmemail')
-
-if (process.env.NODE_ENV === 'test') {
-  const testingRouter = require('./controllers/testing')
-  app.use('/api/testing', testingRouter)
-}
+const sitemapRouter = require('./controllers/sitemap')
 
 const middleware = require('./utils/middleware')
 
@@ -57,6 +54,15 @@ app.use('/api/customerinfo', customerInfoRouter)
 app.use('/api/forgot-password', forgotPasswordRouter)
 app.use('/api/reset-password', resetPassWordRouter)
 app.use('/api/confirm-email', confirmEmailRouter)
+app.use('/sitemap.xml', sitemapRouter)
+
+app.get('/*', function(req, res) {
+  res.sendFile(path.join(__dirname, './build/index.html'), function(err) {
+    if (err) {
+      res.status(500).send(err)
+    }
+  })
+})
 
 app.use(middleware.unknownEndpoint)
 app.use(middleware.errorHandler)

@@ -31,7 +31,7 @@ router.post('/', async (request, response) => {
 
     // sähköpostin vahvistaminen
     const token = jwt.sign({ id: user._id }, process.env.SECRET, { expiresIn: '1d' })
-    const confirmLink = process.env.NODE_ENV === 'production' ? `https://webly.fi/confirm-email/${user._id}/${token}` :
+    const confirmLink = process.env.NODE_ENV === 'production' ? `https://webly.onrender.com/confirm-email/${user._id}/${token}` :
       `http://localhost:3000/confirm-email/${user._id}/${token}`
 
     const transporter = nodemailer.createTransport({

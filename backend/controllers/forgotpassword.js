@@ -13,7 +13,7 @@ router.post('/', (req, res) => {
           return res.send({ Status: 'User not existed' })
         }
         const token = jwt.sign({ id: user._id }, process.env.SECRET, { expiresIn: '1d' })
-        const resetLink = process.env.NODE_ENV === 'production' ? `https://webly.fi/reset-password/${user._id}/${token}` :
+        const resetLink = process.env.NODE_ENV === 'production' ? `https://webly.onrender.com/reset-password/${user._id}/${token}` :
           `http://localhost:3000/reset-password/${user._id}/${token}`
 
         const transporter = nodemailer.createTransport({

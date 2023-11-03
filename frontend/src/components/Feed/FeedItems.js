@@ -17,14 +17,15 @@ const FeedItems = () => {
   const [currentPage, setCurrentPage] = useState(1)
   const postsPerPage = 5
 
-  const feedPosts = useSelector(({feedPosts}) => feedPosts).filter(p => p.isOpen)
+  // suodatetaan kiinni olevat ja menneet ilmoitukset pois
+  const feedPosts = useSelector(({feedPosts}) => feedPosts).filter(p => p.isOpen && new Date(p.dueDate) > new Date())
 
   useEffect(() => {
     setCurrentPage(1)
   }, [filter1, filter2, filter3])
 
   if (!feedPosts || feedPosts.length === 0) {
-    return <Typography>Ei postauksia</Typography>
+    return <Typography sx={{ textAlign: 'center', fontSize: '1.2rem' }}>Ei avoimia ilmoituksia</Typography>
   }
 
   const filteredPosts = feedPosts

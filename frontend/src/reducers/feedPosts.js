@@ -59,7 +59,7 @@ export const makeOffer = (id, content) => {
       const data = await feedPostService.makeoffer(id, content)
       dispatch(alter(data))
     } catch (error) {
-      return { error: 'error adding data' };
+      return { error: error };
     }
   }
 }

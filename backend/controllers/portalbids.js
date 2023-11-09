@@ -66,7 +66,7 @@ router.post('/', userExtractor, async (request, response) => {
     const targetPost = await PortalPost.findById(target.id)
 
     // virheilmoitus jos postaus on suljettu
-    if (!targetPost || !targetPost.isOpen) {
+    if (!targetPost || !targetPost.isOpen || today > new Date(targetPost.dueDate)) {
       return response.status(400).json({ error: 'Tapahtui virhe! Ilmoitus on suljettu!' })
     }
 
@@ -121,6 +121,12 @@ router.put('/:id/acceptBid', userExtractor, async (request, response) => {
 
     const portalBid = await PortalBid.findById(request.params.id)
     const portalPost = await PortalPost.findById(portalBid.targetPost)
+
+    const today = new Date()
+
+    if (today > new Date(portalBid.dueDate)) {
+      return response.status(500).json({ error: 'Virhe! Tarjous ei ole enää voimassa!' })
+    }
 
     const checkIfUserDisabled = await isUserDisabled(user)
 

@@ -14,30 +14,29 @@ import { formatDate } from '../../Functions/formatDate';
 const PortalPostCard = ({ post }) => {
 
   return (
-    <Box
+    <Paper
+    elevation={3}
     component={Link}
         to={`/portaali/ilmoitukset/${post.id}`}
-      sx={{
-        padding: '1rem',
-        backgroundColor: '#f0f0f0',
-        borderRadius: '0.5rem',
-        textDecoration: 'none',
-        color: 'black',
-        marginLeft: '3rem',
-        marginRight: '3rem',
-        display: 'flex',
-        transition: 'all 0.3s linear',
-        flexDirection: 'column',
-        marginTop: '1rem',
-        '@media (max-width: 820px)': {
-          marginLeft: '0.1rem',
-          marginRight: '0.1rem',
+        sx={{
+          padding: '1rem',
+          borderRadius: '0.5rem',
+          textDecoration: 'none',
+          color: 'black',
+          margin: '1rem',
+          display: 'flex',
+          flexDirection: 'column',
+          transition: 'all 0.1s linear',
+          boxShadow: '0rem 0.1rem 0.2rem 0.1rem gray',
+          '@media (max-width: 820px)': {
+            marginLeft: '0.1rem',
+            marginRight: '0.1rem',
+          },
+          '&:hover': {
+            backgroundColor: '#ebebeb',
+            boxShadow: '0rem 0.1rem 0.2rem 0.2rem gray',
         },
-        '&:hover': {
-          backgroundColor: '#DDDDDD',
-          boxShadow: '0rem 0.1rem 0.3rem gray'
-      },
-      }}
+        }}
     >
         <Box sx={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap',
       justifyContent: 'space-between', padding: '0.3rem', borderRadius: '0.3rem',
@@ -109,7 +108,7 @@ const PortalPostCard = ({ post }) => {
         </Table>
       </TableContainer>
       </Box>
-    </Box>
+    </Paper>
   )
 }
 

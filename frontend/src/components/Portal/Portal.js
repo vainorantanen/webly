@@ -31,9 +31,9 @@ const Portal = () => {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dispatch]);
 
-  const openPortalProjects = useSelector(({portalPosts}) => portalPosts).filter(p => p.isOpen)
+  const openPortalProjects = useSelector(({portalPosts}) => portalPosts).filter(p => p.isOpen && new Date(p.dueDate) > new Date())
   const numberOfOpenPortalProjects = openPortalProjects.length
-  const closedPortalProjects = useSelector(({portalPosts}) => portalPosts).filter(p => !p.isOpen)
+  const closedPortalProjects = useSelector(({portalPosts}) => portalPosts).filter(p => !p.isOpen || new Date(p.dueDate) < new Date())
   const numberOfClosedPortalProjects = closedPortalProjects.length
 
   const handleDeletePortalPost = async (postId) => {

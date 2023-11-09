@@ -94,6 +94,9 @@ const PortalBidCard = ({offer, post}) => {
             width: '90%'
           },
         }}>
+          {new Date(offer.dueDate) < new Date() && (
+              <Typography variant='h6' sx={{ textAlign: 'center' }}>Tarjous sulkeutui {formatDate(offer.dueDate)}</Typography>
+            )}
             {offer.isApproved && (
               <Typography sx={{ fontSize: '1.2rem' }}>Tarjous hyväksytty <CheckCircleIcon/></Typography>
             )}
@@ -102,7 +105,9 @@ const PortalBidCard = ({offer, post}) => {
             <Typography><StartIcon />Tarjous jätetty: {formatDate(offer.timeStamp)}</Typography>
             <Typography><AccessTimeIcon />Tarjous voimassa: {formatDate(offer.dueDate) || 'Ei tietoa'}</Typography>
             {user && user.id === post.user.id && !offer.isApproved ? (
-              <Button onClick={() => handleAcceptbid(offer.id)}>Hyväksy tarjous<CheckCircleIcon /></Button>
+              <Button
+              disabled={new Date(offer.dueDate) < new Date()}
+              onClick={() => handleAcceptbid(offer.id)}>Hyväksy tarjous<CheckCircleIcon /></Button>
             ): null}
             {user && user.id === post.user.id && offer.isApproved ? (
               <Button onClick={() => handleAcceptbid(offer.id)}>Epähyväksy tarjous</Button>

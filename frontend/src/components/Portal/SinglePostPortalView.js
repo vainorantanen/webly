@@ -6,6 +6,7 @@ import { useParams } from 'react-router-dom'
 import Togglable from '../Togglable'
 import MakeBidForm from './MakeBidForm'
 import PortalBidCard from './PortalBidCard'
+import { formatDate } from '../../Functions/formatDate'
 
 const SinglePostPortalView = () => {
     const user = useSelector(({user}) => user)
@@ -27,18 +28,16 @@ const SinglePostPortalView = () => {
       )
     }
 
-    // pakko hakea bidit siten, että looppaa portalbidsejä, joiden tekijä on user
-    //const developerBidsOnPost = portalBidsToShow.filter(bid =>
-      //bid.targetPost === id
-    //);
-
   return (
     <Container sx={{ marginTop: '5rem', minHeight: '90vh' }}>
       <Typography sx={{ textAlign: 'center', fontSize: '1.3rem',
     marginBottom: '1rem' }}>Portaali-ilmoitus</Typography>
+    {new Date(post.dueDate) < new Date() && (
+        <Typography variant='h4' sx={{ textAlign: 'center' }}>Ilmoitus on sulkeutunut {formatDate(post.dueDate)}</Typography>
+      )}
       <SingleFeedPostInfo post={post}/>
       {/*Näkymä kehittäjille*/}
-      {user && user.userType !== 'regular' && (
+      {user && user.userType !== 'regular' && new Date(post.dueDate) > new Date() && (
         <Box>
           <Togglable buttonLabel='Tee tarjous'>
             <MakeBidForm post={post}/>

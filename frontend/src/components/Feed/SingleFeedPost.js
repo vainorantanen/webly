@@ -6,6 +6,7 @@ import MakeBidForm from './MakeBidForm'
 import { useSelector } from 'react-redux'
 import SingleFeedPostInfo from './SingleFeedPostInfo'
 import OpenPostBids from './OpenPostBids'
+import { formatDate } from '../../Functions/formatDate'
 
 const SingleFeedPost = () => {
 
@@ -13,12 +14,17 @@ const SingleFeedPost = () => {
   const id = useParams().id
   const post = useSelector(({feedPosts}) => feedPosts.find(p => p.id === id))
 
-  
+if (!post) {
+  return null
+}  
 
   return (
     <Container  sx={{ marginTop: '7rem', minHeight: '100vh' }}>
+      {new Date(post.dueDate) < new Date() && (
+        <Typography variant='h4' sx={{ textAlign: 'center' }}>Ilmoitus on sulkeutunut {formatDate(post.dueDate)}</Typography>
+      )}
       <SingleFeedPostInfo post={post}/>
-      {user && user.userType !== 'regular' && (
+      {user && user.userType !== 'regular' && new Date(post.dueDate) > new Date() && (
         <Togglable buttonLabel='Tee tarjous'>
           <MakeBidForm post={post}/>
         </Togglable>

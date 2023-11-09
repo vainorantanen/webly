@@ -32,18 +32,8 @@ const Footer = () => {
         }}>
           +358 505517322
         </Typography>
-
-        <Typography variant="body1" className="contact" sx={{
-          fontSize: '1rem',
-        }}>
-          webline@webline.fi
-        </Typography>
-
-        <Typography variant='body1' component={Link} to='/kayttoehdot'
-        sx={{ color: 'black' }}
-        >
-          Käyttöehdot
-        </Typography>
+        
+        
 
         <Box sx={{
           marginTop: '1rem',
@@ -92,3 +82,17 @@ const Footer = () => {
 }
 
 export default Footer
+
+/**
+ * <Typography variant="body1" className="contact" sx={{
+          fontSize: '1rem',
+        }}>
+          webline@webline.fi
+        </Typography>
+
+        <Typography variant='body1' component={Link} to='/kayttoehdot'
+        sx={{ color: 'black' }}
+        >
+          Käyttöehdot
+        </Typography>
+ */
